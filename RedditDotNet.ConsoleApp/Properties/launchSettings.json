@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "RedditDotNet.ConsoleApp": {
+      "commandName": "Project"
+    }
+  }
+}
