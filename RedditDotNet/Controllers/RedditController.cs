@@ -83,7 +83,10 @@ namespace RedditDotNet.Controllers
 			HttpRequestMessage request = new(HttpMethod.Get, builder.ToString());
 			var token = await RedditAuthentication.GetBearerToken();
 			request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+			if (!string.IsNullOrWhiteSpace(UserAgent))
+			{
+				request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+			}
 
 			HttpResponseMessage response = await HttpClient.SendAsync(request);
 			response.EnsureSuccessStatusCode();

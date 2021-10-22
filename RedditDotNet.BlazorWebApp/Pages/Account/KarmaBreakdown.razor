@@ -1,0 +1,28 @@
+﻿@page "/account/karma-breakdown"
+
+<h1>Karma Breakdown</h1>
+
+@if (AccountKarmaBreakdown == null)
+{
+	<p>Loading karma breakdown...</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Subreddit</th>
+				<th>Comment Karma</th>
+				<th>Link Karma</th>
+			</tr>
+		</thead>
+		@foreach (var breakdown in AccountKarmaBreakdown)
+		{
+			<tr>
+				<td>@breakdown.Subreddit</td>
+				<td>@breakdown.CommentKarma</td>
+				<td>@breakdown.LinkKarma</td>
+			</tr>
+		}
+	</table>
+}
