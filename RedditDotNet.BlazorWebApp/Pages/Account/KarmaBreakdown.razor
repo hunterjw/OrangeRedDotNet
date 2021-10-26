@@ -16,13 +16,15 @@ else
 				<th>Link Karma</th>
 			</tr>
 		</thead>
-		@foreach (var breakdown in AccountKarmaBreakdown)
-		{
-			<tr>
-				<td>@breakdown.Subreddit</td>
-				<td>@breakdown.CommentKarma</td>
-				<td>@breakdown.LinkKarma</td>
-			</tr>
-		}
+		<tbody>
+			@foreach (var breakdown in AccountKarmaBreakdown)
+			{
+				<tr>
+					<td>@breakdown.Subreddit</td>
+					<td>@breakdown.CommentKarma</td>
+					<td>@breakdown.LinkKarma</td>
+				</tr>
+			}
+		</tbody>
 	</table>
 }
