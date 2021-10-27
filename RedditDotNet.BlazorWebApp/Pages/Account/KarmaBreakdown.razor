@@ -8,23 +8,47 @@
 }
 else
 {
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Subreddit</th>
-				<th>Comment Karma</th>
-				<th>Link Karma</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var breakdown in AccountKarmaBreakdown)
-			{
-				<tr>
-					<td>@breakdown.Subreddit</td>
-					<td>@breakdown.CommentKarma</td>
-					<td>@breakdown.LinkKarma</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+	<h2>Link Karma</h2>
+	<RadzenChart>
+		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" />
+	</RadzenChart>
+
+	<h2>Comment Karma</h2>
+	<RadzenChart>
+		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" />
+	</RadzenChart>
+
+	<div class="card">
+		<div class="card-header">
+			<h2 class="mb-0">
+				<button class="btn btn-link" type="button" @onclick="RawDataButton_OnClick">
+					Raw Data
+				</button>
+			</h2>
+		</div>
+
+		<div class="@(RawDataCollapsed ? "collapse" : "")">
+			<div class="card-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Subreddit</th>
+							<th>Comment Karma</th>
+							<th>Link Karma</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var breakdown in AccountKarmaBreakdown)
+						{
+							<tr>
+								<td>@breakdown.Subreddit</td>
+								<td>@breakdown.CommentKarma</td>
+								<td>@breakdown.LinkKarma</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 }
