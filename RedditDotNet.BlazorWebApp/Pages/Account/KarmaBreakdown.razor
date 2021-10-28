@@ -10,12 +10,12 @@ else
 {
 	<h2>Link Karma</h2>
 	<RadzenChart>
-		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" />
+		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
 	</RadzenChart>
 
 	<h2>Comment Karma</h2>
 	<RadzenChart>
-		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" />
+		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
 	</RadzenChart>
 
 	<div class="card">
