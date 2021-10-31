@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditDotNet.Tests", "Reddi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditDotNet.ConsoleApp", "RedditDotNet.ConsoleApp\RedditDotNet.ConsoleApp.csproj", "{6D593F07-E3EC-43C3-8122-C57ABDEFE9ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditDotNet.BlazorWebApp", "RedditDotNet.BlazorWebApp\RedditDotNet.BlazorWebApp.csproj", "{77FF2293-7D11-4236-86FE-205D9DF98200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditDotNet.BlazorWebApp", "RedditDotNet.BlazorWebApp\RedditDotNet.BlazorWebApp.csproj", "{77FF2293-7D11-4236-86FE-205D9DF98200}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
