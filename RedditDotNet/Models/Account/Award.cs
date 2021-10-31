@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace RedditDotNet.Models.Account
 {
@@ -27,5 +28,18 @@ namespace RedditDotNet.Models.Account
 
 		[JsonProperty("description")]
 		public string Description { get; set; }
+
+		public DateTime GrantedAtDateTime
+		{
+			get
+			{
+				if (GrantedAt == default)
+				{
+					return DateTime.MinValue;
+				}
+				return DateTimeOffset.FromUnixTimeSeconds(GrantedAt.Value)
+					.ToLocalTime().DateTime;
+			}
+		}
 	}
 }

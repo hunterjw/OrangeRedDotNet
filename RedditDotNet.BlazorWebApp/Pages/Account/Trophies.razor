@@ -1,0 +1,38 @@
+﻿@page "/account/trophies"
+
+<h1>Trophies</h1>
+
+@if (Awards == null)
+{
+	<p>Loading trophies...</p>
+}
+else
+{
+	@foreach (var award in Awards)
+	{
+		<div class="card mb-3">
+			<div class="row g-0">
+				<div class="col-md-1 d-flex flex-wrap align-items-center">
+					<img src="@award.Icon70" class="img-fluid mx-auto d-block m-3" alt="@award.Name" />
+				</div>
+				<div class="col">
+					<div class="card-body">
+						<h5 class="card-title">@award.Name</h5>
+						@if (award.GrantedAt != default)
+						{
+							<h6 class="card-subtitle mb-2 text-muted">@award.GrantedAtDateTime</h6>
+						}
+						@if (!string.IsNullOrWhiteSpace(award.Description))
+						{
+							<p class="card-text">@award.Description</p>
+						}
+						@if (!string.IsNullOrWhiteSpace(award.Url))
+						{
+							<a href="@award.Url" class="card-link">@award.Url</a>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}
