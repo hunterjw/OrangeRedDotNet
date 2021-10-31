@@ -1,0 +1,12 @@
+﻿@page "/account/friends"
+
+<h1>Friends</h1>
+
+@if (Users == null)
+{
+	<p>Loading friends list...</p>
+}
+else
+{
+	<UserList Users="@Users" DateLabel="Friend added on" />
+}

@@ -1,0 +1,12 @@
+﻿@page "/account/trusted"
+
+<h1>Trusted</h1>
+
+@if (Users == null)
+{
+	<p>Loading trusted list...</p>
+}
+else
+{
+	<UserList Users="@Users" DateLabel="User trusted on" />
+}

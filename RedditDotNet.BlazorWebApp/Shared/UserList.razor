@@ -1,0 +1,9 @@
+﻿@foreach (var user in Users)
+{
+	<div class="card mb-1">
+		<div class="card-body">
+			<h5 class="card-title">@user.Name</h5>
+			<p class="card-text">@DateLabel @user.DateDateTime.ToString()</p>
+		</div>
+	</div>
+}

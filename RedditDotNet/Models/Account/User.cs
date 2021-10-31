@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace RedditDotNet.Models.Account
 {
@@ -15,5 +16,15 @@ namespace RedditDotNet.Models.Account
 
 		[JsonProperty("id")]
 		public string Id { get; set; }
+
+		[JsonIgnore]
+		public DateTime DateDateTime
+		{
+			get
+			{
+				return DateTimeOffset.FromUnixTimeSeconds((long)Date)
+					.ToLocalTime().DateTime;
+			}
+		}
 	}
 }
