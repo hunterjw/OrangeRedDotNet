@@ -8,17 +8,25 @@
 }
 else
 {
-	<h2>Link Karma</h2>
-	<RadzenChart>
-		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
-	</RadzenChart>
+	<div class="card mb-3">
+		<div class="card-body">
+			<h2 class="card-title">Link Karma</h2>
+			<RadzenChart>
+				<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
+			</RadzenChart>
+		</div>
+	</div>
 
-	<h2>Comment Karma</h2>
-	<RadzenChart>
-		<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
-	</RadzenChart>
+	<div class="card mb-3">
+		<div class="card-body">
+			<h2 class="card-title">Comment Karma</h2>
+			<RadzenChart>
+				<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
+			</RadzenChart>
+		</div>
+	</div>
 
-	<div class="card">
+	<div class="card mb-3">
 		<div class="card-header">
 			<h2 class="mb-0">
 				<button class="btn btn-link" type="button" @onclick="RawDataButton_OnClick">
