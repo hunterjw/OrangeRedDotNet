@@ -29,6 +29,7 @@ namespace RedditDotNet.Models.Account
 		[JsonProperty("description")]
 		public string Description { get; set; }
 
+		[JsonIgnore]
 		public DateTime GrantedAtDateTime
 		{
 			get
