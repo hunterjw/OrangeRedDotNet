@@ -12,7 +12,7 @@ else
 		<div class="card-body">
 			<h2 class="card-title">Link Karma</h2>
 			<RadzenChart>
-				<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
+				<RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
 			</RadzenChart>
 		</div>
 	</div>
@@ -21,7 +21,7 @@ else
 		<div class="card-body">
 			<h2 class="card-title">Comment Karma</h2>
 			<RadzenChart>
-				<RadzenPieSeries Data="@AccountKarmaBreakdown" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
+				<RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
 			</RadzenChart>
 		</div>
 	</div>
@@ -46,7 +46,7 @@ else
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var breakdown in AccountKarmaBreakdown)
+						@foreach (var breakdown in AccountKarmaBreakdown.Data)
 						{
 							<tr>
 								<td>@breakdown.Subreddit</td>

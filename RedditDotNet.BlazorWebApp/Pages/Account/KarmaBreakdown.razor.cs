@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using RedditDotNet.Models;
 using RedditDotNet.Models.Account;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,14 +18,14 @@ namespace RedditDotNet.BlazorWebApp.Pages.Account
 		[Inject]
 		protected Reddit Reddit { get; set; }
 
-		protected List<SubredditKarmaBreakdown> AccountKarmaBreakdown { get; set; }
+		protected Thing<List<SubredditKarmaBreakdown>> AccountKarmaBreakdown { get; set; }
 		protected bool RawDataCollapsed { get; set; } = true;
 		protected IEnumerable<string> SubredditNameHashColors { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{
 			AccountKarmaBreakdown = await Reddit.Account.GetKarmaBreakdown();
-			SubredditNameHashColors = GetSubredditNameHashColors(AccountKarmaBreakdown.Select(_ => _.Subreddit));
+			SubredditNameHashColors = GetSubredditNameHashColors(AccountKarmaBreakdown.Data.Select(_ => _.Subreddit));
 		}
 
 		protected void RawDataButton_OnClick(MouseEventArgs e)

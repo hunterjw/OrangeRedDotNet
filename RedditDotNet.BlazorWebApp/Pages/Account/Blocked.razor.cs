@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Models;
 using RedditDotNet.Models.Account;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages.Account
@@ -10,7 +10,7 @@ namespace RedditDotNet.BlazorWebApp.Pages.Account
 		[Inject]
 		public Reddit Reddit { get; set; }
 
-		public List<User> Users { get; set; }
+		public Thing<UserList> Users { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{

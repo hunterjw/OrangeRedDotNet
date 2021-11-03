@@ -2,9 +2,9 @@
 using RedditDotNet.Models.Account;
 using System.Collections.Generic;
 
-namespace RedditDotNet.Models.DTO
+namespace RedditDotNet.Models.Account
 {
-	public class TrophyListData
+	public class TrophyList
 	{
 		[JsonProperty("trophies")]
 		public List<Thing<Award>> Trophies { get; set; }

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models.Account;
-using System.Collections.Generic;
+using RedditDotNet.Models;
 
 namespace RedditDotNet.BlazorWebApp.Shared
 {
 	public partial class UserList
 	{
 		[Parameter]
-		public List<User> Users { get; set; }
+		public Thing<Models.Account.UserList> Users { get; set; }
 
 		[Parameter]
 		public string DateLabel { get; set; }
