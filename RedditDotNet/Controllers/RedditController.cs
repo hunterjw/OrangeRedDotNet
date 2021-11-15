@@ -104,5 +104,17 @@ namespace RedditDotNet.Controllers
 		{
 			return await DeserializeToObject<T>(await Get(relativeUrl));
 		}
+
+		/// <summary>
+		/// HTTP Get with the response deserialzed to <typeparamref name="T"/>
+		/// </summary>
+		/// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
+		/// <param name="relativeUrl">URL to make the request to</param>
+		/// <param name="queryParameters">Query parameters for the request</param>
+		/// <returns><typeparamref name="T"/> instance</returns>
+		internal async Task<T> Get<T>(string relativeUrl, IDictionary<string, string> queryParameters)
+		{
+			return await DeserializeToObject<T>(await Get(relativeUrl, queryParameters));
+		}
 	}
 }

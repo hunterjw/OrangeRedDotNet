@@ -43,5 +43,21 @@ namespace RedditDotNet
 			}
 		}
 		private AccountController AccountController = null;
+
+		/// <summary>
+		/// Listings operations
+		/// </summary>
+		public ListingsController Listings
+		{
+			get
+			{
+				if (ListingsController == null)
+				{
+					ListingsController = new ListingsController(UserAgent, RedditAuthentication);
+				}
+				return ListingsController;
+			}
+		}
+		private ListingsController ListingsController = null;
 	}
 }
