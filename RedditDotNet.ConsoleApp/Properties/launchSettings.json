@@ -1,8 +1,7 @@
 {
   "profiles": {
     "RedditDotNet.ConsoleApp": {
-      "commandName": "Project",
-      "commandLineArgs": "get-karmabreakdown"
+      "commandName": "Project"
     }
   }
 }
