@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using System;
@@ -27,11 +26,11 @@ namespace RedditDotNet.Json
             {
                 if (array.Count > 0)
                 {
-                    toReturn.Originals = array[0].ToObject<Thing<Listing<Thing<Link>>>>();
+                    toReturn.Originals = array[0].ToObject<Listing<Link>>();
                 }
                 if (array.Count > 1)
                 {
-                    toReturn.Duplicates = array[1].ToObject<Thing<Listing<Thing<Link>>>>();
+                    toReturn.Duplicates = array[1].ToObject<Listing<Link>>();
                 }
             }
             return toReturn;

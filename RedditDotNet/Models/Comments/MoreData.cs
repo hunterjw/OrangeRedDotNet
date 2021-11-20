@@ -6,7 +6,7 @@ namespace RedditDotNet.Models.Comments
     /// <summary>
     /// Summary of more comments
     /// </summary>
-    public class More : CommentBase
+    public class MoreData : CommentBaseData
     {
         [JsonProperty("count")]
         public int Count { get; set; }

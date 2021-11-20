@@ -33,7 +33,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 
         public override string Run(Reddit reddit)
         {
-            return ToJson(reddit.Listings.GetDuplicates(ArticleId, BuildDuplicateListingParameters()).Result);
+            return reddit.Listings.GetDuplicates(ArticleId, BuildDuplicateListingParameters()).Result.ToJson();
         }
 
         /// <summary>

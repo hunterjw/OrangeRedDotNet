@@ -19,7 +19,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
-			return ToJson(reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit).Result);
+			return reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit).Result.ToJson();
 		}
 
 		/// <summary>

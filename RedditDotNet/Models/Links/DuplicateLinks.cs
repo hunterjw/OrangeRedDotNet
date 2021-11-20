@@ -13,11 +13,11 @@ namespace RedditDotNet.Models.Links
         /// <summary>
         /// The original Link requested to get duplicates for
         /// </summary>
-        public Thing<Listing<Thing<Link>>> Originals { get; set; }
+        public Listing<Link> Originals { get; set; }
 
         /// <summary>
         /// Duplicate Links
         /// </summary>
-        public Thing<Listing<Thing<Link>>> Duplicates { get; set; }
+        public Listing<Link> Duplicates { get; set; }
     }
 }

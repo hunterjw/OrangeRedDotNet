@@ -1,15 +1,13 @@
 ﻿using RedditDotNet.Authentication;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Account;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Controllers
 {
-	/// <summary>
-	/// Account operations for Reddit
-	/// </summary>
-	public class AccountController : RedditController
+    /// <summary>
+    /// Account operations for Reddit
+    /// </summary>
+    public class AccountController : RedditController
 	{
 		/// <summary>
 		/// Constructor
@@ -33,9 +31,9 @@ namespace RedditDotNet.Controllers
 		/// Get a breakdown of karma by subreddit for the current user
 		/// </summary>
 		/// <returns>Karma breakdown</returns>
-		public async Task<Thing<List<SubredditKarmaBreakdown>>> GetKarmaBreakdown()
+		public async Task<KarmaBreakdown> GetKarmaBreakdown()
 		{
-			return await Get<Thing<List<SubredditKarmaBreakdown>>>("/api/v1/me/karma");
+			return await Get<KarmaBreakdown>("/api/v1/me/karma");
 		}
 
 		/// <summary>
@@ -51,36 +49,36 @@ namespace RedditDotNet.Controllers
 		/// Get awards for the current user
 		/// </summary>
 		/// <returns>List of awards</returns>
-		public async Task<Thing<TrophyList>> GetTrophies()
+		public async Task<TrophyList> GetTrophies()
 		{
-			return await Get<Thing<TrophyList>>("/api/v1/me/trophies");
+			return await Get<TrophyList>("/api/v1/me/trophies");
 		}
 		
 		/// <summary>
 		/// Get the list of friends for the current user
 		/// </summary>
 		/// <returns>List of friends</returns>
-		public async Task<Thing<UserList>> GetFriends()
+		public async Task<UserList> GetFriends()
 		{
-			return await Get<Thing<UserList>>("/api/v1/me/friends");
+			return await Get<UserList>("/api/v1/me/friends");
  		}
 
 		/// <summary>
 		/// Get list of blocked users for the current user
 		/// </summary>
 		/// <returns>List of blocked users</returns>
-		public async Task<Thing<UserList>> GetBlocked()
+		public async Task<UserList> GetBlocked()
 		{
-			return await Get<Thing<UserList>>("/prefs/blocked");
+			return await Get<UserList>("/prefs/blocked");
 		}
 
 		/// <summary>
 		/// Get list of trusted users for the current user
 		/// </summary>
 		/// <returns>List of trusted users</returns>
-		public async Task<Thing<UserList>> GetTrusted()
+		public async Task<UserList> GetTrusted()
 		{
-			return await Get<Thing<UserList>>("/prefs/trusted");
+			return await Get<UserList>("/prefs/trusted");
 		}
 	}
 }

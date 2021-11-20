@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using RedditDotNet.Extensions;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
 {
@@ -17,7 +18,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
-			return ToJson(reddit.Listings.GetRandom(Subreddit));
+			return reddit.Listings.GetRandom(Subreddit).ToJson();
 		}
 	}
 }

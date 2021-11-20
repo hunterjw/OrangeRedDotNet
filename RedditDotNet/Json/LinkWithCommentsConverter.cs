@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Comments;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
@@ -28,11 +27,11 @@ namespace RedditDotNet.Json
             {
                 if (array.Count > 0)
                 {
-                    toReturn.Links = array[0].ToObject<Thing<Listing<Thing<Link>>>>();
+                    toReturn.Links = array[0].ToObject<Listing<Link>>();
                 }
                 if (array.Count > 1)
                 {
-                    toReturn.Comments = array[1].ToObject<Thing<Listing<Thing<CommentBase>>>>();
+                    toReturn.Comments = array[1].ToObject<Listing<CommentBase>>();
                 }
             }
             return toReturn;

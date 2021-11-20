@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using RedditDotNet.Extensions;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
@@ -10,7 +11,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Account
 	{
 		public override string Run(Reddit reddit)
 		{
-			return ToJson(reddit.Account.GetTrusted().Result);
+			return reddit.Account.GetTrusted().Result.ToJson();
 		}
 	}
 }

@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Account;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages.Account
 {
-	public partial class Trophies
+    public partial class Trophies
 	{
 		[Inject]
 		protected Reddit Reddit { get; set; }
 
-		protected Thing<TrophyList> Awards { get; set; }
+		protected TrophyList Awards { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{

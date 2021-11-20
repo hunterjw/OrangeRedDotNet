@@ -89,7 +89,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
         {
-            return ToJson(reddit.Listings.GetComments(ArticleId, subreddit: Subreddit, parameters: BuildCommentListingParameters()).Result);
+            return reddit.Listings.GetComments(ArticleId, subreddit: Subreddit, parameters: BuildCommentListingParameters()).Result.ToJson();
         }
 
 		/// <summary>

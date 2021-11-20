@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using RedditDotNet.Models;
-using RedditDotNet.Models.Account;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages.Account
 {
-	public partial class KarmaBreakdown
+    public partial class KarmaBreakdown
 	{
         private static readonly SHA1 MySha1 = SHA1.Create();
 
 		[Inject]
 		protected Reddit Reddit { get; set; }
 
-		protected Thing<List<SubredditKarmaBreakdown>> AccountKarmaBreakdown { get; set; }
+		protected Models.Account.KarmaBreakdown AccountKarmaBreakdown { get; set; }
 		protected bool RawDataCollapsed { get; set; } = true;
 		protected IEnumerable<string> SubredditNameHashColors { get; set; }
 

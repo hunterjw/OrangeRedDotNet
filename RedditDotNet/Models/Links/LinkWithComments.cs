@@ -14,11 +14,11 @@ namespace RedditDotNet.Models.Links
         /// <summary>
         /// The Link that was used to request comments for
         /// </summary>
-        public Thing<Listing<Thing<Link>>> Links { get; set; }
+        public Listing<Link> Links { get; set; }
 
         /// <summary>
         /// Comments for the link
         /// </summary>
-        public Thing<Listing<Thing<CommentBase>>> Comments { get; set; }
+        public Listing<CommentBase> Comments { get; set; }
     }
 }

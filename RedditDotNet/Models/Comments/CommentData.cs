@@ -7,10 +7,10 @@ namespace RedditDotNet.Models.Comments
     /// <summary>
     /// A comment on a Link on Reddit
     /// </summary>
-    public class Comment : CommentBase
+    public class CommentData : CommentBaseData
     {
         [JsonProperty("replies")]
-        public Thing<Listing<Thing<CommentBase>>> Replies { get; set; }
+        public Listing<CommentBase> Replies { get; set; }
 
         [JsonProperty("subreddit_id")]
         public string SubredditId { get; set; }
@@ -182,7 +182,7 @@ namespace RedditDotNet.Models.Comments
         public bool Locked { get; set; }
 
         [JsonProperty("report_reasons")]
-        public Listing<string> ReportReasons { get; set; }
+        public ListingData<string> ReportReasons { get; set; }
 
         [JsonProperty("created")]
         public double Created { get; set; }
@@ -211,7 +211,7 @@ namespace RedditDotNet.Models.Comments
         //public object CollapsedBecauseCrowdControl { get; set; }
 
         [JsonProperty("mod_reports")]
-        public List<Listing<string>> ModReports { get; set; }
+        public List<ListingData<string>> ModReports { get; set; }
 
         [JsonProperty("num_reports")]
         public int? NumReports { get; set; }

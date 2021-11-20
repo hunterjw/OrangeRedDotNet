@@ -9,16 +9,6 @@ namespace RedditDotNet.ConsoleApp.Verbs
 	internal abstract class VerbBase
 	{
 		/// <summary>
-		/// Serialize an object to json
-		/// </summary>
-		/// <param name="obj">Object to serialize</param>
-		/// <returns>Json string</returns>
-		protected static string ToJson(object obj)
-		{
-			return JsonConvert.SerializeObject(obj, Formatting.Indented);
-		}
-
-		/// <summary>
 		/// Run this verb
 		/// </summary>
 		/// <returns>Output for the standard output stream</returns>

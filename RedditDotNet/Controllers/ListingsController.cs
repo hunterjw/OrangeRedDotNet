@@ -1,6 +1,5 @@
 ﻿using RedditDotNet.Authentication;
 using RedditDotNet.Interfaces;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using System.Collections.Generic;
@@ -27,9 +26,9 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="parameters">Listing parameter object</param>
 		/// <returns>Listing of links (posts)</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetBest(ListingParameters parameters = null)
+		public async Task<Listing<Link>> GetBest(ListingParameters parameters = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/best", parameters);
+			return await GetListingBySubreddit<Listing<Link>>("/best", parameters);
 		}
 
 		/// <summary>
@@ -37,9 +36,9 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="fullNames">Full names of links to get</param>
 		/// <returns>Listing of links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetByIds(IEnumerable<string> fullNames)
+		public async Task<Listing<Link>> GetByIds(IEnumerable<string> fullNames)
 		{
-			return await Get<Thing<Listing<Thing<Link>>>>($"/by_id/{string.Join(',', fullNames)}");
+			return await Get<Listing<Link>>($"/by_id/{string.Join(',', fullNames)}");
 		}
 
 		/// <summary>
@@ -71,9 +70,9 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Location based listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetHot(LocationListingParameters parameters = null, string subreddit = null)
+		public async Task<Listing<Link>> GetHot(LocationListingParameters parameters = null, string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/hot", parameters, subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/hot", parameters, subreddit);
 		}
 
 		/// <summary>
@@ -82,9 +81,9 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetNew(ListingParameters parameters = null, string subreddit = null)
+		public async Task<Listing<Link>> GetNew(ListingParameters parameters = null, string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/new", parameters, subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/new", parameters, subreddit);
 		}
 
 		/// <summary>
@@ -92,9 +91,9 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetRandom(string subreddit = null)
+		public async Task<Listing<Link>> GetRandom(string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/random", subreddit: subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/random", subreddit: subreddit);
 		}
 
 		/// <summary>
@@ -103,9 +102,9 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetRising(ListingParameters parameters = null, string subreddit = null)
+		public async Task<Listing<Link>> GetRising(ListingParameters parameters = null, string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/rising", parameters, subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/rising", parameters, subreddit);
 		}
 
 		/// <summary>
@@ -114,9 +113,9 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetTop(SortListingParameters parameters = null, string subreddit = null)
+		public async Task<Listing<Link>> GetTop(SortListingParameters parameters = null, string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/top", parameters, subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/top", parameters, subreddit);
 		}
 
 		/// <summary>
@@ -125,9 +124,9 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
-		public async Task<Thing<Listing<Thing<Link>>>> GetControversial(SortListingParameters parameters = null, string subreddit = null)
+		public async Task<Listing<Link>> GetControversial(SortListingParameters parameters = null, string subreddit = null)
 		{
-			return await GetListingBySubreddit<Thing<Listing<Thing<Link>>>>("/controversial", parameters, subreddit);
+			return await GetListingBySubreddit<Listing<Link>>("/controversial", parameters, subreddit);
 		}
 
 		/// <summary>

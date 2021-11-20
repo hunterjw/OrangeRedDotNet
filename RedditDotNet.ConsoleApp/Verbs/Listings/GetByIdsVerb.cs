@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using RedditDotNet.Extensions;
 using System.Collections.Generic;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
@@ -18,7 +19,7 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
-			return ToJson(reddit.Listings.GetByIds(Ids).Result);
+			return reddit.Listings.GetByIds(Ids).Result.ToJson();
 		}
 	}
 }
