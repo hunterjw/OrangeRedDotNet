@@ -114,7 +114,7 @@
             @switch (Link.GetLinkType())
             {
                 case LinkType.Image:
-                    <img class="img-fluid rounded" src="@Link.Data.Url" alt="@Link.Data.Title" />
+                    <img class="rounded" style="width: auto;" src="@Link.Data.Url" alt="@Link.Data.Title" />
                     break;
                 case LinkType.Video:
                     @*<video style="max-width: 100%; height: auto;" controls autoplay>
