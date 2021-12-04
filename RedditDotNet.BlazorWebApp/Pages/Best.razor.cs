@@ -11,7 +11,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
     /// <summary>
     /// Home page of the web app
     /// </summary>
-    public partial class Index
+    public partial class Best
     {
         #region Injected Services
         /// <summary>
