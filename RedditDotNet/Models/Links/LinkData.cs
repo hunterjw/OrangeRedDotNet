@@ -47,7 +47,7 @@ namespace RedditDotNet.Models.Links
         public bool Hidden { get; set; }
 
         [JsonProperty("pwls")]
-        public int Pwls { get; set; }
+        public int? Pwls { get; set; }
 
         [JsonProperty("link_flair_css_class")]
         public string LinkFlairCssClass { get; set; }
@@ -177,7 +177,7 @@ namespace RedditDotNet.Models.Links
         public string LinkFlairType { get; set; }
 
         [JsonProperty("wls")]
-        public int Wls { get; set; }
+        public int? Wls { get; set; }
 
         // TODO
         //[JsonProperty("removed_by_category")]
@@ -356,5 +356,11 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("crosspost_parent_list")]
         public List<LinkData> CrosspostParentList { get; set; }
+
+        [JsonProperty("is_gallery")]
+        public bool IsGallery { get; set; }
+
+        [JsonProperty("crosspost_parent")]
+        public string CrosspostParent { get; set; }
     }
 }

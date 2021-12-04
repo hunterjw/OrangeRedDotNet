@@ -1,27 +1,12 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Home</h1>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<NavLink class="nav-link" href="account/karma-breakdown">
-	Account - Karma Breakdown
-</NavLink>
-
-<NavLink class="nav-link" href="account/trophies">
-	Account - Trophies
-</NavLink>
-
-<NavLink class="nav-link" href="account/friends">
-	Account - Friends
-</NavLink>
-
-<NavLink class="nav-link" href="account/blocked">
-	Account - Blocked
-</NavLink>
-
-<NavLink class="nav-link" href="account/trusted">
-	Account - Trusted
-</NavLink>
+@if (Links == null)
+{
+    <p>Loading links...</p>
+}
+else
+{
+    <LinkList Links="@Links" />
+}
