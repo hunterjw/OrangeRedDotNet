@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/best"
 
 <h1>Home</h1>
 
@@ -9,4 +10,19 @@
 else
 {
     <LinkList Links="@Links" />
+
+    <ul class="pagination justify-content-center">
+        @if (!string.IsNullOrWhiteSpace(Links?.Data?.Before))
+        {
+            <li class="page-item">
+                <a class="page-link" href="@BuildPreviousPageUrl().Result">Previous</a>
+            </li>
+        }
+        @if (!string.IsNullOrWhiteSpace(Links?.Data?.After))
+        {
+            <li class="page-item">
+                <a class="page-link" href="@BuildNextPageUrl().Result">Next</a>
+            </li>
+        }
+    </ul>
 }
