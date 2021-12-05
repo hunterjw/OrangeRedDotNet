@@ -1,0 +1,17 @@
+﻿@page "/rising"
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Rising" />
+
+@if (Links == null)
+{
+    <p>Getting the posts that rise to the top...</p>
+}
+else
+{
+    <LinkList Links="@Links" />
+
+    <LinkListingPagination After="@Links?.Data?.After"
+                       Before="@Links?.Data?.Before"
+                       CurrentPageParameters="@LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit)"
+                       RelativeUrl="/rising" />
+}
