@@ -1,0 +1,17 @@
+﻿@page "/new"
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.New" />
+
+@if (Links == null)
+{
+    <p>Getting the latest posts straight from the source...</p>
+}
+else
+{
+    <LinkList Links="@Links" />
+
+    <LinkListingPagination After="@Links?.Data?.After"
+                       Before="@Links?.Data?.Before"
+                       CurrentPageParameters="@LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit)"
+                       RelativeUrl="/new" />
+}
