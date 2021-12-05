@@ -11,18 +11,8 @@ else
 {
     <LinkList Links="@Links" />
 
-    <ul class="pagination justify-content-center mt-2">
-        @if (!string.IsNullOrWhiteSpace(Links?.Data?.Before))
-        {
-            <li class="page-item">
-                <a class="page-link" href="@BuildPreviousPageUrl().Result">Previous</a>
-            </li>
-        }
-        @if (!string.IsNullOrWhiteSpace(Links?.Data?.After))
-        {
-            <li class="page-item">
-                <a class="page-link" href="@BuildNextPageUrl().Result">Next</a>
-            </li>
-        }
-    </ul>
+    <LinkListingPagination After="@Links?.Data?.After"
+                       Before="@Links?.Data?.Before"
+                       CurrentPageParameters="@LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit)"
+                       RelativeUrl="/best" />
 }

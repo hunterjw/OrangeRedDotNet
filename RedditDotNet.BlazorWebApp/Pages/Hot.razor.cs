@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
-using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
 {
-    /// <summary>
-    /// Home page of the web app
-    /// </summary>
-    public partial class Best
+    public partial class Hot
     {
         #region Injected Services
         /// <summary>
@@ -19,11 +13,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public Reddit Reddit { get; set; }
-        /// <summary>
-        /// HTTP Client
-        /// </summary>
-        [Inject]
-        public HttpClient Http { get; set; }
         #endregion
 
         #region Query Parameters
@@ -64,13 +53,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // Do this so when loading the next page the previous content isn't visible
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
-            Links = null; 
-            
-            Links = await Reddit.Listings.GetBest(
-                LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit));
-            // TODO Remove testing code
-            //var text = await Http.GetStringAsync("listing-sample.json");
-            //Links = JsonConvert.DeserializeObject<Listing<Link>>(text);
+            Links = null;
+
+            Links = await Reddit.Listings.GetHot(
+                LinkListingHelpers.BuildLocationListingParameters(After, Before, Count, Limit));
         }
     }
 }
