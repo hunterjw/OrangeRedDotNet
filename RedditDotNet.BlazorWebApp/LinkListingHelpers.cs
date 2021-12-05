@@ -30,19 +30,41 @@ namespace RedditDotNet.BlazorWebApp
 
         public static async Task<string> BuildNextPageUrl(string relativeUrl, string after, ListingParameters currentPageParameters)
         {
-            var parameters = currentPageParameters;
+            var parameters = new ListingParameters
+            {
+                After = currentPageParameters.After,
+                Before = currentPageParameters.Before,
+                Count = currentPageParameters.Count,
+                Limit = currentPageParameters.Limit
+            };
             parameters.After = parameters.Before = null;
-            parameters.Count += parameters.Limit;
             parameters.After = after;
+            if (string.IsNullOrWhiteSpace(currentPageParameters.After) && string.IsNullOrWhiteSpace(currentPageParameters.Before))
+            {
+                parameters.Count = parameters.Limit;
+            }
+            else if (!string.IsNullOrWhiteSpace(currentPageParameters.After))
+            {
+                parameters.Count += parameters.Limit;
+            }
             return $"{relativeUrl}?{await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync()}";
         }
 
         public static async Task<string> BuildPreviousPageUrl(string relativeUrl, string before, ListingParameters currentPageParameters)
         {
-            var parameters = currentPageParameters;
+            var parameters = new ListingParameters
+            {
+                After = currentPageParameters.After,
+                Before = currentPageParameters.Before,
+                Count = currentPageParameters.Count,
+                Limit = currentPageParameters.Limit
+            };
             parameters.After = parameters.Before = null;
-            parameters.Count -= parameters.Limit;
             parameters.Before = before;
+            if (!string.IsNullOrWhiteSpace(currentPageParameters.Before))
+            {
+                parameters.Count -= parameters.Limit;
+            }
             return $"{relativeUrl}?{await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync()}";
         }
     }
