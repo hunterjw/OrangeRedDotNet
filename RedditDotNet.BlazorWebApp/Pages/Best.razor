@@ -1,17 +1,17 @@
 ﻿@page "/"
 @page "/best"
 
-<h1>Home</h1>
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Best" />
 
 @if (Links == null)
 {
-    <p>Loading links...</p>
+    <p>Loading the best of Reddit...</p>
 }
 else
 {
     <LinkList Links="@Links" />
 
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center mt-2">
         @if (!string.IsNullOrWhiteSpace(Links?.Data?.Before))
         {
             <li class="page-item">
