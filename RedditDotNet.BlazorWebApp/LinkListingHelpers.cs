@@ -28,6 +28,17 @@ namespace RedditDotNet.BlazorWebApp
             };
         }
 
+        public static SortListingParameters BuildSortListingParameters(string after, string before, int? count, int? limit)
+        {
+            return new SortListingParameters
+            {
+                After = after,
+                Before = before,
+                Count = count ?? 0,
+                Limit = limit ?? 25
+            };
+        }
+
         public static async Task<string> BuildNextPageUrl(string relativeUrl, string after, ListingParameters currentPageParameters)
         {
             var parameters = new ListingParameters

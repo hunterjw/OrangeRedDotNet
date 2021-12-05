@@ -1,0 +1,17 @@
+﻿@page "/top"
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Top" />
+
+@if (Links == null)
+{
+    <p>Getting the tippity top of Reddit...</p>
+}
+else
+{
+    <LinkList Links="@Links" />
+
+    <LinkListingPagination After="@Links?.Data?.After"
+                       Before="@Links?.Data?.Before"
+                       CurrentPageParameters="@LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit)"
+                       RelativeUrl="/top" />
+}

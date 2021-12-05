@@ -1,0 +1,17 @@
+﻿@page "/controversial"
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Controversial" />
+
+@if (Links == null)
+{
+    <p>Getting the spiciest posts...</p>
+}
+else
+{
+    <LinkList Links="@Links" />
+
+    <LinkListingPagination After="@Links?.Data?.After"
+                       Before="@Links?.Data?.Before"
+                       CurrentPageParameters="@LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit)"
+                       RelativeUrl="/controversial" />
+}
