@@ -16,5 +16,17 @@ namespace RedditDotNet.BlazorWebApp.Shared
     {
         [Parameter]
         public LinkListingTabs ActiveTab { get; set; }
+
+        [Parameter]
+        public string Subreddit { get; set; }
+
+        protected string GetSubredditPrefix()
+        {
+            if (string.IsNullOrWhiteSpace(Subreddit))
+            {
+                return string.Empty;
+            }
+            return $"/r/{Subreddit}";
+        }
     }
 }

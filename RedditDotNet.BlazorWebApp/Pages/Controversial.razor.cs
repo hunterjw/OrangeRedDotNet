@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
@@ -42,6 +43,14 @@ namespace RedditDotNet.BlazorWebApp.Pages
         public int? Limit { get; set; }
         #endregion
 
+        #region Route Parameters
+        /// <summary>
+        /// Subreddit to get links for
+        /// </summary>
+        [Parameter]
+        public string Subreddit { get; set; }
+        #endregion
+
         /// <summary>
         /// Links displayed on this page
         /// </summary>
@@ -56,7 +65,30 @@ namespace RedditDotNet.BlazorWebApp.Pages
             Links = null;
 
             Links = await Reddit.Listings.GetControversial(
-                LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit));
+                LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit),
+                Subreddit);
+
+            if (!string.IsNullOrWhiteSpace(Subreddit))
+            {
+                var linkSubredditName = Links?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
+                if (!string.IsNullOrWhiteSpace(linkSubredditName))
+                {
+                    Subreddit = linkSubredditName;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper function to get the relative URL for the current page
+        /// </summary>
+        /// <returns></returns>
+        protected string GetRelativeUrl()
+        {
+            if (!string.IsNullOrWhiteSpace(Subreddit))
+            {
+                return $"/r/{Subreddit}/controversial";
+            }
+            return "/controversial";
         }
     }
 }

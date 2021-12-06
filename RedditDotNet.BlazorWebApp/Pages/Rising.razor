@@ -1,6 +1,12 @@
 ﻿@page "/rising"
+@page "/r/{subreddit}/rising"
 
-<LinkListingNavTabs ActiveTab="LinkListingTabs.Rising" />
+@if (!string.IsNullOrWhiteSpace(Subreddit))
+{
+    <h2>@Subreddit</h2>
+}
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Rising" Subreddit="@Subreddit" />
 
 @if (Links == null)
 {
@@ -13,5 +19,5 @@ else
     <LinkListingPagination After="@Links?.Data?.After"
                        Before="@Links?.Data?.Before"
                        CurrentPageParameters="@LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit)"
-                       RelativeUrl="/rising" />
+                       RelativeUrl="@GetRelativeUrl()" />
 }

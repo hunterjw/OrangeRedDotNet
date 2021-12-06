@@ -1,6 +1,12 @@
 ﻿@page "/controversial"
+@page "/r/{subreddit}/controversial"
 
-<LinkListingNavTabs ActiveTab="LinkListingTabs.Controversial" />
+@if (!string.IsNullOrWhiteSpace(Subreddit))
+{
+    <h2>@Subreddit</h2>
+}
+
+<LinkListingNavTabs ActiveTab="LinkListingTabs.Controversial" Subreddit="@Subreddit" />
 
 @if (Links == null)
 {
@@ -13,5 +19,5 @@ else
     <LinkListingPagination After="@Links?.Data?.After"
                        Before="@Links?.Data?.Before"
                        CurrentPageParameters="@LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit)"
-                       RelativeUrl="/controversial" />
+                       RelativeUrl="@GetRelativeUrl()" />
 }
