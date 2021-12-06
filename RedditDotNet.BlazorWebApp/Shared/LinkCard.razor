@@ -25,7 +25,9 @@
             <div class="col d-flex justify-content-center flex-column">
                 <div class="row g-0">
                     <div class="col">
-                        <h6 class="card-subtitle text-muted mb-1">@Link.Data.Subreddit</h6>
+                        <h6>
+                            <a class="card-subtitle text-muted mb-1 text-decoration-none" href="/r/@Link.Data.Subreddit" >@Link.Data.Subreddit</a>
+                        </h6>
                     </div>
                     <div class="col d-flex justify-content-end text-end">
                         <h6 class="card-subtitle text-muted mb-1">@Link.Data.CreatedUtc.ToDateTimeUtc()</h6>
@@ -33,7 +35,8 @@
                 </div>
                 <div class="row g-0">
                     <div class="col">
-                        <h5 class="card-title">@Link.Data.Title</h5>
+                        @*<h5 class="card-title">@Link.Data.Title</h5>*@
+                        <h5 class="card-title">@((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))</h5>
                     </div>
                 </div>
                 <div class="row g-0">
