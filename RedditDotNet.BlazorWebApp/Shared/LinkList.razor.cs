@@ -13,5 +13,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Parameter]
         public Listing<Models.Links.Link> Links { get; set; }
+
+        /// <summary>
+        /// If to have the link contents collapsed or not by default
+        /// </summary>
+        [Parameter]
+        public bool ContentCollapsed { get; set; } = true;
     }
 }

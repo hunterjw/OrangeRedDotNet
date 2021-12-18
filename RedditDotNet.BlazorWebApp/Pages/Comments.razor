@@ -1,0 +1,15 @@
+﻿@page "/r/{subreddit}/comments/{articleId}"
+@using RedditDotNet.Models.Links
+
+<h2>@Subreddit</h2>
+
+@if (LinkWithComments == null)
+{
+    <p>Loading...</p>
+}
+else 
+{
+    <LinkList ContentCollapsed="false" Links="@LinkWithComments.Links" />
+    <hr />
+    <CommentsList Comments="@LinkWithComments.Comments" />
+}

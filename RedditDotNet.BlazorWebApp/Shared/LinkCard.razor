@@ -94,7 +94,7 @@
                         @if (!string.IsNullOrWhiteSpace(Link.Data.Selftext))
                         {
                         }
-                        <button class="btn">
+                        <button class="btn" @onclick="CommentsButton_OnClick">
                             <span class="oi oi-comment-square"></span>
                             <span>@Link.Data.NumComments.ToDisplayString()</span>
                         </button>

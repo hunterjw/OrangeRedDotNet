@@ -11,6 +11,9 @@ namespace RedditDotNet.BlazorWebApp.Shared
     /// </summary>
     public partial class LinkCard
     {
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         /// <summary>
         /// Link to display
         /// </summary>
@@ -20,7 +23,8 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <summary>
         /// If the content of the Link is collapsed or not
         /// </summary>
-        protected bool ContentCollapsed { get; set; } = true;
+        [Parameter]
+        public bool ContentCollapsed { get; set; } = true;
 
         /// <summary>
         /// Get a preview image URL
@@ -38,6 +42,20 @@ namespace RedditDotNet.BlazorWebApp.Shared
             }
         }
 
+        /// <inheritdoc/>
+        protected override void OnParametersSet()
+        {
+            LinkType linkType = Link.GetLinkType();
+            if (!ContentCollapsed && 
+                !(linkType == LinkType.Image || 
+                linkType == LinkType.Gallery ||
+                linkType == LinkType.Video || 
+                linkType == LinkType.Text))
+            {
+                ContentCollapsed = true;
+            }
+        }
+
         /// <summary>
         /// OnClick handler for buttons that toggle the collapsable region
         /// </summary>
@@ -45,6 +63,15 @@ namespace RedditDotNet.BlazorWebApp.Shared
         protected void ContentCollapsedButton_OnClick(MouseEventArgs e)
         {
             ContentCollapsed = !ContentCollapsed;
+        }
+
+        /// <summary>
+        /// On click event handler for the comments button
+        /// </summary>
+        /// <param name="e"></param>
+        protected void CommentsButton_OnClick(MouseEventArgs e)
+        {
+            NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}");
         }
     }
 }

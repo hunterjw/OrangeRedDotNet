@@ -1,0 +1,69 @@
+﻿@using RedditDotNet.Models
+@using RedditDotNet.Models.Comments
+@using System.Web
+
+@if (Comment.Data is CommentData commentData)
+{
+    <div class="card mb-1" @ondblclick="Card_OnDblClick">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-auto">
+                    <h6 class="card-subtitle mb-1" @onclick="RepliesCollapsedButton_OnClick">
+                        @if (RepliesCollapsed)
+                        {
+                            <span>[+]</span>
+                        }
+                        else
+                        {
+                            <span>[-]</span>
+                        }
+                    </h6>
+                </div>
+                <div class="col-auto">
+                    <h6 class="card-subtitle mb-1">
+                        @commentData.Author
+                    </h6>
+                </div>
+                @if (!commentData.ScoreHidden)
+                {
+                    <div class="col-auto">
+                        <h6 class="card-subtitle mb-1 text-muted">
+                            @commentData.Score points
+                        </h6>
+                    </div>
+                }
+                <div class="col-auto">
+                    <h6 class="card-subtitle mb-1 text-muted">
+                        @commentData.CreatedUtc.ToDateTimeUtc()
+                    </h6>
+                </div>
+                @if (RepliesCollapsed)
+                {
+                    <div class="col-auto">
+                        <h6 class="card-subtitle mb-1 text-muted">
+                            (@(commentData.Replies?.Data?.Children?.Count ?? 0) children comments)
+                        </h6>
+                    </div>
+                }
+            </div>
+            @if (!RepliesCollapsed)
+            {
+                <div class="row g-0">
+                    @((MarkupString)HttpUtility.HtmlDecode(commentData.BodyHtml))
+                </div>
+            }
+        </div>
+    </div>
+    @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
+    {
+        <div class="border-start">
+            <div class="ms-1">
+                <CommentsList Comments="@commentData.Replies" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>Comment has more @Comment.Data.Id</p>
+}
