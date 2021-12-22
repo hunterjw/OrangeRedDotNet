@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RedditDotNet.BlazorWebApp.Shared;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,52 +70,48 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // page isn't disposed)
             Links = null;
 
-            switch (ListingType)
+            var listingTypeEnum = GetListingType();
+            if (string.IsNullOrWhiteSpace(ListingType))
             {
-                case "best":
+                if (listingTypeEnum == LinkListingType.Best)
+                {
+                    // This means we're on the home page, which is "best"
+                    ListingType = "best";
+                }
+                else if (listingTypeEnum == LinkListingType.Hot)
+                {
+                    // This means we're on a subreddit landing page, which is "hot"
+                    ListingType = "hot";
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
+            }
+
+            switch (listingTypeEnum)
+            {
+                case LinkListingType.Best:
                     Subreddit = string.Empty;
-                    Links = await Reddit.Listings.GetBest(
-                        LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit));
+                    Links = await Reddit.Listings.GetBest(BuildListingParameters());
                     break;
-                case "hot":
-                    Links = await Reddit.Listings.GetHot(
-                        LinkListingHelpers.BuildLocationListingParameters(After, Before, Count, Limit),
-                        Subreddit);
+                case LinkListingType.Hot:
+                    Links = await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
                     break;
-                case "new":
-                    Links = await Reddit.Listings.GetNew(
-                        LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit),
-                        Subreddit);
+                case LinkListingType.New:
+                    Links = await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
                     break;
-                case "rising":
-                    Links = await Reddit.Listings.GetRising(
-                        LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit),
-                        Subreddit);
+                case LinkListingType.Rising:
+                    Links = await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
                     break;
-                case "controversial":
-                    Links = await Reddit.Listings.GetControversial(
-                        LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit),
-                        Subreddit);
+                case LinkListingType.Controversial:
+                    Links = await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
                     break;
-                case "top":
-                    Links = await Reddit.Listings.GetTop(
-                        LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit),
-                        Subreddit);
+                case LinkListingType.Top:
+                    Links = await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
                     break;
                 default:
-                    if (!string.IsNullOrWhiteSpace(Subreddit))
-                    {
-                        Links = await Reddit.Listings.GetHot(
-                            LinkListingHelpers.BuildLocationListingParameters(After, Before, Count, Limit),
-                            Subreddit);
-                    }
-                    else
-                    {
-                        ListingType = "best";
-                        Links = await Reddit.Listings.GetBest(
-                            LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit));
-                    }
-                    break;
+                    throw new ArgumentException();
             }
 
             if (!string.IsNullOrWhiteSpace(Subreddit))
@@ -142,22 +138,20 @@ namespace RedditDotNet.BlazorWebApp.Pages
         }
 
         /// <summary>
-        /// Helper function to build the listing parameters for the current page
+        /// Helper function to build the parameters object for the current page
         /// </summary>
-        /// <returns>ListingParameters object</returns>
-        protected ListingParameters BuildListingParameters()
+        /// <returns>Parameters object</returns>
+        protected ListingParameters BuildParameters()
         {
-            return ListingType switch
+            return GetListingType() switch
             {
-                "best" => LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit),
-                "hot" => LinkListingHelpers.BuildLocationListingParameters(After, Before, Count, Limit),
-                "new" => LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit),
-                "rising" => LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit),
-                "controversial" => LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit),
-                "top" => LinkListingHelpers.BuildSortListingParameters(After, Before, Count, Limit),
-                _ => string.IsNullOrWhiteSpace(Subreddit) ? 
-                    LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit) :
-                    LinkListingHelpers.BuildLocationListingParameters(After, Before, Count, Limit)
+                LinkListingType.Best => BuildListingParameters(),
+                LinkListingType.Hot => BuildLocationListingParameters(),
+                LinkListingType.New => BuildListingParameters(),
+                LinkListingType.Rising => BuildListingParameters(),
+                LinkListingType.Controversial => BuildSortListingParameters(),
+                LinkListingType.Top => BuildSortListingParameters(),
+                _ => throw new ArgumentException()
             };
         }
 
@@ -165,17 +159,17 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Get the current type of this listing
         /// </summary>
         /// <returns>Listing type</returns>
-        protected LinkListingTabs GetListingType()
+        protected LinkListingType GetListingType()
         {
             return ListingType switch
             {
-                "best" => LinkListingTabs.Best,
-                "hot" => LinkListingTabs.Hot,
-                "new" => LinkListingTabs.New,
-                "rising" => LinkListingTabs.Rising,
-                "controversial" => LinkListingTabs.Controversial,
-                "top" => LinkListingTabs.Top,
-                _ => string.IsNullOrWhiteSpace(Subreddit) ? LinkListingTabs.Best : LinkListingTabs.Hot,
+                "best" => LinkListingType.Best,
+                "hot" => LinkListingType.Hot,
+                "new" => LinkListingType.New,
+                "rising" => LinkListingType.Rising,
+                "controversial" => LinkListingType.Controversial,
+                "top" => LinkListingType.Top,
+                _ => string.IsNullOrWhiteSpace(Subreddit) ? LinkListingType.Best : LinkListingType.Hot,
             };
         }
 
@@ -185,17 +179,60 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <returns>Loading quip string</returns>
         protected string GetLoadingQuip()
         {
-            return ListingType switch
+            return GetListingType() switch
             {
-                "best" => "Loading the best of Reddit...",
-                "hot" => "Getting some hot posts straight from the oven...",
-                "new" => "Getting the latest posts straight from the source...",
-                "rising" => "Getting the posts that rise to the top...",
-                "controversial" => "Getting the spiciest posts...",
-                "top" => "Getting the tippity top of Reddit...",
-                _ => string.IsNullOrWhiteSpace(Subreddit) ? 
-                    "Loading the best of Reddit..." : 
-                    "Getting some hot posts straight from the oven...",
+                LinkListingType.Best => "Loading the best of Reddit...",
+                LinkListingType.Hot => "Getting some hot posts straight from the oven...",
+                LinkListingType.New => "Getting the latest posts straight from the source...",
+                LinkListingType.Rising => "Getting the posts that rise to the top...",
+                LinkListingType.Controversial => "Getting the spiciest posts...",
+                LinkListingType.Top => "Getting the tippity top of Reddit...",
+                _ => throw new ArgumentException()
+            };
+        }
+
+        /// <summary>
+        /// Build a ListingParameters object based on the current component parameters
+        /// </summary>
+        /// <returns>ListingParameters object</returns>
+        protected ListingParameters BuildListingParameters()
+        {
+            return new ListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count ?? 0,
+                Limit = Limit ?? 25
+            };
+        }
+
+        /// <summary>
+        /// Build a LocationListingParameters object based on the current component parameters
+        /// </summary>
+        /// <returns>LocationListingParameters object</returns>
+        protected LocationListingParameters BuildLocationListingParameters()
+        {
+            return new LocationListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count ?? 0,
+                Limit = Limit ?? 25
+            };
+        }
+
+        /// <summary>
+        /// Build a SortListingParameters object based on the current component parameters
+        /// </summary>
+        /// <returns>SortListingParameters object</returns>
+        protected SortListingParameters BuildSortListingParameters()
+        {
+            return new SortListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count ?? 0,
+                Limit = Limit ?? 25
             };
         }
     }

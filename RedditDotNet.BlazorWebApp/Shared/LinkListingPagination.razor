@@ -2,13 +2,13 @@
     @if (!string.IsNullOrWhiteSpace(Before))
     {
         <li class="page-item">
-            <a class="page-link" href="@LinkListingHelpers.BuildPreviousPageUrl(RelativeUrl, Before, CurrentPageParameters).Result">Previous</a>
+            <a class="page-link" href="@BuildPreviousPageUrl().Result">Previous</a>
         </li>
     }
     @if (!string.IsNullOrWhiteSpace(After))
     {
         <li class="page-item">
-            <a class="page-link" href="@LinkListingHelpers.BuildNextPageUrl(RelativeUrl, After, CurrentPageParameters).Result">Next</a>
+            <a class="page-link" href="@BuildNextPageUrl().Result">Next</a>
         </li>
     }
 </ul>

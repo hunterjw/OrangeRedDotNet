@@ -2,24 +2,27 @@
 
 namespace RedditDotNet.BlazorWebApp.Shared
 {
-    public enum LinkListingTabs
-    {
-        Best,
-        Hot,
-        New,
-        Rising,
-        Controversial,
-        Top
-    }
-
+    /// <summary>
+    /// Navigation tabs for Link listings
+    /// </summary>
     public partial class LinkListingNavTabs
     {
+        /// <summary>
+        /// The type of the active tab
+        /// </summary>
         [Parameter]
-        public LinkListingTabs ActiveTab { get; set; }
+        public LinkListingType ActiveTab { get; set; }
 
+        /// <summary>
+        /// Subreddit to link to (optional)
+        /// </summary>
         [Parameter]
         public string Subreddit { get; set; }
 
+        /// <summary>
+        /// Get the prefix URL for a subreddit
+        /// </summary>
+        /// <returns>Prefix relative URL</returns>
         protected string GetSubredditPrefix()
         {
             if (string.IsNullOrWhiteSpace(Subreddit))
