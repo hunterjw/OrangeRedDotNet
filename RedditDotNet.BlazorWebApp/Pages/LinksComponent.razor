@@ -1,16 +1,18 @@
-﻿@page "/rising"
-@page "/r/{subreddit}/rising"
+﻿@page "/"
+@page "/{listingType}"
+@page "/r/{subreddit}"
+@page "/r/{subreddit}/{listingType}"
 
 @if (!string.IsNullOrWhiteSpace(Subreddit))
 {
     <h2>@Subreddit</h2>
 }
 
-<LinkListingNavTabs ActiveTab="LinkListingTabs.Rising" Subreddit="@Subreddit" />
+<LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" />
 
 @if (Links == null)
 {
-    <p>Getting the posts that rise to the top...</p>
+    <p>@GetLoadingQuip()</p>
 }
 else
 {
@@ -18,6 +20,6 @@ else
 
     <LinkListingPagination After="@Links?.Data?.After"
                        Before="@Links?.Data?.Before"
-                       CurrentPageParameters="@LinkListingHelpers.BuildListingParameters(After, Before, Count, Limit)"
+                       CurrentPageParameters="@BuildListingParameters()"
                        RelativeUrl="@GetRelativeUrl()" />
 }
