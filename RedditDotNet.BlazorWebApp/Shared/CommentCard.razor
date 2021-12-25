@@ -4,7 +4,7 @@
 
 @if (Comment.Data is CommentData commentData)
 {
-    <div class="card mb-1" @ondblclick="Card_OnDblClick">
+    <div class="card text-dark bg-light mb-1" @ondblclick="Card_OnDblClick">
         <div class="card-body">
             <div class="row">
                 <div class="col-auto">
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-auto">
                     <h6 class="card-subtitle mb-1">
-                        @commentData.Author
+                        <a class="text-decoration-none">/u/@commentData.Author</a>
                     </h6>
                 </div>
                 @if (!commentData.ScoreHidden)
@@ -37,14 +37,6 @@
                         @commentData.CreatedUtc.ToDateTimeUtc()
                     </h6>
                 </div>
-                @if (RepliesCollapsed)
-                {
-                    <div class="col-auto">
-                        <h6 class="card-subtitle mb-1 text-muted">
-                            (@(commentData.Replies?.Data?.Children?.Count ?? 0) children comments)
-                        </h6>
-                    </div>
-                }
             </div>
             @if (!RepliesCollapsed)
             {
@@ -52,12 +44,20 @@
                     @((MarkupString)HttpUtility.HtmlDecode(commentData.BodyHtml))
                 </div>
             }
+            else
+            {
+                <div class="row g-0">
+                    <h6 class="card-subtitle mb-1 text-muted">
+                        (@(commentData.Replies?.Data?.Children?.Count ?? 0) children comments)
+                    </h6>
+                </div>
+            }
         </div>
     </div>
     @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
     {
-        <div class="border-start">
-            <div class="ms-1">
+        <div class="border-start border-secondary border-3">
+            <div class="ms-2">
                 <CommentsList Comments="@commentData.Replies" />
             </div>
         </div>

@@ -1,128 +1,115 @@
 ﻿@using System.Web
 @using RedditDotNet.Models.Links
 
-<div class="card mb-1">
+<div class="card text-dark bg-light mb-1 @(Link.Data.Stickied ? "border-success" : "")">
     <div class="card-body">
-        <div class="row g-0">
+        <div class="row">
+            <div class="col-auto d-flex justify-content-center flex-column w-25"
+                 style="max-width: 150px">
+                <div class="rounded w-100 h-100"
+                     style="background-image: url(@PreviewUrl);
+                        background-position: center; background-repeat: no-repeat;
+                        background-color: gray;
+                        background-size: cover;">
+                </div>
+            </div>
+            <div class="col">
+                <h6 class="card-subtitle text-muted mb-1">
+                    <a class="text-decoration-none" href="/r/@Link.Data.Subreddit">
+                        /r/@Link.Data.Subreddit
+                    </a>
+                </h6>
+                <h4 class="card-title @(Link.Data.Stickied ? "text-success" : "")">
+                    @((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))
+                </h4>
+                <h6 class="card-subtitle text-muted mb-1">
+                    Posted by <a class="text-decoration-none">/u/@Link.Data.Author</a>
+                </h6>
+                <h6 class="card-subtitle text-muted mb-1">
+                    @Link.Data.CreatedUtc.ToDateTimeUtc()
+                </h6>
+            </div>
+            @if (Link.Data.Stickied)
+            {
+                <div class="col-auto d-flex justify-content-center flex-column">
+                    <span class="oi oi-pin card-subtitle text-success"></span>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
             <div class="col-auto d-flex justify-content-center flex-column">
-                <div class="rounded" style="width: 100px; height: 100px; background-image: url('@PreviewUrl'); background-position: center; background-repeat: no-repeat; background-color: gray"></div>
+                <span>@Link.Data.Score.ToDisplayString()</span>
             </div>
-            <div class="col-auto d-flex justify-content-center flex-column text-center" style="width: 55px">
-                @*<div class="row g-0">
-                    <button class="btn">
-                        <span class="oi oi-arrow-thick-top"></span>
-                    </button>
-                </div>*@
-                <div class="row g-0">
-                    <span>@Link.Data.Score.ToDisplayString()</span>
-                </div>
-                @*<div class="row g-0">
-                    <button class="btn">
-                        <span class="oi oi-arrow-thick-bottom"></span>
-                    </button>
-                </div>*@
-            </div>
-            <div class="col d-flex justify-content-center flex-column">
-                <div class="row g-0">
-                    <div class="col">
-                        <h6>
-                            <a class="card-subtitle text-muted mb-1 text-decoration-none" href="/r/@Link.Data.Subreddit" >@Link.Data.Subreddit</a>
-                        </h6>
-                    </div>
-                    <div class="col d-flex justify-content-end text-end">
-                        <h6 class="card-subtitle text-muted mb-1">@Link.Data.CreatedUtc.ToDateTimeUtc()</h6>
-                    </div>
-                </div>
-                <div class="row g-0">
-                    <div class="col">
-                        @*<h5 class="card-title">@Link.Data.Title</h5>*@
-                        <h5 class="card-title">@((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))</h5>
-                    </div>
-                </div>
-                <div class="row g-0">
-                    <div class="col">
-                        @switch (Link.GetLinkType())
+            <div class="col-auto">
+                @switch (Link.GetLinkType())
+                {
+                    case LinkType.Link:
+                        <a class="btn btn-light" href="@Link.Data.Url" target="_blank">
+                            <span class="oi oi-share-boxed"></span>
+                        </a>
+                        break;
+                    case LinkType.Image:
+                    case LinkType.Video:
+                    case LinkType.Gallery:
+                        <button class="btn btn-light" @onclick="ContentCollapsedButton_OnClick">
+                            @if (ContentCollapsed)
+                            {
+                                <span class="oi oi-fullscreen-enter"></span>
+                            }
+                            else
+                            {
+                                <span class="oi oi-fullscreen-exit"></span>
+                            }
+                        </button>
+                        break;
+                    case LinkType.Poll:
+                    case LinkType.Crosspost:
+                        @*TODO*@
+                        <button class="btn btn-light">
+                            <span class="oi oi-question-mark"></span>
+                        </button>
+                        break;
+                    case LinkType.Text:
+                        if (!string.IsNullOrWhiteSpace(Link.Data.SelftextHtml))
                         {
-                            case LinkType.Link:
-                                <a class="btn" href="@Link.Data.Url" target="_blank">
-                                    <span class="oi oi-share-boxed"></span>
-                                </a>
-                                break;
-                            case LinkType.Image:
-                            case LinkType.Video:
-                            case LinkType.Gallery:
-                                <button class="btn" @onclick="ContentCollapsedButton_OnClick">
-                                    @if (ContentCollapsed)
-                                    {
-                                        <span class="oi oi-fullscreen-enter"></span>
-                                    }
-                                    else
-                                    {
-                                        <span class="oi oi-fullscreen-exit"></span>
-                                    }
-                                </button>
-                                break;
-                            case LinkType.Poll:
-                            case LinkType.Crosspost:
-                                @*TODO*@
-                                <button class="btn">
-                                    <span class="oi oi-question-mark"></span>
-                                </button>
-                                break;
-                            case LinkType.Text:
-                                if (!string.IsNullOrWhiteSpace(Link.Data.SelftextHtml))
+                            <button class="btn btn-light" @onclick="ContentCollapsedButton_OnClick">
+                                @if (ContentCollapsed)
                                 {
-                                    <button class="btn" @onclick="ContentCollapsedButton_OnClick">
-                                        @if (ContentCollapsed)
-                                        {
-                                            <span class="oi oi-chevron-bottom"></span>
-                                        }
-                                        else
-                                        {
-                                            <span class="oi oi-chevron-top"></span>
-                                        }
-                                    </button>
+                                    <span class="oi oi-chevron-bottom"></span>
                                 }
                                 else
                                 {
-                                    <button class="btn">
-                                        <span class="oi oi-share-boxed"></span>
-                                    </button>
+                                    <span class="oi oi-chevron-top"></span>
                                 }
-                                break;
+                            </button>
                         }
-                        @if (!string.IsNullOrWhiteSpace(Link.Data.Selftext))
+                        else
                         {
+                            <button class="btn btn-light">
+                                <span class="oi oi-share-boxed"></span>
+                            </button>
                         }
-                        <button class="btn" @onclick="CommentsButton_OnClick">
-                            <span class="oi oi-comment-square"></span>
-                            <span>@Link.Data.NumComments.ToDisplayString()</span>
-                        </button>
-
-                        @*<button class="btn">
-                            <span class="oi oi-bookmark"></span>
-                        </button>
-                        <button class="btn">
-                            <span class="oi oi-share"></span>
-                        </button>
-                        <button class="btn">
-                            <span class="oi oi-ellipses"></span>
-                        </button>*@
-                    </div>
-                </div>
+                        break;
+                }
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-light" @onclick="CommentsButton_OnClick">
+                    <span class="oi oi-comment-square"></span>
+                    <span>@Link.Data.NumComments.ToDisplayString()</span>
+                </button>
             </div>
         </div>
-        <div class="@(ContentCollapsed ? "collapse" : "row g-0")">
-            <hr />
+    </div>
+    <div class="@(ContentCollapsed ? "collapse" : "card-body border-top")">
+        <div class="row g-0 d-flex justify-content-center flex-row">
             @switch (Link.GetLinkType())
             {
                 case LinkType.Image:
                     <img class="rounded" style="width: auto;" src="@Link.Data.Url" alt="@Link.Data.Title" />
                     break;
                 case LinkType.Video:
-                    @*<video style="max-width: 100%; height: auto;" controls autoplay>
-                        <source>
-                    </video>*@
                     @*TODO*@
                     <p>Video support to be added later</p>
                     break;

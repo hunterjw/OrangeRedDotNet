@@ -35,7 +35,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
             {
                 if (Link?.Data?.Preview?.Images?.Count > 0)
                 {
-                    return HttpUtility.HtmlDecode(Link.Data.Preview.Images.First().Resolutions.First().Url);
+                    return HttpUtility.HtmlDecode(Link.Data.Preview.Images.First().Resolutions.Last().Url);
                 }
                 // TODO replace this with locally hosted resource
                 return "https://via.placeholder.com/256";
@@ -46,10 +46,10 @@ namespace RedditDotNet.BlazorWebApp.Shared
         protected override void OnParametersSet()
         {
             LinkType linkType = Link.GetLinkType();
-            if (!ContentCollapsed && 
-                !(linkType == LinkType.Image || 
+            if (!ContentCollapsed &&
+                !(linkType == LinkType.Image ||
                 linkType == LinkType.Gallery ||
-                linkType == LinkType.Video || 
+                linkType == LinkType.Video ||
                 linkType == LinkType.Text))
             {
                 ContentCollapsed = true;

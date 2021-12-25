@@ -10,7 +10,7 @@ else
 {
 	@foreach (var award in Awards.Data.Trophies.Select(_ => _.Data))
 	{
-		<div class="card mb-1">
+		<div class="card text-dark bg-light mb-1">
 			<div class="row g-0">
 				<div class="col-md-1 d-flex flex-wrap align-items-center">
 					<img src="@award.Icon70" class="img-fluid mx-auto d-block m-3" alt="@award.Name" />
