@@ -126,9 +126,8 @@ namespace RedditDotNet.Models.Comments
         [JsonProperty("downs")]
         public int Downs { get; set; }
 
-        // TODO
-        //[JsonProperty("author_flair_richtext")]
-        //public List<object> AuthorFlairRichtext { get; set; }
+        [JsonProperty("author_flair_richtext")]
+        public List<FlairRichtext> AuthorFlairRichtext { get; set; }
 
         [JsonProperty("author_patreon_flair")]
         public bool AuthorPatreonFlair { get; set; }

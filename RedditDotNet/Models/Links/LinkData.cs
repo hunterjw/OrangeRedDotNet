@@ -36,9 +36,8 @@ namespace RedditDotNet.Models.Links
         [JsonProperty("title")]
         public string Title { get; set; }
 
-        // TODO
-        //[JsonProperty("link_flair_richtext")]
-        //public List<object> LinkFlairRichtext { get; set; }
+        [JsonProperty("link_flair_richtext")]
+        public List<FlairRichtext> LinkFlairRichtext { get; set; }
 
         [JsonProperty("subreddit_name_prefixed")]
         public string SubredditNamePrefixed { get; set; }
@@ -150,9 +149,8 @@ namespace RedditDotNet.Models.Links
         [JsonProperty("author_flair_css_class")]
         public string AuthorFlairCssClass { get; set; }
 
-        // TODO
-        //[JsonProperty("author_flair_richtext")]
-        //public List<object> AuthorFlairRichtext { get; set; }
+        [JsonProperty("author_flair_richtext")]
+        public List<FlairRichtext> AuthorFlairRichtext { get; set; }
 
         [JsonProperty("gildings")]
         public Dictionary<string, int> Gildings { get; set; }

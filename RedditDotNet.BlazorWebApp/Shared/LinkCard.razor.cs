@@ -73,5 +73,21 @@ namespace RedditDotNet.BlazorWebApp.Shared
         {
             NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}");
         }
+
+        /// <summary>
+        /// Double click event handler for the card
+        /// </summary>
+        /// <param name="e">Mouse event args</param>
+        protected void Card_OnDblClick(MouseEventArgs e)
+        {
+            LinkType linkType = Link.GetLinkType();
+            if (linkType == LinkType.Image ||
+                linkType == LinkType.Gallery ||
+                linkType == LinkType.Video ||
+                linkType == LinkType.Text)
+            {
+                ContentCollapsed = !ContentCollapsed;
+            }
+        }
     }
 }

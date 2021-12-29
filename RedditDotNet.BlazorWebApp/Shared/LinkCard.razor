@@ -1,7 +1,8 @@
 ﻿@using System.Web
 @using RedditDotNet.Models.Links
 
-<div class="card text-dark bg-light mb-1 @(Link.Data.Stickied ? "border-success" : "")">
+<div class="card text-dark bg-light mb-1 @(Link.Data.Stickied ? "border-success" : "")"
+     @ondblclick="Card_OnDblClick">
     <div class="card-body">
         <div class="row">
             <div class="col-auto d-flex justify-content-center flex-column w-25"
@@ -24,10 +25,22 @@
                 </h4>
                 <h6 class="card-subtitle text-muted mb-1">
                     Posted by <a class="text-decoration-none">/u/@Link.Data.Author</a>
+                    <Flair FlairBackgroundColor="@Link.Data.AuthorFlairBackgroundColor"
+                           FlairRichtext="@Link.Data.AuthorFlairRichtext"
+                           FlairText="@Link.Data.AuthorFlairText"
+                           FlairTextColor="@Link.Data.AuthorFlairTextColor"
+                           FlairType="@Link.Data.AuthorFlairType" />
                 </h6>
                 <h6 class="card-subtitle text-muted mb-1">
                     @Link.Data.CreatedUtc.ToDateTimeUtc()
                 </h6>
+                <Flair FlairBackgroundColor="@Link.Data.LinkFlairBackgroundColor"
+                       FlairRichtext="@Link.Data.LinkFlairRichtext"
+                       FlairText="@Link.Data.LinkFlairText"
+                       FlairTextColor="@Link.Data.LinkFlairTextColor"
+                       FlairType="@Link.Data.LinkFlairType"
+                       IsOriginalContent="@Link.Data.IsOriginalContent"
+                       Over18="@Link.Data.Over18" />
             </div>
             @if (Link.Data.Stickied)
             {

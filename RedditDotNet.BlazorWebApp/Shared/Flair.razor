@@ -1,0 +1,45 @@
+﻿@using RedditDotNet.Models
+@using RedditDotNet.Models.Links
+
+@if (Over18)
+{
+    <span class="badge bg-danger me-1">NSFW</span>
+}
+@if (IsOriginalContent)
+{
+    <span class="badge bg-primary me-1">OC</span>
+}
+
+@switch (FlairType?.ToLower())
+{
+    case "text":
+        <span class="@FlairClass()" style="@FlairStyle()">@FlairText</span>
+        break;
+    case "richtext":
+        <span class="@FlairClass()" style="@FlairStyle()">
+            @if (FlairRichtext?.Count > 0)
+            {
+                @foreach (FlairRichtext flair in FlairRichtext)
+                {
+                    switch (flair?.Type.ToLower())
+                    {
+                        case "text":
+                            @flair?.Text
+                            break;
+                        case "emoji":
+                            <img src="@flair?.Url" alt="@flair?.Tag" style="height: 1em; width: auto;" />
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                @FlairText
+            }
+        </span>
+        break;
+    default:
+        break;
+}
