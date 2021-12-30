@@ -35,7 +35,12 @@ namespace RedditDotNet.BlazorWebApp.Shared
             {
                 if (Link?.Data?.Preview?.Images?.Count > 0)
                 {
-                    return HttpUtility.HtmlDecode(Link.Data.Preview.Images.First().Resolutions.Last().Url);
+                    PreviewImage image = Link.Data.Preview.Images.First();
+                    if ((Link?.Data?.Over18 ?? false) && (image.Variants?.ContainsKey("nsfw") ?? false))
+                    {
+                        image = image.Variants["nsfw"];
+                    }
+                    return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
                 }
                 // TODO replace this with locally hosted resource
                 return "https://via.placeholder.com/256";

@@ -15,8 +15,8 @@ namespace RedditDotNet.Models.Links
         public List<ImageDetail> Resolutions { get; set; }
 
         // TODO
-        //[JsonProperty("")]
-        //public object variants { get; set; }
+        [JsonProperty("variants")]
+        public Dictionary<string, PreviewImage> Variants { get; set; }
 
         [JsonProperty("id")]
         public string Id { get; set; }
