@@ -2,7 +2,7 @@
 using RedditDotNet.Models.Comments;
 using RedditDotNet.Models.Listings;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Comments
 {
     /// <summary>
     /// Comments list component

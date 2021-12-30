@@ -4,7 +4,7 @@ using RedditDotNet.Models.Links;
 using System.Linq;
 using System.Web;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Links
 {
     /// <summary>
     /// Component to display a link as a card

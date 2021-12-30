@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Links
 {
     /// <summary>
     /// Navigation tabs for Link listings

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models.Listings;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Links
 {
     /// <summary>
     /// Component for displaying a list of Links

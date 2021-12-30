@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using RedditDotNet.Models.Comments;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Comments
 {
     /// <summary>
     /// Card for a single comment and its replies

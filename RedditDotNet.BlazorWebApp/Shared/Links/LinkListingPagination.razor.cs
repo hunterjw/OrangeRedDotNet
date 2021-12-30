@@ -3,7 +3,7 @@ using RedditDotNet.Models.Listings;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RedditDotNet.BlazorWebApp.Shared
+namespace RedditDotNet.BlazorWebApp.Shared.Links
 {
     /// <summary>
     /// Pagination component for a Link listing
