@@ -40,20 +40,51 @@
                        FlairTextColor="@Link.Data.LinkFlairTextColor"
                        FlairType="@Link.Data.LinkFlairType"
                        IsOriginalContent="@Link.Data.IsOriginalContent"
-                       Over18="@Link.Data.Over18" />
+                       Over18="@Link.Data.Over18"
+                       Spoiler="@Link.Data.Spoiler"
+                       Stickied="@Link.Data.Stickied"
+                       Locked="@Link.Data.Locked"
+                       Archived="Link.Data.Archived" />
             </div>
-            @if (Link.Data.Stickied)
+        </div>
+        <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
+            @if (Link.Data.Spoiler && !SpoilerAcknowledged)
             {
-                <div class="col-auto d-flex justify-content-center flex-column">
-                    <span class="oi oi-pin card-subtitle text-success"></span>
-                </div>
+                <button class="btn btn-secondary w-100" @onclick="SpoilerButton_OnClick">Show Spoiler</button>
+            }
+            else
+            {
+                @switch (Link.GetLinkType())
+                {
+                    case LinkType.Image:
+                        <img class="rounded" style="width: auto;" src="@Link.Data.Url" alt="@Link.Data.Title" />
+                        break;
+                    case LinkType.Video:
+                        @*TODO*@
+                        <p>Video support to be added later</p>
+                        break;
+                    case LinkType.Gallery:
+                        @*TODO*@
+                        <p>Gallery support to be added later</p>
+                        break;
+                    case LinkType.Text:
+                        @((MarkupString)HttpUtility.HtmlDecode(Link.Data.SelftextHtml))
+                        break;
+                }
             }
         </div>
     </div>
     <div class="card-footer">
         <div class="row">
             <div class="col-auto d-flex justify-content-center flex-column">
-                <span>@Link.Data.Score.ToDisplayString()</span>
+                @if (Link.Data.HideScore)
+                {
+                    <span>Score Hidden</span>
+                }
+                else
+                {
+                    <span>@Link.Data.Score.ToDisplayString()</span>
+                }
             </div>
             <div class="col-auto">
                 @switch (Link.GetLinkType())
@@ -113,27 +144,6 @@
                     <span>@Link.Data.NumComments.ToDisplayString()</span>
                 </button>
             </div>
-        </div>
-    </div>
-    <div class="@(ContentCollapsed ? "collapse" : "card-body border-top")">
-        <div class="row g-0 d-flex justify-content-center flex-row">
-            @switch (Link.GetLinkType())
-            {
-                case LinkType.Image:
-                    <img class="rounded" style="width: auto;" src="@Link.Data.Url" alt="@Link.Data.Title" />
-                    break;
-                case LinkType.Video:
-                    @*TODO*@
-                    <p>Video support to be added later</p>
-                    break;
-                case LinkType.Gallery:
-                    @*TODO*@
-                    <p>Gallery support to be added later</p>
-                    break;
-                case LinkType.Text:
-                    @((MarkupString)HttpUtility.HtmlDecode(Link.Data.SelftextHtml))
-                    break;
-            }
         </div>
     </div>
 </div>

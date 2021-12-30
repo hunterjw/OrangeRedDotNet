@@ -5,6 +5,22 @@
 {
     <span class="badge bg-danger me-1">NSFW</span>
 }
+@if (Spoiler)
+{
+    <span class="badge bg-warning text-dark me-1">Spoiler</span>
+}
+@if (Locked)
+{
+    <span class="badge bg-warning text-dark me-1">Locked</span>
+}
+@if (Stickied)
+{
+    <span class="badge bg-success me-1">Stickied</span>
+}
+@if (Archived)
+{
+    <span class="badge bg-secondary me-1">Archived</span>
+}
 @if (IsOriginalContent)
 {
     <span class="badge bg-primary me-1">OC</span>

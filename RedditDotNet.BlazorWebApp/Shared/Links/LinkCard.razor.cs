@@ -27,6 +27,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         public bool ContentCollapsed { get; set; } = true;
 
         /// <summary>
+        /// If the spoiler has been acknowledged or not
+        /// </summary>
+        protected bool SpoilerAcknowledged { get; set; }
+
+        /// <summary>
         /// Get a preview image URL
         /// </summary>
         protected string PreviewUrl
@@ -39,6 +44,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                     if ((Link?.Data?.Over18 ?? false) && (image.Variants?.ContainsKey("nsfw") ?? false))
                     {
                         image = image.Variants["nsfw"];
+                    }
+                    if ((Link?.Data?.Spoiler ?? false) && (image.Variants?.ContainsKey("obfuscated") ?? false))
+                    {
+                        image = image.Variants["obfuscated"];
                     }
                     return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
                 }
@@ -93,6 +102,15 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
             {
                 ContentCollapsed = !ContentCollapsed;
             }
+        }
+
+        /// <summary>
+        /// Button clicked event handler for the spoiler button
+        /// </summary>
+        /// <param name="e">Mouse event args</param>
+        protected void SpoilerButton_OnClick(MouseEventArgs e)
+        {
+            SpoilerAcknowledged = !SpoilerAcknowledged;
         }
     }
 }

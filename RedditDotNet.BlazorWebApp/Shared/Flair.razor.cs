@@ -21,6 +21,26 @@ namespace RedditDotNet.BlazorWebApp.Shared
         [Parameter]
         public bool IsOriginalContent { get; set; } = false;
         /// <summary>
+        /// If the content is a spoiler
+        /// </summary>
+        [Parameter]
+        public bool Spoiler { get; set; } = false;
+        /// <summary>
+        /// If the content is sticked
+        /// </summary>
+        [Parameter]
+        public bool Stickied { get; set; } = false;
+        /// <summary>
+        /// If the content is locked
+        /// </summary>
+        [Parameter]
+        public bool Locked { get; set; } = false;
+        /// <summary>
+        /// If the content is archived
+        /// </summary>
+        [Parameter]
+        public bool Archived { get; set; } = false;
+        /// <summary>
         /// Type of flair
         /// </summary>
         [Parameter]
