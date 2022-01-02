@@ -100,9 +100,8 @@ namespace RedditDotNet.Models.Comments
         [JsonProperty("mod_note")]
         public string ModNote { get; set; }
 
-        // TODO
-        //[JsonProperty("all_awardings")]
-        //public List<object> AllAwardings { get; set; }
+        [JsonProperty("all_awardings")]
+        public List<Awarding> AllAwardings { get; set; }
 
         [JsonProperty("collapsed")]
         public bool Collapsed { get; set; }

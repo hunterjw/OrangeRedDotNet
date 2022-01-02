@@ -34,6 +34,7 @@
                 <h6 class="card-subtitle text-muted mb-1">
                     @Link.Data.CreatedUtc.ToDateTimeUtc()
                 </h6>
+                <Awardings Data="@Link.Data.AllAwardings" />
                 <Flair FlairBackgroundColor="@Link.Data.LinkFlairBackgroundColor"
                        FlairRichtext="@Link.Data.LinkFlairRichtext"
                        FlairText="@Link.Data.LinkFlairText"

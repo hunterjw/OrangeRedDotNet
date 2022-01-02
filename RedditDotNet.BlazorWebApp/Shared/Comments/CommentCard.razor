@@ -20,6 +20,7 @@
                     <h6 class="card-subtitle mb-1 text-muted">
                         @commentData.CreatedUtc.ToDateTimeUtc()
                     </h6>
+                    <Awardings Data="@commentData.AllAwardings" />
                     <Flair
                        Stickied="@commentData.Stickied"
                        Locked="@commentData.Locked" />

@@ -1,0 +1,15 @@
+﻿@using RedditDotNet.Models
+
+<h6 class="card-subtitle text-muted mb-1">
+    @foreach (Awarding award in Data)
+    {
+        <span class="me-1">
+            <img src="@award.IconUrl"
+             alt="@award.Description"
+             style="height: 1em; width: auto;" />
+            <span>
+                @award.Count
+            </span>
+        </span>
+    }
+</h6>

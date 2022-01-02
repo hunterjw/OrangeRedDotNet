@@ -229,9 +229,8 @@ namespace RedditDotNet.Models.Links
         [JsonProperty("preview")]
         public LinkPreview Preview { get; set; }
 
-        // TODO
-        //[JsonProperty("all_awardings")]
-        //public List<object> AllAwardings { get; set; }
+        [JsonProperty("all_awardings")]
+        public List<Awarding> AllAwardings { get; set; }
 
         // TODO
         //[JsonProperty("awarders")]

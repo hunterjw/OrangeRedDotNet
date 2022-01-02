@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RedditDotNet.Models.Links
+namespace RedditDotNet.Models
 {
     /// <summary>
     /// Details of an image
