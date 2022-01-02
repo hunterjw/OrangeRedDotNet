@@ -21,8 +21,7 @@
                         @commentData.CreatedUtc.ToDateTimeUtc()
                     </h6>
                     <Awardings Data="@commentData.AllAwardings" />
-                    <Flair
-                       Stickied="@commentData.Stickied"
+                    <Flair Stickied="@commentData.Stickied"
                        Locked="@commentData.Locked" />
                     @if (!RepliesCollapsed)
                     {
@@ -36,14 +35,16 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-auto d-flex justify-content-center flex-column">
-                    @if (!commentData.ScoreHidden)
-                    {
-                        <span>@commentData.Score.ToDisplayString()</span>
-                    }
-                    else
-                    {
-                        <span>Score Hidden</span>
-                    }
+                    <span class="@(commentData.Likes.HasValue ? (commentData.Likes.Value ? "upvoted" : "downvoted") : "")">
+                        @if (commentData.ScoreHidden)
+                        {
+                            <span>Score Hidden</span>
+                        }
+                        else
+                        {
+                            @commentData.Score.ToDisplayString()
+                        }
+                    </span>
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-light" @onclick="RepliesCollapsedButton_OnClick">

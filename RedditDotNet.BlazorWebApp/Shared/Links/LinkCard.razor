@@ -78,14 +78,16 @@
     <div class="card-footer">
         <div class="row">
             <div class="col-auto d-flex justify-content-center flex-column">
-                @if (Link.Data.HideScore)
-                {
-                    <span>Score Hidden</span>
-                }
-                else
-                {
-                    <span>@Link.Data.Score.ToDisplayString()</span>
-                }
+                <span class="@(Link.Data.Likes.HasValue ? (Link.Data.Likes.Value ? "upvoted" : "downvoted") : "")">
+                    @if (Link.Data.HideScore)
+                    {
+                        <span>Score Hidden</span>
+                    }
+                    else
+                    {
+                        @Link.Data.Score.ToDisplayString()
+                    }
+                </span>
             </div>
             <div class="col-auto">
                 @switch (Link.GetLinkType())
