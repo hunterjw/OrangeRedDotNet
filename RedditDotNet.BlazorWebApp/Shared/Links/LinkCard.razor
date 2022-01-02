@@ -5,13 +5,9 @@
      @ondblclick="Card_OnDblClick">
     <div class="card-body">
         <div class="row">
-            <div class="col-auto d-flex justify-content-center flex-column w-25"
-                 style="max-width: 150px">
-                <div class="rounded w-100 h-100"
-                     style="background-image: url(@PreviewUrl);
-                        background-position: center; background-repeat: no-repeat;
-                        background-color: gray;
-                        background-size: cover;">
+            <div class="col-auto d-flex justify-content-center flex-column w-25 link-preview-row">
+                <div class="rounded w-100 h-100 link-preview-img"
+                     style="background-image: url(@PreviewUrl);">
                 </div>
             </div>
             <div class="col">
@@ -58,7 +54,7 @@
                 @switch (Link.GetLinkType())
                 {
                     case LinkType.Image:
-                        <img class="rounded" style="width: auto;" src="@Link.Data.Url" alt="@Link.Data.Title" />
+                        <img class="rounded link-content-img" src="@Link.Data.Url" alt="@Link.Data.Title" />
                         break;
                     case LinkType.Video:
                         @*TODO*@
