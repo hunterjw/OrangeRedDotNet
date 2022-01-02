@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
 {
-    public partial class LinksComponent
+    public partial class Links
     {
         #region Injected Services
         /// <summary>
@@ -60,7 +60,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <summary>
         /// Links displayed on this page
         /// </summary>
-        protected Listing<Link> Links { get; set; }
+        protected Listing<Link> LinkListing { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -68,7 +68,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // Do this so when loading the next page the previous content isn't visible
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
-            Links = null;
+            LinkListing = null;
 
             var listingTypeEnum = GetListingType();
             if (string.IsNullOrWhiteSpace(ListingType))
@@ -93,22 +93,22 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 case LinkListingType.Best:
                     Subreddit = string.Empty;
-                    Links = await Reddit.Listings.GetBest(BuildListingParameters());
+                    LinkListing = await Reddit.Listings.GetBest(BuildListingParameters());
                     break;
                 case LinkListingType.Hot:
-                    Links = await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
+                    LinkListing = await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
                     break;
                 case LinkListingType.New:
-                    Links = await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
+                    LinkListing = await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Rising:
-                    Links = await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
+                    LinkListing = await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Controversial:
-                    Links = await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
+                    LinkListing = await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Top:
-                    Links = await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
+                    LinkListing = await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
                     break;
                 default:
                     throw new ArgumentException();
@@ -116,7 +116,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
 
             if (!string.IsNullOrWhiteSpace(Subreddit))
             {
-                var linkSubredditName = Links?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
+                var linkSubredditName = LinkListing?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
                 if (!string.IsNullOrWhiteSpace(linkSubredditName))
                 {
                     Subreddit = linkSubredditName;

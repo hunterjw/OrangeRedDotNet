@@ -10,16 +10,16 @@
 
 <LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" />
 
-@if (Links == null)
+@if (LinkListing == null)
 {
     <p>@GetLoadingQuip()</p>
 }
 else
 {
-    <LinkList Links="@Links" />
+    <LinkList Links="@LinkListing" />
 
-    <LinkListingPagination After="@Links?.Data?.After"
-                       Before="@Links?.Data?.Before"
+    <LinkListingPagination After="@LinkListing?.Data?.After"
+                       Before="@LinkListing?.Data?.Before"
                        CurrentPageParameters="@BuildParameters()"
                        RelativeUrl="@GetRelativeUrl()" />
 }
