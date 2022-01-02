@@ -1,0 +1,19 @@
+﻿@page "/r/{subreddit}/duplicates/{articleId}"
+
+<h2>@Subreddit</h2>
+
+@if (DuplicateLinks == null)
+{
+    <p>Whoa, déjà vu...</p>
+}
+else
+{
+    <LinkList Links="DuplicateLinks.Originals" />
+    <hr />
+    <LinkList Links="@DuplicateLinks.Duplicates" />
+    <LinkListingPagination 
+        After="@DuplicateLinks.Duplicates?.Data?.After"
+        Before="@DuplicateLinks.Duplicates?.Data?.Before"
+        CurrentPageParameters="@BuildParameters()"
+        RelativeUrl="@GetRelativeUrl()" />
+}

@@ -126,5 +126,14 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         {
             NsfwAcknowledged = !NsfwAcknowledged;
         }
+
+        /// <summary>
+        /// Button clicked event handler for the duplicates btton
+        /// </summary>
+        /// <param name="e">Mouse event args</param>
+        protected void DuplicatesButton_OnClick(MouseEventArgs e)
+        {
+            NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}");
+        }
     }
 }

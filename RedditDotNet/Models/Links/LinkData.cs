@@ -359,5 +359,8 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("crosspost_parent")]
         public string CrosspostParent { get; set; }
+
+        [JsonProperty("num_duplicates")]
+        public int? NumDuplicates { get; set; }
     }
 }

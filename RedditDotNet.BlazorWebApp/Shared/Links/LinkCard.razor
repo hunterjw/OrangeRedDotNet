@@ -145,6 +145,15 @@
                     <span>@Link.Data.NumComments.ToDisplayString()</span>
                 </button>
             </div>
+            @if (Link.Data.NumDuplicates != null && Link.Data.NumDuplicates > 0)
+            {
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="DuplicatesButton_OnClick">
+                        <span class="oi oi-chat"></span>
+                        <span>Other discussions (@Link.Data.NumDuplicates)</span>
+                    </button>
+                </div>
+            }
         </div>
     </div>
 </div>
