@@ -32,6 +32,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         protected bool SpoilerAcknowledged { get; set; }
 
         /// <summary>
+        /// If NSFW has been acknowledged or not
+        /// </summary>
+        protected bool NsfwAcknowledged { get; set; }
+
+        /// <summary>
         /// Get a preview image URL
         /// </summary>
         protected string PreviewUrl
@@ -111,6 +116,15 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         protected void SpoilerButton_OnClick(MouseEventArgs e)
         {
             SpoilerAcknowledged = !SpoilerAcknowledged;
+        }
+
+        /// <summary>
+        /// Button clicked event handler for the NSFW button
+        /// </summary>
+        /// <param name="e">Mouse event args</param>
+        protected void NsfwButton_OnClick(MouseEventArgs e)
+        {
+            NsfwAcknowledged = !NsfwAcknowledged;
         }
     }
 }

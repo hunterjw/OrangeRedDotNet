@@ -49,6 +49,10 @@
             {
                 <button class="btn btn-secondary w-100" @onclick="SpoilerButton_OnClick">Show Spoiler</button>
             }
+            else if (Link.Data.Over18 && !NsfwAcknowledged)
+            {
+                <button class="btn btn-danger w-100" @onclick="NsfwButton_OnClick">Show NSFW</button>
+            }
             else
             {
                 @switch (Link.GetLinkType())
