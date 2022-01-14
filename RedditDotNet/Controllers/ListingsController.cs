@@ -1,4 +1,5 @@
 ﻿using RedditDotNet.Authentication;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
@@ -26,6 +27,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="parameters">Listing parameter object</param>
 		/// <returns>Listing of links (posts)</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetBest(ListingParameters parameters = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/best", parameters);
@@ -36,6 +38,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="fullNames">Full names of links to get</param>
 		/// <returns>Listing of links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetByIds(IEnumerable<string> fullNames)
 		{
 			return await Get<Listing<Link>>($"/by_id/{string.Join(',', fullNames)}");
@@ -48,6 +51,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Comment listing parameters</param>
 		/// <param name="subreddit">Subreddit for the link</param>
 		/// <returns>Link with assosiated comments</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<LinkWithComments> GetComments(string articleId, CommentListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<LinkWithComments>($"/comments/{articleId}", parameters, subreddit);
@@ -59,6 +63,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="articleId">Link ID</param>
 		/// <param name="parameters">Duplicate listing parameters</param>
 		/// <returns>Original link with the duplicate links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<DuplicateLinks> GetDuplicates(string articleId, DuplicateListingParameters parameters = null)
 		{
 			return await GetListingBySubreddit<DuplicateLinks>($"/duplicates/{articleId}", parameters);
@@ -70,6 +75,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Location based listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetHot(LocationListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/hot", parameters, subreddit);
@@ -81,6 +87,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetNew(ListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/new", parameters, subreddit);
@@ -91,6 +98,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetRandom(string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/random", subreddit: subreddit);
@@ -102,6 +110,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetRising(ListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/rising", parameters, subreddit);
@@ -113,6 +122,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetTop(SortListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/top", parameters, subreddit);
@@ -124,6 +134,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
 		public async Task<Listing<Link>> GetControversial(SortListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/controversial", parameters, subreddit);
@@ -137,6 +148,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Parameters for the request</param>
 		/// <param name="subreddit">Subreddit to get content from</param>
 		/// <returns>Deserialized json object</returns>
+		/// <exception cref="RedditApiException"></exception>
 		private async Task<T> GetListingBySubreddit<T>(string relativeUrl, IQueryParameters parameters = null, string subreddit = null)
 		{
 			string url = string.Empty;

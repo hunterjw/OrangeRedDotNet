@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RedditDotNet.Authentication;
+using RedditDotNet.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,13 +58,14 @@ namespace RedditDotNet.Controllers
 			return serializer.Deserialize<T>(jsonTextReader);
 		}
 
-        #region Get
-        /// <summary>
-        /// HTTP Get
-        /// </summary>
-        /// <param name="relativeUrl">URL to make the request to</param>
-        /// <returns>HttpResponseMessage</returns>
-        internal async Task<HttpResponseMessage> Get(string relativeUrl)
+		#region Get
+		/// <summary>
+		/// HTTP Get
+		/// </summary>
+		/// <param name="relativeUrl">URL to make the request to</param>
+		/// <returns>HttpResponseMessage</returns>
+		/// <exception cref="RedditApiException"></exception>
+		internal async Task<HttpResponseMessage> Get(string relativeUrl)
 		{
 			return await Get(relativeUrl, null);
 		}
@@ -74,6 +76,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="relativeUrl">URL to make the request to</param>
 		/// <param name="queryParameters">Query parameters for the request</param>
 		/// <returns>HttpResponseMessage</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<HttpResponseMessage> Get(string relativeUrl, IDictionary<string, string> queryParameters)
 		{
 			UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -90,9 +93,12 @@ namespace RedditDotNet.Controllers
 			}
 
 			HttpResponseMessage response = await HttpClient.SendAsync(request);
-			response.EnsureSuccessStatusCode();
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new RedditApiException(response);
+			}
 
-            string responseJson = await response.Content.ReadAsStringAsync();
+			string responseJson = await response.Content.ReadAsStringAsync();
 
 			return response;
 		}
@@ -103,6 +109,7 @@ namespace RedditDotNet.Controllers
 		/// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
 		/// <param name="relativeUrl">URL to make the request to</param>
 		/// <returns><typeparamref name="T"/> instance</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<T> Get<T>(string relativeUrl)
 		{
 			return await DeserializeToObject<T>(await Get(relativeUrl));
@@ -115,19 +122,21 @@ namespace RedditDotNet.Controllers
 		/// <param name="relativeUrl">URL to make the request to</param>
 		/// <param name="queryParameters">Query parameters for the request</param>
 		/// <returns><typeparamref name="T"/> instance</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<T> Get<T>(string relativeUrl, IDictionary<string, string> queryParameters)
 		{
 			return await DeserializeToObject<T>(await Get(relativeUrl, queryParameters));
 		}
-        #endregion
+		#endregion
 
-        #region Put
+		#region Put
 		/// <summary>
 		/// HTTP Put
 		/// </summary>
 		/// <param name="relativeUrl">Relative URL</param>
 		/// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
 		/// <returns>HttpResonseMessage</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<HttpResponseMessage> Put(string relativeUrl, IDictionary<string, string> queryParameters)
 		{
 			UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -141,9 +150,12 @@ namespace RedditDotNet.Controllers
 			request.Content = new FormUrlEncodedContent(queryParameters);
 
 			HttpResponseMessage response = await HttpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new RedditApiException(response);
+			}
 
-            string responseJson = await response.Content.ReadAsStringAsync();
+			string responseJson = await response.Content.ReadAsStringAsync();
 
 			return response;
 		}
@@ -155,6 +167,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="relativeUrl">Relative URL</param>
 		/// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
 		/// <returns><typeparamref name="T"/> object</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<T> Put<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
 			return await DeserializeToObject<T>(await Put(relativeUrl, queryParameters));
@@ -167,6 +180,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <param name="relativeUrl">Relative URL</param>
 		/// <returns>Awaitable Task</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task Delete(string relativeUrl)
 		{
 			UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -179,7 +193,10 @@ namespace RedditDotNet.Controllers
 			}
 
 			HttpResponseMessage response = await HttpClient.SendAsync(request);
-			response.EnsureSuccessStatusCode();
+			if (!response.IsSuccessStatusCode)
+			{
+				throw new RedditApiException(response);
+			}
 		}
 		#endregion
 
@@ -190,6 +207,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="relativeUrl">Relative URL</param>
 		/// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
 		/// <returns>HttpResponseMessage</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> queryParameters)
 		{
 			UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -203,7 +221,10 @@ namespace RedditDotNet.Controllers
 			request.Content = new FormUrlEncodedContent(queryParameters);
 
 			HttpResponseMessage response = await HttpClient.SendAsync(request);
-			response.EnsureSuccessStatusCode();
+			if (!response.IsSuccessStatusCode)
+            {
+				throw new RedditApiException(response);
+            }
 
 			string responseJson = await response.Content.ReadAsStringAsync();
 
@@ -217,6 +238,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="relativeUrl">Relative URL</param>
 		/// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
 		/// <returns><typeparamref name="T"/> object</returns>
+		/// <exception cref="RedditApiException"></exception>
 		internal async Task<T> Post<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
 			return await DeserializeToObject<T>(await Post(relativeUrl, queryParameters));
