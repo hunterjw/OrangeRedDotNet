@@ -17,5 +17,16 @@ namespace RedditDotNet.Extensions
         {
             return JsonConvert.SerializeObject(obj, formatting);
         }
+
+        /// <summary>
+        /// Deserialize a json string to <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type to deserialize to</typeparam>
+        /// <param name="json">Json string</param>
+        /// <returns><typeparamref name="T"/> object</returns>
+        public static T FromJson<T>(this string json)
+        {
+            return JsonConvert.DeserializeObject<T>(json);
+        }
     }
 }

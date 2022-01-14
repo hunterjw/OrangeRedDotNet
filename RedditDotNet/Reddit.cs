@@ -59,5 +59,21 @@ namespace RedditDotNet
 			}
 		}
 		private ListingsController ListingsController = null;
+
+		/// <summary>
+		/// MultiReddit operations
+		/// </summary>
+		public MultiController Multis
+        {
+			get
+            {
+				if (MultiController == null)
+                {
+					MultiController = new MultiController(UserAgent, RedditAuthentication);
+                }
+				return MultiController;
+            }
+        }
+		private MultiController MultiController = null;
 	}
 }
