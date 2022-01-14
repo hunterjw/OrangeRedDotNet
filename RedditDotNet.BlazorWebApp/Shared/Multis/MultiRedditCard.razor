@@ -1,0 +1,111 @@
+﻿@using System.Web
+
+@if (MultiReddit != null)
+{
+    <div class="card text-dark bg-light mb-1">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-auto d-flex justify-content-center flex-column w-25 multireddit-icon-col">
+                    <img class="rounded" src="@MultiReddit.Data.IconUrl" />
+                </div>
+                <div class="col">
+                    <h4 class="card-title">
+                        @MultiReddit.Data.DisplayName
+                    </h4>
+                    <h6 class="card-subtitle text-muted mb-1">
+                        @(MultiReddit.Data.Subreddits?.Count ?? 0) communities in this custom feed, @MultiReddit.Data.Visibility
+                    </h6>
+                    <Flair Over18="@MultiReddit.Data.Over18" />
+                    @((MarkupString)HttpUtility.HtmlDecode(MultiReddit.Data.DescriptionHtml))
+                </div>
+            </div>
+            <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
+                <ul class="list-group">
+                    @if (MultiReddit.Data.CanEdit)
+                    {
+                        <li class="list-group-item list-group-item-light">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Subreddit name" @bind="AddSubredditName" />
+                                <button class="btn btn-success" @onclick="AddSubredditButton_OnClick">
+                                    Add
+                                </button>
+                            </div>
+                        </li>
+                    }
+                    @foreach (var subreddit in MultiReddit.Data.Subreddits.OrderBy(_ => _.Name))
+                    {
+                        <li class="list-group-item list-group-item-light">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <a class="text-decoration-none w-auto" href="/r/@subreddit.Name">
+                                            /r/@subreddit.Name
+                                        </a>
+                                    </div>
+                                    @if (subreddit.Detail != null)
+                                    {
+                                        <div class="row">
+                                            <span class="w-auto">
+                                                @subreddit.Detail.Subscribers.ToDisplayString() members
+                                            </span>
+                                        </div>
+                                        <div class="row">
+                                            <span class="w-auto">
+                                                <Flair Over18="@subreddit.Detail.Over18" />
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                                @if (MultiReddit.Data.CanEdit)
+                                {
+                                    <div class="col-auto d-flex flex-column justify-content-center">
+                                        <button class="btn btn-outline-danger" @onclick="@(() => RemoveSubredditButton_OnClick(subreddit.Name))">
+                                            Remove
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="ContentCollapsedButton_OnClick">
+                        @if (ContentCollapsed)
+                        {
+                            <span class="oi oi-chevron-bottom"></span>
+                        }
+                        else
+                        {
+                            <span class="oi oi-chevron-top"></span>
+                        }
+                    </button>
+                </div>
+                @if (MultiReddit.Data.CanEdit)
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="EditMultiRedditButton_OnClick">
+                            Edit
+                        </button>
+                    </div>
+                }
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="CopyMultiRedditButton_OnClick">
+                        Copy
+                    </button>
+                </div>
+                @if (MultiReddit.Data.CanEdit)
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-outline-danger" @onclick="@DeleteMultiRedditButton_OnClick">
+                            Delete
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

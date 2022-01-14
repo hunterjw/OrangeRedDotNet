@@ -1,0 +1,6 @@
+﻿@foreach (var multireddit in MultiReddits.OrderBy(_ => _.Data.DisplayName))
+{
+    <MultiRedditCard MultiReddit="@multireddit"
+                 OnMultiRedditDelete="@OnMultiRedditDelete"
+                 OnMultiRedditCopy="OnMultiRedditCopy" />
+}

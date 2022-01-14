@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace RedditDotNet.BlazorWebApp
 {
@@ -35,5 +36,13 @@ namespace RedditDotNet.BlazorWebApp
             return DateTimeOffset.FromUnixTimeSeconds((long)timestampUtc)
                 .ToLocalTime().DateTime;
         }
+
+        /// <summary>
+        /// Format a MultiReddit display name into a subpath
+        /// </summary>
+        /// <param name="input">Display name</param>
+        /// <returns>Path component</returns>
+        public static string FormatNewMultiName(this string input) =>
+            new(input.ToLower().Select(_ => char.IsWhiteSpace(_) ? '_' : _).ToArray());
     }
 }

@@ -1,0 +1,29 @@
+﻿<form>
+    <div class="mb-3">
+        <label for="nameInput" class="form-label">Name</label>
+        <input type="text" class="form-control" id="nameInput" @bind="UpdateModel.DisplayName">
+    </div>
+    <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Description</label>
+        <textarea class="form-control" id="descriptionInput" rows="3" @bind="UpdateModel.DescriptionMd"></textarea>
+    </div>
+    @if (!HideVisibility)
+    {
+        <div class="mb-3">
+            <label for="visibilitySelect" class="form-label">Privacy</label>
+            <select class="form-select" id="visibilitySelect" @bind="UpdateModel.Visibility">
+                <option value="private">Private</option>
+                <option value="public">Public</option>
+            </select>
+        </div>
+    }
+    <div class="btn-group" role="group" style="width: 100%;">
+        <button type="button" class="btn btn-secondary" @onclick="CancelButton_OnClick">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-success" @onclick="SaveButton_OnClick">
+            Save
+        </button>
+    </div>
+</form>
+

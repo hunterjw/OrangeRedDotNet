@@ -48,3 +48,12 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.wideModal {
+    width: 50rem;
+    max-width: 100%;
+}
+
+.blazored-modal-header {
+    padding-bottom: 0px !important;
+}

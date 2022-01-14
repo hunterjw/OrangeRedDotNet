@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ namespace RedditDotNet.BlazorWebApp
 
 			builder.Configuration.GetSection(nameof(PasswordAuthenticationOptions)).Bind(PasswordAuthenticationOptions);
 			builder.Services.AddScoped(sp => new Reddit(string.Empty, new PasswordAuthentication(PasswordAuthenticationOptions)));
+
+			builder.Services.AddBlazoredModal();
 
 			await builder.Build().RunAsync();
 		}
