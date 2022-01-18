@@ -140,6 +140,68 @@ namespace RedditDotNet.Controllers
 			return await GetListingBySubreddit<Listing<Link>>("/controversial", parameters, subreddit);
 		}
 
+		#region MultiReddit
+		/// <summary>
+		/// Get the hottest Links for a MultiReddit
+		/// </summary>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="parameters">Location based listing parameters</param>
+		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Listing<Link>> GetHot(string multiRedditPath, LocationListingParameters parameters = null)
+		{
+			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "hot", parameters);
+		}
+
+		/// <summary>
+		/// Get the newest Links for a MultiReddit
+		/// </summary>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="parameters">Listing parameters</param>
+		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Listing<Link>> GetNew(string multiRedditPath, ListingParameters parameters = null)
+		{
+			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "new", parameters);
+		}
+
+		/// <summary>
+		/// Get rising Links for a MultiReddit
+		/// </summary>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="parameters">Listing parameters</param>
+		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Listing<Link>> GetRising(string multiRedditPath, ListingParameters parameters = null)
+		{
+			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "rising", parameters);
+		}
+
+		/// <summary>
+		/// Get the top Links for a MultiReddit
+		/// </summary>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="parameters">Sort listing parameters</param>
+		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Listing<Link>> GetTop(string multiRedditPath, SortListingParameters parameters = null)
+		{
+			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "top", parameters);
+		}
+
+		/// <summary>
+		/// Get the most controversial Links for a MultiReddit
+		/// </summary>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="parameters">Sort listing parameters</param>
+		/// <returns>Listing of Links</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Listing<Link>> GetControversial(string multiRedditPath, SortListingParameters parameters = null)
+		{
+			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "controversial", parameters);
+		}
+		#endregion
+
 		/// <summary>
 		/// Generic method to get Listings (optionally by Subreddit)
 		/// </summary>
@@ -157,6 +219,32 @@ namespace RedditDotNet.Controllers
 				url += $"/r/{subreddit}";
 			}
 			url += relativeUrl;
+			IDictionary<string, string> dict = null;
+			if (parameters != null)
+			{
+				parameters.Validate();
+				dict = parameters.ToQueryParameters();
+			}
+			return await Get<T>(url, dict);
+		}
+
+		/// <summary>
+		/// Generic method to get Listings for a MultiReddit
+		/// </summary>
+		/// <typeparam name="T">Type to deserialize json HTTP response content to</typeparam>
+		/// <param name="multiRedditPath">MultiReddit relative path</param>
+		/// <param name="relativeUrl">Relative URL for the request</param>
+		/// <param name="parameters">Parameters for the request</param>
+		/// <returns>Deserialized json object</returns>
+		/// <exception cref="RedditApiException"></exception>
+		private async Task<T> GetListingForMultiReddit<T>(string multiRedditPath, string relativeUrl, IQueryParameters parameters = null)
+		{
+			string url = multiRedditPath;
+			if (!url.EndsWith('/'))
+            {
+				url += '/';
+            }
+			url += relativeUrl + "/";
 			IDictionary<string, string> dict = null;
 			if (parameters != null)
 			{

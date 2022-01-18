@@ -20,16 +20,26 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         public string Subreddit { get; set; }
 
         /// <summary>
+        /// MultiReddit base path
+        /// </summary>
+        [Parameter]
+        public string MultiRedditPath { get; set; }
+
+        /// <summary>
         /// Get the prefix URL for a subreddit
         /// </summary>
         /// <returns>Prefix relative URL</returns>
-        protected string GetSubredditPrefix()
+        protected string GetRelativeUrlPrefix()
         {
-            if (string.IsNullOrWhiteSpace(Subreddit))
+            if (!string.IsNullOrWhiteSpace(Subreddit))
             {
-                return string.Empty;
+                return $"/r/{Subreddit}";
             }
-            return $"/r/{Subreddit}";
+            else if (!string.IsNullOrWhiteSpace(MultiRedditPath))
+            {
+                return MultiRedditPath;
+            }
+            return string.Empty;
         }
     }
 }

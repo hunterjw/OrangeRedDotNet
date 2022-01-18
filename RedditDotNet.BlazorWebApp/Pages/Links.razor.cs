@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using System;
@@ -55,12 +56,32 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Parameter]
         public string ListingType { get; set; }
+        /// <summary>
+        /// Username (for MultiReddits)
+        /// </summary>
+        [Parameter]
+        public string UserName { get; set; }
+        /// <summary>
+        /// MultiReddit name
+        /// </summary>
+        [Parameter]
+        public string MultiName { get; set; }
         #endregion
 
         /// <summary>
         /// Links displayed on this page
         /// </summary>
         protected Listing<Link> LinkListing { get; set; }
+
+        /// <summary>
+        /// Current user identity
+        /// </summary>
+        protected Identity Identity { get; set; }
+
+        /// <summary>
+        /// If the listing is a MultiReddit or not
+        /// </summary>
+        protected bool IsMultiReddit => !string.IsNullOrWhiteSpace(MultiName);
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -69,6 +90,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
             LinkListing = null;
+
+            if (Identity == null)
+            {
+                Identity = await Reddit.Account.GetIdentity();
+            }
 
             var listingTypeEnum = GetListingType();
             if (string.IsNullOrWhiteSpace(ListingType))
@@ -96,19 +122,29 @@ namespace RedditDotNet.BlazorWebApp.Pages
                     LinkListing = await Reddit.Listings.GetBest(BuildListingParameters());
                     break;
                 case LinkListingType.Hot:
-                    LinkListing = await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
+                    LinkListing = IsMultiReddit ?
+                        await Reddit.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) : 
+                        await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
                     break;
                 case LinkListingType.New:
-                    LinkListing = await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
+                    LinkListing = IsMultiReddit ?
+                        await Reddit.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) : 
+                        await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Rising:
-                    LinkListing = await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
+                    LinkListing = IsMultiReddit ?
+                        await Reddit.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) : 
+                        await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Controversial:
-                    LinkListing = await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
+                    LinkListing = IsMultiReddit ?
+                        await Reddit.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) : 
+                        await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Top:
-                    LinkListing = await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
+                    LinkListing = IsMultiReddit ?
+                        await Reddit.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) : 
+                        await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
                     break;
                 default:
                     throw new ArgumentException();
@@ -125,6 +161,27 @@ namespace RedditDotNet.BlazorWebApp.Pages
         }
 
         /// <summary>
+        /// Get the MultiReddit base URL
+        /// </summary>
+        /// <returns>MultiReddit URL</returns>
+        protected string GetMultiRedditUrl()
+        {
+            if (IsMultiReddit)
+            {
+                if (!string.IsNullOrWhiteSpace(UserName))
+                {
+                    if (UserName.Equals(Identity?.Name))
+                    {
+                        return $"/me/m/{MultiName}";
+                    }
+                    return $"/user/{UserName}/m/{MultiName}";
+                }
+                return $"/me/m/{MultiName}";
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Helper function to get the relative URL for the current page
         /// </summary>
         /// <returns></returns>
@@ -133,6 +190,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
             if (!string.IsNullOrWhiteSpace(Subreddit))
             {
                 return $"/r/{Subreddit}/{ListingType}";
+            }
+            else if (IsMultiReddit)
+            {
+                return $"{GetMultiRedditUrl()}/{ListingType}";
             }
             return $"/{ListingType}";
         }
@@ -169,7 +230,8 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 "rising" => LinkListingType.Rising,
                 "controversial" => LinkListingType.Controversial,
                 "top" => LinkListingType.Top,
-                _ => string.IsNullOrWhiteSpace(Subreddit) ? LinkListingType.Best : LinkListingType.Hot,
+                _ => !string.IsNullOrWhiteSpace(Subreddit) || (IsMultiReddit) ? 
+                    LinkListingType.Hot : LinkListingType.Best,
             };
         }
 

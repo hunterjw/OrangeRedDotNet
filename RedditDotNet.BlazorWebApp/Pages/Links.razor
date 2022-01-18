@@ -2,13 +2,21 @@
 @page "/{listingType}"
 @page "/r/{subreddit}"
 @page "/r/{subreddit}/{listingType}"
+@page "/user/{userName}/m/{multiName}"
+@page "/user/{userName}/m/{multiName}/{listingType}"
+@page "/me/m/{multiName}"
+@page "/me/m/{multiName}/{listingType}"
 
 @if (!string.IsNullOrWhiteSpace(Subreddit))
 {
     <h2>@Subreddit</h2>
 }
+else if (IsMultiReddit)
+{
+    <h2>@GetMultiRedditUrl()</h2>
+}
 
-<LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" />
+<LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
 
 @if (LinkListing == null)
 {

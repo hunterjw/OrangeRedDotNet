@@ -22,13 +22,18 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
         /// </summary>
         [Option(HelpText = "Type of listing to get (best, hot, new, rising, controversial, top, random)")]
         public string ListingType { get; set; }
+        /// <summary>
+        /// Path of MultiReddit to get links for
+        /// </summary>
+        [Option(HelpText = "Path of MultiReddit to get links for")]
+        public string MultiRedditPath { get; set; }
         
         public override string Run(Reddit reddit)
         {
             ListingType = ListingType?.ToLower();
             if (string.IsNullOrWhiteSpace(ListingType))
             {
-                if (string.IsNullOrWhiteSpace(Subreddit))
+                if (string.IsNullOrWhiteSpace(Subreddit) && string.IsNullOrWhiteSpace(MultiRedditPath))
                 {
                     ListingType = "best";
                 }
@@ -41,11 +46,21 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
             Listing<Link> links = ListingType switch
             {
                 "best" => reddit.Listings.GetBest(BuildListingParameters()).Result,
-                "hot" => reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit).Result,
-                "new" => reddit.Listings.GetNew(BuildListingParameters(), Subreddit).Result,
-                "rising" => reddit.Listings.GetRising(BuildListingParameters(), Subreddit).Result,
-                "controversial" => reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit).Result,
-                "top" => reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit).Result,
+                "hot" => string.IsNullOrWhiteSpace(MultiRedditPath) ? 
+                    reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit).Result :
+                    reddit.Listings.GetHot(MultiRedditPath, BuildLocationListingParameters()).Result,
+                "new" => string.IsNullOrWhiteSpace(MultiRedditPath) ? 
+                    reddit.Listings.GetNew(BuildListingParameters(), Subreddit).Result :
+                    reddit.Listings.GetNew(MultiRedditPath, BuildListingParameters()).Result,
+                "rising" => string.IsNullOrWhiteSpace(MultiRedditPath) ? 
+                    reddit.Listings.GetRising(BuildListingParameters(), Subreddit).Result :
+                    reddit.Listings.GetRising(MultiRedditPath, BuildListingParameters()).Result,
+                "controversial" => string.IsNullOrWhiteSpace(MultiRedditPath) ? 
+                    reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit).Result :
+                    reddit.Listings.GetControversial(MultiRedditPath, BuildSortListingParameters()).Result,
+                "top" => string.IsNullOrWhiteSpace(MultiRedditPath) ? 
+                    reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit).Result :
+                    reddit.Listings.GetTop(MultiRedditPath, BuildSortListingParameters()).Result,
                 "random" => reddit.Listings.GetRandom(Subreddit).Result,
                 _ => throw new ArgumentException($"Invalid {nameof(ListingType)}"),
             };
