@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RedditDotNet.Models.Listings
+namespace RedditDotNet.Models.Parameters
 {
     /// <summary>
     /// Comment sort enum

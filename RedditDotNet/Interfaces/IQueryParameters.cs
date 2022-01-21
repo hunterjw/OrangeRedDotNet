@@ -14,9 +14,9 @@ namespace RedditDotNet.Interfaces
         IDictionary<string, string> ToQueryParameters();
 
         /// <summary>
-        /// Validate the query parameters
+        /// Get a list of validation errors for the parameters
         /// </summary>
-        /// <exception cref="ArgumentException">When the parameters are invalid</exception>
-        void Validate();
+        /// <returns>List of errors</returns>
+        IList<string> GetValidationErrors();
     }
 }

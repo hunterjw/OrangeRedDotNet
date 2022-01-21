@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
+using RedditDotNet.Models.Subreddits;
 using System.Collections.Generic;
 
 namespace RedditDotNet.Models.Account
 {
-	public class Identity
+    public class AccountData
     {
         [JsonProperty("is_employee")]
         public bool IsEmployee { get; set; }

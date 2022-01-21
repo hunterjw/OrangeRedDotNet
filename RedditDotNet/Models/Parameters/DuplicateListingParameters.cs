@@ -1,7 +1,7 @@
 ﻿using RedditDotNet.Extensions;
 using System.Collections.Generic;
 
-namespace RedditDotNet.Models.Listings
+namespace RedditDotNet.Models.Parameters
 {
     /// <summary>
     /// Listing parameters for getting duplicate links
@@ -21,7 +21,8 @@ namespace RedditDotNet.Models.Listings
         /// </summary>
         public string Subreddit { get; set; }
 
-        public new IDictionary<string, string> ToQueryParameters()
+        /// <inheritdoc/>
+        public override IDictionary<string, string> ToQueryParameters()
         {
             IDictionary<string, string> dict = base.ToQueryParameters();
             if (CrosspostsOnly.HasValue)

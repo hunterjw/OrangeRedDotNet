@@ -61,7 +61,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                Identity identity = await Reddit.Account.GetIdentity();
+                AccountData identity = await Reddit.Account.GetIdentity();
                 string path = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
                 MultiReddit newMulti = await Reddit.Multis.CreateMulti(path, updateModelResult, true);
                 MultiReddits.Add(newMulti);

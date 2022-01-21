@@ -1,4 +1,6 @@
-﻿namespace RedditDotNet.Models.Comments
+﻿using RedditDotNet.Interfaces;
+
+namespace RedditDotNet.Models.Comments
 {
-    public class CommentBase : Thing<CommentBaseData> { }
+    public class CommentBase : Thing<CommentBaseData>, ILinkOrComment { }
 }

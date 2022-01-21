@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using RedditDotNet.Authentication;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -126,6 +128,30 @@ namespace RedditDotNet.Controllers
         internal async Task<T> Get<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             return await DeserializeToObject<T>(await Get(relativeUrl, queryParameters));
+        }
+
+        /// <summary>
+        /// HTTP Get with the response deserialzed to <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
+        /// <param name="relativeUrl">URL to make the request to</param>
+        /// <param name="parameters">Query parameters for the request</param>
+        /// <returns><typeparamref name="T"/> instance</returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="RedditApiException"></exception>
+        internal async Task<T> Get<T>(string relativeUrl, IQueryParameters parameters)
+        {
+            IDictionary<string, string> dict = null;
+            if (parameters != null)
+            {
+                var errors = parameters.GetValidationErrors();
+                if (errors?.Any() ?? false)
+                {
+                    throw new ArgumentException(string.Join(Environment.NewLine, errors));
+                }
+                dict = parameters.ToQueryParameters();
+            }
+            return await Get<T>(relativeUrl, dict);
         }
         #endregion
 

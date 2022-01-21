@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models.Links;
-using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 using System.Linq;
 using System.Threading.Tasks;
 

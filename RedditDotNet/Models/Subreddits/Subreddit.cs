@@ -6,7 +6,7 @@ namespace RedditDotNet.Models.Subreddits
     /// <summary>
     /// Subreddit details
     /// </summary>
-	public class SubredditDetail
+	public class Subreddit
     {
         [JsonProperty("default_set")]
         public bool DefaultSet { get; set; }

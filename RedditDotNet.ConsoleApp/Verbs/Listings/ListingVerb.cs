@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
 {

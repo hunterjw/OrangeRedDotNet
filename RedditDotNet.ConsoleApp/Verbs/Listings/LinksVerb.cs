@@ -2,6 +2,7 @@
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 using System;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings

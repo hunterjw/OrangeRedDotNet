@@ -75,5 +75,21 @@ namespace RedditDotNet
             }
         }
 		private MultiController MultiController = null;
+
+		/// <summary>
+		/// User operations
+		/// </summary>
+		public UsersController Users
+        {
+            get
+            {
+				if (UsersController == null)
+                {
+					UsersController = new UsersController(UserAgent, RedditAuthentication);
+                }
+				return UsersController;
+            }
+        }
+		private UsersController UsersController = null;
 	}
 }

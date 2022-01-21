@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 using System.Net.Http;
 using System.Threading.Tasks;
 

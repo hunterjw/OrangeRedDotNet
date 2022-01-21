@@ -1,7 +1,8 @@
 {
   "profiles": {
     "RedditDotNet.ConsoleApp": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "users-get-overview --username \"\""
     }
   }
 }

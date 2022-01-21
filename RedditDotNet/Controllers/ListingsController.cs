@@ -3,7 +3,10 @@ using RedditDotNet.Exceptions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Controllers
@@ -28,6 +31,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameter object</param>
 		/// <returns>Listing of links (posts)</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetBest(ListingParameters parameters = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/best", parameters);
@@ -52,6 +56,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit for the link</param>
 		/// <returns>Link with assosiated comments</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<LinkWithComments> GetComments(string articleId, CommentListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<LinkWithComments>($"/comments/{articleId}", parameters, subreddit);
@@ -64,6 +69,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Duplicate listing parameters</param>
 		/// <returns>Original link with the duplicate links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<DuplicateLinks> GetDuplicates(string articleId, DuplicateListingParameters parameters = null)
 		{
 			return await GetListingBySubreddit<DuplicateLinks>($"/duplicates/{articleId}", parameters);
@@ -76,6 +82,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetHot(LocationListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/hot", parameters, subreddit);
@@ -88,6 +95,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetNew(ListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/new", parameters, subreddit);
@@ -99,6 +107,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetRandom(string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/random", subreddit: subreddit);
@@ -111,6 +120,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetRising(ListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/rising", parameters, subreddit);
@@ -123,6 +133,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetTop(SortListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/top", parameters, subreddit);
@@ -135,6 +146,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get Links for</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetControversial(SortListingParameters parameters = null, string subreddit = null)
 		{
 			return await GetListingBySubreddit<Listing<Link>>("/controversial", parameters, subreddit);
@@ -148,6 +160,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Location based listing parameters</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetHot(string multiRedditPath, LocationListingParameters parameters = null)
 		{
 			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "hot", parameters);
@@ -160,6 +173,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetNew(string multiRedditPath, ListingParameters parameters = null)
 		{
 			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "new", parameters);
@@ -172,6 +186,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Listing parameters</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetRising(string multiRedditPath, ListingParameters parameters = null)
 		{
 			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "rising", parameters);
@@ -184,6 +199,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetTop(string multiRedditPath, SortListingParameters parameters = null)
 		{
 			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "top", parameters);
@@ -196,6 +212,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Sort listing parameters</param>
 		/// <returns>Listing of Links</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		public async Task<Listing<Link>> GetControversial(string multiRedditPath, SortListingParameters parameters = null)
 		{
 			return await GetListingForMultiReddit<Listing<Link>>(multiRedditPath, "controversial", parameters);
@@ -211,6 +228,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="subreddit">Subreddit to get content from</param>
 		/// <returns>Deserialized json object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		private async Task<T> GetListingBySubreddit<T>(string relativeUrl, IQueryParameters parameters = null, string subreddit = null)
 		{
 			string url = string.Empty;
@@ -219,13 +237,7 @@ namespace RedditDotNet.Controllers
 				url += $"/r/{subreddit}";
 			}
 			url += relativeUrl;
-			IDictionary<string, string> dict = null;
-			if (parameters != null)
-			{
-				parameters.Validate();
-				dict = parameters.ToQueryParameters();
-			}
-			return await Get<T>(url, dict);
+			return await Get<T>(url, parameters);
 		}
 
 		/// <summary>
@@ -237,6 +249,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="parameters">Parameters for the request</param>
 		/// <returns>Deserialized json object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="ArgumentException"></exception>
 		private async Task<T> GetListingForMultiReddit<T>(string multiRedditPath, string relativeUrl, IQueryParameters parameters = null)
 		{
 			string url = multiRedditPath;
@@ -245,13 +258,7 @@ namespace RedditDotNet.Controllers
 				url += '/';
             }
 			url += relativeUrl + "/";
-			IDictionary<string, string> dict = null;
-			if (parameters != null)
-			{
-				parameters.Validate();
-				dict = parameters.ToQueryParameters();
-			}
-			return await Get<T>(url, dict);
+			return await Get<T>(url, parameters);
 		}
 	}
 }

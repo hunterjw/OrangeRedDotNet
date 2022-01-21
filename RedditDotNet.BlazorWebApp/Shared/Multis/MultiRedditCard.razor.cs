@@ -183,7 +183,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                Identity identity = await Reddit.Account.GetIdentity();
+                AccountData identity = await Reddit.Account.GetIdentity();
                 string newPath = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
                 var copiedMultiReddit = await Reddit.Multis.CopyMulti(
                     MultiReddit.Data.Path, 

@@ -24,9 +24,9 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>User Identity</returns>
 		/// <exception cref="RedditApiException"></exception>
-		public async Task<Identity> GetIdentity()
+		public async Task<AccountData> GetIdentity()
 		{
-			return await Get<Identity>("/api/v1/me");
+			return await Get<AccountData>("/api/v1/me");
 		}
 
 		/// <summary>

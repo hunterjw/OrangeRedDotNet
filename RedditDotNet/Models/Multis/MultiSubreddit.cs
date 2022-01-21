@@ -12,6 +12,6 @@ namespace RedditDotNet.Models.Multis
         public string Name { get; set; }
 
         [JsonProperty("data")]
-        public SubredditDetail Detail { get; set; }
+        public Subreddit Detail { get; set; }
     }
 }

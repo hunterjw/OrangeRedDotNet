@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RedditDotNet.Interfaces;
+using System;
 
 namespace RedditDotNet.Models.Links
 {
-    public class Link : Thing<LinkData>
+    public class Link : Thing<LinkData>, ILinkOrComment
     {
         /// <summary>
         /// Get the type of this link

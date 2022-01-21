@@ -2,6 +2,7 @@
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,7 +77,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <summary>
         /// Current user identity
         /// </summary>
-        protected Identity Identity { get; set; }
+        protected AccountData Identity { get; set; }
 
         /// <summary>
         /// If the listing is a MultiReddit or not
