@@ -4,11 +4,13 @@ using RedditDotNet.Extensions;
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
 	/// <summary>
-	/// Verb to get karma breakdown by subreddit
+	/// Get a breakdown of karma by subreddit for the current user
 	/// </summary>
-	[Verb("get-karmabreakdown")]
-	class GetKarmaBreakdownVerb : VerbBase
+	[Verb("account-get-karmabreakdown", 
+		HelpText = "Get a breakdown of karma by subreddit for the current user")]
+	internal class GetKarmaBreakdownVerb : VerbBase
 	{
+		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
 			return reddit.Account.GetKarmaBreakdown().Result.ToJson();

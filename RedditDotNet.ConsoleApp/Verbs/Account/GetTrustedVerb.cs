@@ -4,11 +4,12 @@ using RedditDotNet.Extensions;
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
 	/// <summary>
-	/// Verb to get trusted users
+	/// Get list of trusted users for the current user
 	/// </summary>
-	[Verb("get-trusted")]
-	class GetTrustedVerb : VerbBase
+	[Verb("account-get-trusted", HelpText = "Get list of trusted users for the current user")]
+	internal class GetTrustedVerb : VerbBase
 	{
+		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
 			return reddit.Account.GetTrusted().Result.ToJson();

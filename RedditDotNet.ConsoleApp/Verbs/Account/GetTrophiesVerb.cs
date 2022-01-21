@@ -4,11 +4,12 @@ using RedditDotNet.Extensions;
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
 	/// <summary>
-	/// Verb to get trophies
+	/// Get awards for the current user
 	/// </summary>
-	[Verb("get-trophies")]
-	class GetTrophiesVerb : VerbBase
+	[Verb("account-get-trophies", HelpText = "Get awards for the current user")]
+	internal class GetTrophiesVerb : VerbBase
 	{
+		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
 			return reddit.Account.GetTrophies().Result.ToJson();

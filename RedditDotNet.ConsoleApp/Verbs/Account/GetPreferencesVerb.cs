@@ -4,11 +4,13 @@ using RedditDotNet.Extensions;
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
 	/// <summary>
-	/// Verb to get preferences
+	/// Get the user preferences for the current user
 	/// </summary>
-	[Verb("get-preferences")]
-	class GetPreferencesVerb : VerbBase
+	[Verb("account-get-preferences", 
+		HelpText = "Get the user preferences for the current user")]
+	internal class GetPreferencesVerb : VerbBase
 	{
+		/// <inheritdoc/>
 		public override string Run(Reddit reddit)
 		{
 			return reddit.Account.GetPreferences().Result.ToJson();
