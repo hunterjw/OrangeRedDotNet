@@ -27,6 +27,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         public Reddit Reddit { get; set; }
 
         /// <summary>
+        /// Identity service
+        /// </summary>
+        [Inject]
+        public IdentityService IdentityService { get; set; }
+
+        /// <summary>
         /// MultiReddit to display
         /// </summary>
         [Parameter]
@@ -183,7 +189,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                AccountData identity = await Reddit.Account.GetIdentity();
+                AccountData identity = await IdentityService.GetIdentity();
                 string newPath = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
                 var copiedMultiReddit = await Reddit.Multis.CopyMulti(
                     MultiReddit.Data.Path, 

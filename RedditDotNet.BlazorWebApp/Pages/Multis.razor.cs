@@ -27,6 +27,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         public IModalService ModalService { get; set; }
 
         /// <summary>
+        /// Identity service
+        /// </summary>
+        [Inject]
+        public IdentityService IdentityService { get; set; }
+
+        /// <summary>
         /// MultiReddit list
         /// </summary>
         protected List<MultiReddit> MultiReddits { get; set; }
@@ -61,7 +67,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                AccountData identity = await Reddit.Account.GetIdentity();
+                AccountData identity = await IdentityService.GetIdentity();
                 string path = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
                 MultiReddit newMulti = await Reddit.Multis.CreateMulti(path, updateModelResult, true);
                 MultiReddits.Add(newMulti);

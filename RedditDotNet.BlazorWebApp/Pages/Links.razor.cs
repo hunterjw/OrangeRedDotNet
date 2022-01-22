@@ -17,6 +17,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public Reddit Reddit { get; set; }
+
+        /// <summary>
+        /// Identity service
+        /// </summary>
+        [Inject]
+        public IdentityService IdentityService { get; set; }
         #endregion
 
         #region Query Parameters
@@ -92,10 +98,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // page isn't disposed)
             LinkListing = null;
 
-            if (Identity == null)
-            {
-                Identity = await Reddit.Account.GetIdentity();
-            }
+            Identity = await IdentityService.GetIdentity();
 
             var listingTypeEnum = GetListingType();
             if (string.IsNullOrWhiteSpace(ListingType))
