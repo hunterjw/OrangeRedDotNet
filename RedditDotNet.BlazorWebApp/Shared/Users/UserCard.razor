@@ -1,0 +1,35 @@
+﻿@using System.Web
+
+<div class="card text-dark bg-light mb-1">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-auto d-flex justify-content-center flex-column">
+                <img class="rounded user-profile-img"
+                     src="@HttpUtility.HtmlDecode(AccountData.IconImg)" />
+            </div>
+            <div class="col">
+                <h4 class="card-title">
+                    @Title
+                </h4>
+                <h6 class="card-subtitle text-muted mb-1">
+                    <a class="text-decoration-none"
+                       href="/user/@AccountData.Name">
+                        /u/@AccountData.Name
+                    </a>
+                </h6>
+                <h6 class="card-subtitle text-muted mb-1">
+                    Joined @AccountData.CreatedUTC.ToDateTimeUtc()
+                </h6>
+                <h6 class="card-subtitle text-muted mb-1">
+                    @AccountData.TotalKarma.ToDisplayString() Karma
+                    (@AccountData.LinkKarma.ToDisplayString() Link,
+                    @AccountData.CommentKarma.ToDisplayString() Comment)
+                </h6>
+                @if (!string.IsNullOrWhiteSpace(Description))
+                {
+                    <p>@Description</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

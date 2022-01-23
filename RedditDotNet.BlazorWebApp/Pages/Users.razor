@@ -1,0 +1,12 @@
+﻿@page "/u/{userName}"
+@page "/user/{userName}"
+
+@if (Account == null)
+{
+    <h2>@UserName</h2>
+    <p>Loading...</p>
+}
+else
+{
+    <UserCard AccountData="@Account.Data" />
+}

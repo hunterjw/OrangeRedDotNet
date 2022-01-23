@@ -20,7 +20,7 @@
                     @((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))
                 </h4>
                 <h6 class="card-subtitle text-muted mb-1">
-                    Posted by <a class="text-decoration-none">/u/@Link.Data.Author</a>
+                    Posted by <a class="text-decoration-none" href="/user/@Link.Data.Author">/u/@Link.Data.Author</a>
                     <Flair FlairBackgroundColor="@Link.Data.AuthorFlairBackgroundColor"
                            FlairRichtext="@Link.Data.AuthorFlairRichtext"
                            FlairText="@Link.Data.AuthorFlairText"
