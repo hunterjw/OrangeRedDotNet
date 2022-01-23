@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Interfaces;
+using RedditDotNet.Models.Account;
+using RedditDotNet.Models.Listings;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
@@ -31,10 +34,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected Models.Account.Account Account { get; set; }
 
+        protected TrophyList Trophies { get; set; }
+
+        protected Listing<ILinkOrComment> Overview { get; set; }
+
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
             Account = await Reddit.Users.GetAbout(UserName);
+            Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
+            Overview = await Reddit.Users.GetOverview(Account.Data.Name);
         }
     }
 }

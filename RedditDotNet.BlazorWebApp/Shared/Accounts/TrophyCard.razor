@@ -1,0 +1,24 @@
+﻿<div class="card text-dark bg-light">
+    <div class="row g-0">
+        <div class="col-md-1 d-flex flex-wrap align-items-center">
+            <img src="@AwardData.Icon70" class="img-fluid mx-auto d-block m-3" alt="@AwardData.Name" />
+        </div>
+        <div class="col">
+            <div class="card-body">
+                <h5 class="card-title">@AwardData.Name</h5>
+                @if (AwardData.GrantedAt != default)
+                {
+                    <h6 class="card-subtitle mb-2 text-muted">@AwardData.GrantedAtDateTime</h6>
+                }
+                @if (!string.IsNullOrWhiteSpace(AwardData.Description))
+                {
+                    <p class="card-text">@AwardData.Description</p>
+                }
+                @if (!string.IsNullOrWhiteSpace(AwardData.Url))
+                {
+                    <a href="@AwardData.Url" class="card-link">@AwardData.Url</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

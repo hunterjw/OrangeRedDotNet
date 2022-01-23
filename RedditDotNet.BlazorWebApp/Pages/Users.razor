@@ -4,9 +4,29 @@
 @if (Account == null)
 {
     <h2>@UserName</h2>
-    <p>Loading...</p>
+    <p>Loading profile...</p>
 }
 else
 {
     <UserCard AccountData="@Account.Data" />
+}
+
+@if (Trophies == null)
+{
+    <p>Loading trophies...</p>
+}
+else
+{
+    <TrophiesCard Trophies="@Trophies" />
+}
+
+<hr />
+
+@if (Overview == null)
+{
+    <p>Loading overview...</p>
+}
+else 
+{
+    <LinkOrCommentList Listing="@Overview" />
 }
