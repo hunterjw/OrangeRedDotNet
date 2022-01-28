@@ -3,7 +3,7 @@
 @page "/user/{userName}"
 @page "/user/{userName}/{listingType}"
 
-@if (Account == null)
+@if (!ProfileLoaded)
 {
     <h2>@UserName</h2>
     <p>Loading profile...</p>
@@ -11,14 +11,6 @@
 else
 {
     <UserCard AccountData="@Account.Data" />
-}
-
-@if (Trophies == null)
-{
-    <p>Loading trophies...</p>
-}
-else
-{
     <TrophiesCard Trophies="@Trophies" />
 }
 

@@ -93,6 +93,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
         protected Listing<Link> Links { get; set; }
 
         /// <summary>
+        /// If the profile is loaded or not
+        /// </summary>
+        protected bool ProfileLoaded { get; set; } = false;
+
+        /// <summary>
         /// If the listing is loaded or not
         /// </summary>
         protected bool ListingLoaded { get; set; } = false;
@@ -100,6 +105,13 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
+            if (!ProfileLoaded)
+            {
+                Account = await Reddit.Users.GetAbout(UserName);
+                Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
+                ProfileLoaded = true;
+            }
+
             if (string.IsNullOrWhiteSpace(ListingType))
             {
                 ListingType = "overview";
@@ -108,16 +120,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
             LinksOrComments = null;
             Comments = null;
             Links = null;
-
-            if (Account == null)
-            {
-                Account = await Reddit.Users.GetAbout(UserName);
-            }
-            if (Trophies == null)
-            {
-                Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
-            }
-
             switch (GetListingType())
             {
                 case UserProfileListingType.Overview:
