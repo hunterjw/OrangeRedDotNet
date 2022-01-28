@@ -102,13 +102,41 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected bool ListingLoaded { get; set; } = false;
 
+        /// <summary>
+        /// If the current profile is the current user
+        /// </summary>
+        protected bool IsSelf { get; set; } = false;
+
+        /// <summary>
+        /// Karma breakdown for the current user (if the user is self)
+        /// </summary>
+        protected KarmaBreakdown KarmaBreakdown { get; set; }
+
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
+            ListingLoaded = false;
+            LinksOrComments = null;
+            Comments = null;
+            Links = null;
+            if (ProfileLoaded && !UserName.Equals(Account.Data.Name))
+            {
+                ProfileLoaded = false;
+                IsSelf = false;
+            }
+
             if (!ProfileLoaded)
             {
                 Account = await Reddit.Users.GetAbout(UserName);
                 Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
+
+                AccountData identity = await IdentityService.GetIdentity();
+                if (Account.Data.Name.Equals(identity.Name))
+                {
+                    IsSelf = true;
+                    KarmaBreakdown = await Reddit.Account.GetKarmaBreakdown();
+                }
+
                 ProfileLoaded = true;
             }
 
@@ -116,10 +144,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 ListingType = "overview";
             }
-            ListingLoaded = false;
-            LinksOrComments = null;
-            Comments = null;
-            Links = null;
             switch (GetListingType())
             {
                 case UserProfileListingType.Overview:

@@ -1,0 +1,86 @@
+﻿<div class="card text-dark bg-light">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-auto d-flex justify-content-center flex-column">
+                Karma Breakdown
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-light" @onclick="CollapseButton_OnClick">
+                    @if (CardCollapsed)
+                    {
+                        <span class="oi oi-chevron-bottom"></span>
+                    }
+                    else
+                    {
+                        <span class="oi oi-chevron-top"></span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body @(CardCollapsed ? "collapse" : "")">
+        <div class="card text-dark bg-light mb-1">
+            <div class="card-body">
+                <h4 class="card-title">Link Karma</h4>
+                <RadzenChart>
+                    <RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
+                </RadzenChart>
+            </div>
+        </div>
+
+        <div class="card text-dark bg-light mb-1">
+            <div class="card-body">
+                <h4 class="card-title">Comment Karma</h4>
+                <RadzenChart>
+                    <RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
+                </RadzenChart>
+            </div>
+        </div>
+
+        <div class="card text-dark bg-light mb-1">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-auto d-flex justify-content-center flex-column">
+                        Raw Data
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="RawDataButton_OnClick">
+                            @if (RawDataCollapsed)
+                            {
+                                <span class="oi oi-chevron-bottom"></span>
+                            }
+                            else
+                            {
+                                <span class="oi oi-chevron-top"></span>
+                            }
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="@(RawDataCollapsed ? "collapse" : "")">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subreddit</th>
+                                <th>Comment Karma</th>
+                                <th>Link Karma</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var breakdown in AccountKarmaBreakdown.Data)
+                            {
+                                <tr>
+                                    <td>@breakdown.Subreddit</td>
+                                    <td>@breakdown.CommentKarma</td>
+                                    <td>@breakdown.LinkKarma</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

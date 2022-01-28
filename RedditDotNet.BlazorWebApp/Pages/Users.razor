@@ -12,6 +12,10 @@ else
 {
     <UserCard AccountData="@Account.Data" />
     <TrophiesCard Trophies="@Trophies" />
+    @if (IsSelf)
+    {
+        <KarmaBreakdownCard AccountKarmaBreakdown="@KarmaBreakdown" />
+    }
 }
 
 <hr />
