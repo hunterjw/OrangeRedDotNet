@@ -1,33 +1,30 @@
-﻿<div class="mb-1">
-    <div class="card text-dark bg-light">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-auto d-flex justify-content-center flex-column">
-                    @Trophies.Data.Trophies.Count() Trophies
-                </div>
-                @if (Trophies.Data.Trophies.Count() > 0)
-                {
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="TrophiesCollapseButton_OnClick">
-                            @if (TrophiesCardCollapsed)
-                            {
-                                <span class="oi oi-chevron-bottom"></span>
-                            }
-                            else
-                            {
-                                <span class="oi oi-chevron-top"></span>
-                            }
-                        </button>
-                    </div>
-                }
+﻿<div class="card text-dark bg-light mb-1">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-auto d-flex justify-content-center flex-column">
+                @Trophies.Data.Trophies.Count() Trophies
             </div>
+            @if (Trophies.Data.Trophies.Count() > 0)
+            {
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="TrophiesCollapseButton_OnClick">
+                        @if (TrophiesCardCollapsed)
+                        {
+                            <span class="oi oi-chevron-bottom"></span>
+                        }
+                        else
+                        {
+                            <span class="oi oi-chevron-top"></span>
+                        }
+                    </button>
+                </div>
+            }
         </div>
     </div>
-    @if (!TrophiesCardCollapsed)
-    {
+    <div class="card-body @(TrophiesCardCollapsed ? "collapse" : "")">
         @foreach (var award in Trophies.Data.Trophies.Select(_ => _.Data))
         {
             <TrophyCard AwardData="@award" />
         }
-    }
+    </div>
 </div>

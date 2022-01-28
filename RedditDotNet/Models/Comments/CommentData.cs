@@ -216,5 +216,26 @@ namespace RedditDotNet.Models.Comments
 
         [JsonProperty("ups")]
         public int Ups { get; set; }
+
+        [JsonProperty("link_author")]
+        public string LinkAuthor { get; set; }
+
+        [JsonProperty("link_permalink")]
+        public string LinkPermalink { get; set; }
+
+        [JsonProperty("link_title")]
+        public string LinkTitle { get; set; }
+
+        [JsonProperty("link_url")]
+        public string LinkUrl { get; set; }
+
+        [JsonProperty("num_comments")]
+        public int NumComments { get; set; }
+
+        [JsonProperty("over_18")]
+        public bool Over18 { get; set; }
+
+        [JsonProperty("quarantine")]
+        public bool Quarantine { get; set; }
     }
 }

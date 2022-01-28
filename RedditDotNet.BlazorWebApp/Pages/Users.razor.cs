@@ -34,16 +34,31 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected Models.Account.Account Account { get; set; }
 
+        /// <summary>
+        /// Trophies for the current account
+        /// </summary>
         protected TrophyList Trophies { get; set; }
 
+        /// <summary>
+        /// Results for the user link/comment overview
+        /// </summary>
         protected Listing<ILinkOrComment> Overview { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            Account = await Reddit.Users.GetAbout(UserName);
-            Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
-            Overview = await Reddit.Users.GetOverview(Account.Data.Name);
+            if (Account == null)
+            {
+                Account = await Reddit.Users.GetAbout(UserName);
+            }
+            if (Trophies == null)
+            {
+                Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
+            }
+            if (Overview == null)
+            {
+                Overview = await Reddit.Users.GetOverview(Account.Data.Name);
+            }
         }
     }
 }

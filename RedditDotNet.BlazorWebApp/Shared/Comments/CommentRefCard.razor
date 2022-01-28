@@ -1,0 +1,31 @@
+﻿@using RedditDotNet.Models.Comments
+@using System.Web
+
+@if (Comment.Data is CommentData commentData)
+{
+    <div class="card text-dark bg-light mb-1">
+        <div class="card-body">
+            <h6 class="card-subtitle text-muted mb-1">
+                <a class="text-decoration-none" href="/r/@commentData.Subreddit">
+                    /r/@commentData.Subreddit
+                </a>
+            </h6>
+            <h4 class="card-title">
+                <a class="text-decoration-none" href="/r/@commentData.Subreddit/comments/@commentData.LinkId[3..]">
+                    @((MarkupString)HttpUtility.HtmlDecode(commentData.LinkTitle))
+                </a>
+            </h4>
+            <h6 class="card-subtitle text-muted mb-1">
+                Posted by <a class="text-decoration-none" href="/user/@commentData.LinkAuthor">/u/@commentData.LinkAuthor</a>
+            </h6>
+            <Flair Over18="@commentData.Over18" />
+            <div class="mt-1">
+                <CommentCard Comment="@Comment" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <CommentCard Comment="@Comment" />
+}
