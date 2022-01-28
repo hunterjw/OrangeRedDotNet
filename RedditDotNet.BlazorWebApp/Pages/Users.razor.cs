@@ -2,6 +2,7 @@
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Comments;
+using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
 using System.Threading.Tasks;
@@ -87,6 +88,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
         protected Listing<CommentBase> Comments { get; set; }
 
         /// <summary>
+        /// Results for the links
+        /// </summary>
+        protected Listing<Link> Links { get; set; }
+
+        /// <summary>
         /// If the listing is loaded or not
         /// </summary>
         protected bool ListingLoaded { get; set; } = false;
@@ -101,6 +107,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             ListingLoaded = false;
             Overview = null;
             Comments = null;
+            Links = null;
 
             if (Account == null)
             {
@@ -118,6 +125,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
                     break;
                 case UserProfileListingType.Comments:
                     Comments = await Reddit.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Submitted:
+                    Links = await Reddit.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
                     break;
             }
             ListingLoaded = true;
@@ -142,6 +152,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 "overview" => UserProfileListingType.Overview,
                 "comments" => UserProfileListingType.Comments,
+                "submitted" => UserProfileListingType.Submitted,
                 _ => UserProfileListingType.Overview
             };
         }
@@ -180,6 +191,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 UserProfileListingType.Overview => "Loading overview...",
                 UserProfileListingType.Comments => "Loading comments...",
+                UserProfileListingType.Submitted => "Loading links...",
                 _ => "Loading..."
             };
         }

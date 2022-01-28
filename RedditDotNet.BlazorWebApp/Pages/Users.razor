@@ -48,5 +48,12 @@ else
                    CurrentPageParameters="@BuildParameters()"
                    RelativeUrl="@GetRelativeUrl()" />
             break;
+        case UserProfileListingType.Submitted:
+            <LinkList Links="@Links" ContentCollapsed="true" />
+            <ListingPagination After="@Links?.Data?.After"
+                   Before="@Links?.Data?.Before"
+                   CurrentPageParameters="@BuildParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+            break;
     }
 }
