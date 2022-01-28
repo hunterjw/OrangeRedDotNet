@@ -3,8 +3,11 @@
     /// <summary>
     /// Enum for the different listing types on user profile pages
     /// </summary>
-    public enum UserPageListingTypeEnum
+    public enum UserProfileListingType
     {
-        Overview
+        Overview,
+        Comments,
+        Submitted,
+        Gilded
     }
 }

@@ -1,0 +1,14 @@
+﻿<ul class="nav nav-pills mb-2">
+    <li class="nav-item">
+        <a class="@(ActiveTab == UserProfileListingType.Overview ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/overview">
+            Overview
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="@(ActiveTab == UserProfileListingType.Comments ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/comments">
+            Comments
+        </a>
+    </li>
+</ul>

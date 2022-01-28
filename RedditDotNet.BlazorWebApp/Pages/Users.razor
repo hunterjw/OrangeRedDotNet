@@ -24,16 +24,29 @@ else
 
 <hr />
 
-@if (Overview == null)
+<UserProfileNavTabs UserName="@UserName"
+                    ActiveTab="@GetListingType()" />
+@if (!ListingLoaded)
 {
-    <p>Loading overview...</p>
+    <p>@GetLoadingQuip()</p>
 }
-else 
+else
 {
-    <LinkOrCommentList Listing="@Overview" />
-
-    <ListingPagination After="@Overview?.Data?.After"
-                       Before="@Overview?.Data?.Before"
-                       CurrentPageParameters="@BuildParameters()"
-                       RelativeUrl="@GetRelativeUrl()" />
+    @switch (GetListingType())
+    {
+        case UserProfileListingType.Overview:
+            <LinkOrCommentList Listing="@Overview" />
+            <ListingPagination After="@Overview?.Data?.After"
+                   Before="@Overview?.Data?.Before"
+                   CurrentPageParameters="@BuildParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+            break;
+        case UserProfileListingType.Comments:
+            <CommentList Comments="@Comments" />
+            <ListingPagination After="@Comments?.Data?.After"
+                   Before="@Comments?.Data?.Before"
+                   CurrentPageParameters="@BuildParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+            break;
+    }
 }

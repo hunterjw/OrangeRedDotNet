@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
+using RedditDotNet.Models.Comments;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
 using System.Threading.Tasks;
@@ -80,6 +81,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected Listing<ILinkOrComment> Overview { get; set; }
 
+        /// <summary>
+        /// Results for the comments
+        /// </summary>
+        protected Listing<CommentBase> Comments { get; set; }
+
+        /// <summary>
+        /// If the listing is loaded or not
+        /// </summary>
+        protected bool ListingLoaded { get; set; } = false;
+
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
@@ -87,7 +98,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 ListingType = "overview";
             }
+            ListingLoaded = false;
             Overview = null;
+            Comments = null;
 
             if (Account == null)
             {
@@ -97,7 +110,17 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
             }
-            Overview = await Reddit.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
+
+            switch (GetListingType())
+            {
+                case UserProfileListingType.Overview:
+                    Overview = await Reddit.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Comments:
+                    Comments = await Reddit.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+            }
+            ListingLoaded = true;
         }
 
         /// <summary>
@@ -113,12 +136,13 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Get the current type of this listing
         /// </summary>
         /// <returns>Listing type</returns>
-        protected UserPageListingTypeEnum GetListingType()
+        protected UserProfileListingType GetListingType()
         {
             return ListingType switch
             {
-                "overview" => UserPageListingTypeEnum.Overview,
-                _ => UserPageListingTypeEnum.Overview
+                "overview" => UserProfileListingType.Overview,
+                "comments" => UserProfileListingType.Comments,
+                _ => UserProfileListingType.Overview
             };
         }
 
@@ -143,6 +167,20 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 Before = Before,
                 Count = Count ?? 0,
                 Limit = Limit ?? 25,
+            };
+        }
+
+        /// <summary>
+        /// Get the loading quip for the listings
+        /// </summary>
+        /// <returns>Quip</returns>
+        protected string GetLoadingQuip()
+        {
+            return GetListingType() switch
+            {
+                UserProfileListingType.Overview => "Loading overview...",
+                UserProfileListingType.Comments => "Loading comments...",
+                _ => "Loading..."
             };
         }
     }
