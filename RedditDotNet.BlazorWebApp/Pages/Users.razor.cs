@@ -78,9 +78,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
         protected TrophyList Trophies { get; set; }
 
         /// <summary>
-        /// Results for the user link/comment overview
+        /// Results for the user link/comment listings
         /// </summary>
-        protected Listing<ILinkOrComment> Overview { get; set; }
+        protected Listing<ILinkOrComment> LinksOrComments { get; set; }
 
         /// <summary>
         /// Results for the comments
@@ -105,7 +105,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 ListingType = "overview";
             }
             ListingLoaded = false;
-            Overview = null;
+            LinksOrComments = null;
             Comments = null;
             Links = null;
 
@@ -121,13 +121,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
             switch (GetListingType())
             {
                 case UserProfileListingType.Overview:
-                    Overview = await Reddit.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await Reddit.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Comments:
                     Comments = await Reddit.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Submitted:
                     Links = await Reddit.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Gilded:
+                    LinksOrComments = await Reddit.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
                     break;
             }
             ListingLoaded = true;
@@ -153,6 +156,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 "overview" => UserProfileListingType.Overview,
                 "comments" => UserProfileListingType.Comments,
                 "submitted" => UserProfileListingType.Submitted,
+                "gilded" => UserProfileListingType.Gilded,
                 _ => UserProfileListingType.Overview
             };
         }
@@ -192,6 +196,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 UserProfileListingType.Overview => "Loading overview...",
                 UserProfileListingType.Comments => "Loading comments...",
                 UserProfileListingType.Submitted => "Loading links...",
+                UserProfileListingType.Gilded => "Loading gilded...",
                 _ => "Loading..."
             };
         }

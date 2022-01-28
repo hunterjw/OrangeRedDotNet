@@ -35,9 +35,10 @@ else
     @switch (GetListingType())
     {
         case UserProfileListingType.Overview:
-            <LinkOrCommentList Listing="@Overview" />
-            <ListingPagination After="@Overview?.Data?.After"
-                   Before="@Overview?.Data?.Before"
+        case UserProfileListingType.Gilded:
+            <LinkOrCommentList Listing="@LinksOrComments" />
+            <ListingPagination After="@LinksOrComments?.Data?.After"
+                   Before="@LinksOrComments?.Data?.Before"
                    CurrentPageParameters="@BuildParameters()"
                    RelativeUrl="@GetRelativeUrl()" />
             break;
