@@ -1,5 +1,7 @@
 ﻿@page "/u/{userName}"
+@page "/u/{userName}/{listingType}"
 @page "/user/{userName}"
+@page "/user/{userName}/{listingType}"
 
 @if (Account == null)
 {
@@ -29,4 +31,9 @@ else
 else 
 {
     <LinkOrCommentList Listing="@Overview" />
+
+    <ListingPagination After="@Overview?.Data?.After"
+                       Before="@Overview?.Data?.Before"
+                       CurrentPageParameters="@BuildParameters()"
+                       RelativeUrl="@GetRelativeUrl()" />
 }
