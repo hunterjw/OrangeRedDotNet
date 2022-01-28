@@ -21,7 +21,8 @@ else
 <hr />
 
 <UserProfileNavTabs UserName="@UserName"
-                    ActiveTab="@GetListingType()" />
+                    ActiveTab="@GetListingType()"
+                    IsSelf="@IsSelf" />
 @if (!ListingLoaded)
 {
     <p>@GetLoadingQuip()</p>
@@ -32,6 +33,10 @@ else
     {
         case UserProfileListingType.Overview:
         case UserProfileListingType.Gilded:
+        case UserProfileListingType.Upvoted:
+        case UserProfileListingType.Downvoted:
+        case UserProfileListingType.Hidden:
+        case UserProfileListingType.Saved:
             <LinkOrCommentList Listing="@LinksOrComments" />
             <ListingPagination After="@LinksOrComments?.Data?.After"
                    Before="@LinksOrComments?.Data?.Before"

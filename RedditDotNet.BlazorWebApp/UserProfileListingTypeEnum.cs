@@ -8,6 +8,10 @@
         Overview,
         Comments,
         Submitted,
-        Gilded
+        Gilded,
+        Upvoted,
+        Downvoted,
+        Hidden,
+        Saved
     }
 }

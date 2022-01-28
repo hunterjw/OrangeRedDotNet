@@ -158,6 +158,18 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 case UserProfileListingType.Gilded:
                     LinksOrComments = await Reddit.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
                     break;
+                case UserProfileListingType.Upvoted:
+                    LinksOrComments = await Reddit.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Downvoted:
+                    LinksOrComments = await Reddit.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Hidden:
+                    LinksOrComments = await Reddit.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
+                    break;
+                case UserProfileListingType.Saved:
+                    LinksOrComments = await Reddit.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
+                    break;
             }
             ListingLoaded = true;
         }
@@ -183,6 +195,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 "comments" => UserProfileListingType.Comments,
                 "submitted" => UserProfileListingType.Submitted,
                 "gilded" => UserProfileListingType.Gilded,
+                "upvoted" => UserProfileListingType.Upvoted,
+                "downvoted" => UserProfileListingType.Downvoted,
+                "hidden" => UserProfileListingType.Hidden,
+                "saved" => UserProfileListingType.Saved,
                 _ => UserProfileListingType.Overview
             };
         }
@@ -223,6 +239,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 UserProfileListingType.Comments => "Loading comments...",
                 UserProfileListingType.Submitted => "Loading links...",
                 UserProfileListingType.Gilded => "Loading gilded...",
+                UserProfileListingType.Upvoted => "Loading upvoted...",
+                UserProfileListingType.Downvoted => "Loading downvoted...",
+                UserProfileListingType.Hidden => "Loading hidden...",
+                UserProfileListingType.Saved => "Loading saved...",
                 _ => "Loading..."
             };
         }

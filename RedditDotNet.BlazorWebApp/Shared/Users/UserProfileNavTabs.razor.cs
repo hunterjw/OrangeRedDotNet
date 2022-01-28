@@ -18,5 +18,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         [Parameter]
         public UserProfileListingType ActiveTab { get; set; }
+
+        /// <summary>
+        /// If the user is self
+        /// </summary>
+        [Parameter]
+        public bool IsSelf { get; set; }
     }
 }

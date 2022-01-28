@@ -23,4 +23,31 @@
             Gilded
         </a>
     </li>
+    @if (IsSelf)
+    {
+        <li class="nav-item">
+            <a class="@(ActiveTab == UserProfileListingType.Upvoted ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/upvoted">
+                Upvoted
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ActiveTab == UserProfileListingType.Downvoted ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/downvoted">
+                Downvoted
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ActiveTab == UserProfileListingType.Hidden ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/hidden">
+                Hidden
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ActiveTab == UserProfileListingType.Saved ? "nav-link active" : "nav-link")"
+           href="/user/@UserName/saved">
+                Saved
+            </a>
+        </li>
+    }
 </ul>
