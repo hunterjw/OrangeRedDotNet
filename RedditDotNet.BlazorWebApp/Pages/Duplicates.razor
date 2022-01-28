@@ -11,7 +11,7 @@ else
     <LinkList Links="DuplicateLinks.Originals" />
     <hr />
     <LinkList Links="@DuplicateLinks.Duplicates" />
-    <LinkListingPagination 
+    <ListingPagination 
         After="@DuplicateLinks.Duplicates?.Data?.After"
         Before="@DuplicateLinks.Duplicates?.Data?.Before"
         CurrentPageParameters="@BuildParameters()"

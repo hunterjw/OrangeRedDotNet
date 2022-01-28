@@ -26,7 +26,7 @@ else
 {
     <LinkList Links="@LinkListing" />
 
-    <LinkListingPagination After="@LinkListing?.Data?.After"
+    <ListingPagination After="@LinkListing?.Data?.After"
                        Before="@LinkListing?.Data?.Before"
                        CurrentPageParameters="@BuildParameters()"
                        RelativeUrl="@GetRelativeUrl()" />

@@ -3,12 +3,12 @@ using RedditDotNet.Models.Parameters;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RedditDotNet.BlazorWebApp.Shared.Links
+namespace RedditDotNet.BlazorWebApp.Shared
 {
     /// <summary>
     /// Pagination component for a Link listing
     /// </summary>
-    public partial class LinkListingPagination
+    public partial class ListingPagination
     {
         /// <summary>
         /// Relative URL for the current listing (no query parameters
