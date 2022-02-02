@@ -1,0 +1,54 @@
+﻿@if (MultiRedditStates == null)
+{
+    <p>Loading MultiReddits...</p>
+}
+else
+{
+    @foreach (var multiRedditState in MultiRedditStates.OrderBy(_ => _.MultiReddit.Data.DisplayName))
+    {
+        <div class="card bd-light text-dark mb-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto d-flex justify-content-center flex-column">
+                        <input type="checkbox" checked="@(multiRedditState.CurrentState)"
+                       @onchange="() => { MultiRedditSelectInput_OnChange(multiRedditState.MultiReddit.Data.Name); }" />
+                    </div>
+                    <div class="col-auto d-flex justify-content-center flex-column">
+                        <img class="rounded multireddit-icon-img" src="@multiRedditState.MultiReddit.Data.IconUrl" />
+                    </div>
+                    <div class="col">
+                        <h4 class="card-title">
+                            @multiRedditState.MultiReddit.Data.DisplayName
+                        </h4>
+                        <h6 class="card-subtitle text-muted">
+                            <span>@multiRedditState.MultiReddit.Data.Subreddits.Count communities</span>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (CreateNewActive)
+    {
+        <div class="input-group mb-1">
+            <input class="form-control" type="text" placeholder="New Multi Name" @bind="NewMultiName" />
+            <button class="btn btn-success" @onclick="CreateNewSubmittButton_OnClick">
+                Create
+            </button>
+        </div>
+    }
+    else
+    {
+        <button class="btn btn-light mb-1 w-100" @onclick="CreateNewButton_OnClick">
+            Create a new Multi
+        </button>
+    }
+    <div class="btn-group" role="group" style="width: 100%;">
+        <button type="button" class="btn btn-secondary" @onclick="CancelButton_OnClick">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-success" @onclick="SaveButton_OnClick">
+            Save
+        </button>
+    </div>
+}
