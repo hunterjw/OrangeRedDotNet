@@ -20,5 +20,20 @@ namespace RedditDotNet.Models.Parameters
             dict.Add("g", Location.ToDescriptionString());
             return dict;
         }
+
+        /// <inheritdoc/>
+        public override ListingParameters Copy()
+        {
+            return new LocationListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count,
+                ExpandSubreddits = ExpandSubreddits,
+                Limit = Limit,
+                ShowAll = ShowAll,
+                Location = Location,
+            };
+        }
     }
 }

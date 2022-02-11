@@ -37,13 +37,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Relative URL for the next page</returns>
         protected async Task<string> BuildNextPageUrl()
         {
-            var parameters = new ListingParameters
-            {
-                After = CurrentPageParameters.After,
-                Before = CurrentPageParameters.Before,
-                Count = CurrentPageParameters.Count,
-                Limit = CurrentPageParameters.Limit
-            };
+            var parameters = CurrentPageParameters.Copy();
             parameters.After = parameters.Before = null;
             parameters.After = After;
             if (string.IsNullOrWhiteSpace(CurrentPageParameters.After) && string.IsNullOrWhiteSpace(CurrentPageParameters.Before))
@@ -63,13 +57,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Relative URL for the previous page</returns>
         protected async Task<string> BuildPreviousPageUrl()
         {
-            var parameters = new ListingParameters
-            {
-                After = CurrentPageParameters.After,
-                Before = CurrentPageParameters.Before,
-                Count = CurrentPageParameters.Count,
-                Limit = CurrentPageParameters.Limit
-            };
+            var parameters = CurrentPageParameters.Copy();
             parameters.After = parameters.Before = null;
             parameters.Before = Before;
             if (!string.IsNullOrWhiteSpace(CurrentPageParameters.Before))

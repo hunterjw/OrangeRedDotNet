@@ -7,9 +7,18 @@
 {
     <p>Loading...</p>
 }
-else 
+else
 {
     <LinkList ContentCollapsed="false" Links="@LinkWithComments.Links" />
     <hr />
+    <select value="@Sort" class="form-select mb-2" style="width: auto;" @onchange="SortSelect_OnChange">
+        <option value="confidence">Best</option>
+        <option value="top">Top</option>
+        <option value="new">New</option>
+        <option value="controversial">Controversial</option>
+        <option value="old">Old</option>
+        <option value="random">Random</option>
+        <option value="qa">Q&A</option>
+    </select>
     <CommentsList Comments="@LinkWithComments.Comments" />
 }

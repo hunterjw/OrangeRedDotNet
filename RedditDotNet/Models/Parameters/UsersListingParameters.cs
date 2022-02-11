@@ -58,5 +58,23 @@ namespace RedditDotNet.Models.Parameters
             }
             return errors;
         }
+
+        /// <inheritdoc/>
+        public override ListingParameters Copy()
+        {
+            return new UsersListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count,
+                ExpandSubreddits = ExpandSubreddits,
+                Limit = Limit,
+                ShowAll = ShowAll,
+                Context = Context,
+                Sort = Sort,
+                Timescale = Timescale,
+                Type = Type,
+            };
+        }
     }
 }

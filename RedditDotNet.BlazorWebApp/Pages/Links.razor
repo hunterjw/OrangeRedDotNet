@@ -7,6 +7,10 @@
 @page "/me/m/{multiName}"
 @page "/me/m/{multiName}/{listingType}"
 
+@{
+    LinkListingType listingType = GetListingType();
+}
+
 @if (!string.IsNullOrWhiteSpace(Subreddit))
 {
     <h2>@Subreddit</h2>
@@ -16,7 +20,26 @@ else if (IsMultiReddit)
     <h2>@GetMultiRedditUrl()</h2>
 }
 
-<LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
+<div class="row">
+    <div class="col-auto">
+        <LinkListingNavTabs ActiveTab="@listingType" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
+    </div>
+    @if (listingType == LinkListingType.Controversial || listingType == LinkListingType.Top)
+    {
+        <div class="col-auto">
+            <select value="@Timescale" class="form-select mb-2" style="width: auto;" @onchange="TimescaleSelect_OnChange">
+                <option value="hour">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+    }
+</div>
+
+
 
 @if (LinkListing == null)
 {
@@ -27,7 +50,7 @@ else
     <LinkList Links="@LinkListing" />
 
     <ListingPagination After="@LinkListing?.Data?.After"
-                       Before="@LinkListing?.Data?.Before"
-                       CurrentPageParameters="@BuildParameters()"
-                       RelativeUrl="@GetRelativeUrl()" />
+                   Before="@LinkListing?.Data?.Before"
+                   CurrentPageParameters="@BuildParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
 }

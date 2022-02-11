@@ -20,5 +20,20 @@ namespace RedditDotNet.Models.Parameters
             dict.Add("t", Timescale.ToDescriptionString());
             return dict;
         }
+
+        /// <inheritdoc/>
+        public override ListingParameters Copy()
+        {
+            return new SortListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count,
+                ExpandSubreddits = ExpandSubreddits,
+                Limit = Limit,
+                ShowAll = ShowAll,
+                Timescale = Timescale,
+            };
+        }
     }
 }

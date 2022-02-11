@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Extensions;
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
@@ -23,6 +25,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public IdentityService IdentityService { get; set; }
+
+        /// <summary>
+        /// Navigation manager
+        /// </summary>
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         #endregion
 
         #region Query Parameters
@@ -50,6 +58,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         [Parameter]
         [SupplyParameterFromQuery]
         public int? Limit { get; set; }
+        /// <summary>
+        /// Timescale for the returned things
+        /// </summary>
+        [Parameter]
+        [SupplyParameterFromQuery(Name = "t")]
+        public string Timescale { get; set; }
         #endregion
 
         #region Route Parameters
@@ -97,6 +111,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
             LinkListing = null;
+
+            if (string.IsNullOrWhiteSpace(Timescale))
+            {
+                Timescale = "hour";
+            }
 
             Identity = await IdentityService.GetIdentity();
 
@@ -298,8 +317,26 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 After = After,
                 Before = Before,
                 Count = Count ?? 0,
-                Limit = Limit ?? 25
+                Limit = Limit ?? 25,
+                Timescale = string.IsNullOrWhiteSpace(Timescale) ? Models.Parameters.Timescale.Hour 
+                    : Timescale.ToEnumFromDescriptionString<Timescale>()
             };
+        }
+
+        /// <summary>
+        /// OnChange event handler for the timescale select dropdown
+        /// </summary>
+        /// <param name="args">ChangeEventArgs</param>
+        /// <returns>awaitable task</returns>
+        protected async Task TimescaleSelect_OnChange(ChangeEventArgs args)
+        {
+            SortListingParameters parameters = BuildSortListingParameters();
+            parameters.Timescale = ((string)args.Value).ToEnumFromDescriptionString<Timescale>();
+            // reset the position of the of the listing
+            parameters.After = parameters.Before = null;
+            parameters.Count = 0;
+            string parametersString = await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync();
+            NavigationManager.NavigateTo($"{GetRelativeUrl()}?{parametersString}");
         }
     }
 }

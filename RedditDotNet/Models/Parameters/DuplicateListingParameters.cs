@@ -39,5 +39,22 @@ namespace RedditDotNet.Models.Parameters
             }
             return dict;
         }
+
+        /// <inheritdoc/>
+        public override ListingParameters Copy()
+        {
+            return new DuplicateListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count,
+                ExpandSubreddits = ExpandSubreddits,
+                Limit = Limit,
+                ShowAll = ShowAll,
+                CrosspostsOnly = CrosspostsOnly,
+                Sort = Sort,
+                Subreddit = Subreddit,
+            };
+        }
     }
 }

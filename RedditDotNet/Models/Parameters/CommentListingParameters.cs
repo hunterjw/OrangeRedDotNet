@@ -16,7 +16,7 @@ namespace RedditDotNet.Models.Parameters
         /// <summary>
         /// Number of parent comments to be shown, an integer between 0 and 8
         /// </summary>
-        public int? Context { get; set; } = 0;
+        public int? Context { get; set; }
         /// <summary>
         /// Maximum depth of subtrees in the thread to get
         /// </summary>

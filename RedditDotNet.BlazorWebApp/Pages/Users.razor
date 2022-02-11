@@ -19,10 +19,34 @@ else
 }
 
 <hr />
-
-<UserProfileNavTabs UserName="@UserName"
-                    ActiveTab="@GetListingType()"
-                    IsSelf="@IsSelf" />
+<div class="row">
+    <div class="col-auto">
+        <UserProfileNavTabs UserName="@UserName"
+                            ActiveTab="@GetListingType()"
+                            IsSelf="@IsSelf" />
+    </div>
+    <div class="col-auto">
+        <select value="@Sort" class="form-select mb-2" style="width: auto;" @onchange="SortSelect_OnChange">
+            <option value="hot">Hot</option>
+            <option value="new">New</option>
+            <option value="top">Top</option>
+            <option value="controversial">Controversial</option>
+        </select>
+    </div>
+    @if ((Sort?.Equals("top") ?? false) || (Sort?.Equals("controversial") ?? false))
+    {
+        <div class="col-auto">
+            <select value="@Timescale" class="form-select mb-2" style="width: auto;" @onchange="TimescaleSelect_OnChange">
+                <option value="hour">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+    }
+</div>
 @if (!ListingLoaded)
 {
     <p>@GetLoadingQuip()</p>

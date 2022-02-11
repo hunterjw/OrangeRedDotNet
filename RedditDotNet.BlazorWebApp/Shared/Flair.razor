@@ -1,5 +1,6 @@
 ﻿@using RedditDotNet.Models
 @using RedditDotNet.Models.Links
+@using System.Web
 
 @if (Over18)
 {
@@ -29,7 +30,10 @@
 @switch (FlairType?.ToLower())
 {
     case "text":
-        <span class="@FlairClass()" style="@FlairStyle()">@FlairText</span>
+        if (!string.IsNullOrWhiteSpace(FlairText))
+        {
+            <span class="@FlairClass()" style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</span>
+        }
         break;
     case "richtext":
         <span class="@FlairClass()" style="@FlairStyle()">
@@ -40,7 +44,10 @@
                     switch (flair?.Type.ToLower())
                     {
                         case "text":
-                            @flair?.Text
+                            if (!string.IsNullOrWhiteSpace(flair?.Text))
+                            {
+                                @((MarkupString)HttpUtility.HtmlDecode(flair?.Text))
+                            }
                             break;
                         case "emoji":
                             <img src="@flair?.Url" alt="@flair?.Tag" class="flair-emoji" />
@@ -50,9 +57,9 @@
                     }
                 }
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(FlairText))
             {
-                @FlairText
+                @((MarkupString)HttpUtility.HtmlDecode(FlairText))
             }
         </span>
         break;

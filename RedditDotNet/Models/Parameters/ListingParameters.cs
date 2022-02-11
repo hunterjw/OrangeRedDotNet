@@ -76,5 +76,22 @@ namespace RedditDotNet.Models.Parameters
 
             return errors;
         }
+
+        /// <summary>
+        /// Copy the current ListingParameters into a new object
+        /// </summary>
+        /// <returns>New ListingParameters instance</returns>
+        public virtual ListingParameters Copy()
+        {
+            return new ListingParameters
+            {
+                After = After,
+                Before = Before,
+                Count = Count,
+                ExpandSubreddits = ExpandSubreddits,
+                Limit = Limit,
+                ShowAll = ShowAll,
+            };
+        }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Extensions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Comments;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages
@@ -26,6 +28,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public IdentityService IdentityService { get; set; }
+
+        /// <summary>
+        /// Navigation manager
+        /// </summary>
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         #region Route Parameters
         /// <summary>
@@ -65,6 +73,18 @@ namespace RedditDotNet.BlazorWebApp.Pages
         [Parameter]
         [SupplyParameterFromQuery]
         public int? Limit { get; set; }
+        /// <summary>
+        /// Sort of the things returned
+        /// </summary>
+        [Parameter]
+        [SupplyParameterFromQuery]
+        public string Sort { get; set; }
+        /// <summary>
+        /// Timescale of the things returned
+        /// </summary>
+        [Parameter]
+        [SupplyParameterFromQuery(Name = "t")]
+        public string Timescale { get; set; }
         #endregion
 
         /// <summary>
@@ -119,6 +139,20 @@ namespace RedditDotNet.BlazorWebApp.Pages
             LinksOrComments = null;
             Comments = null;
             Links = null;
+
+            if (string.IsNullOrWhiteSpace(ListingType))
+            {
+                ListingType = "overview";
+            }
+            if (string.IsNullOrWhiteSpace(Sort))
+            {
+                Sort = "new";
+            }
+            if (string.IsNullOrWhiteSpace(Timescale) && (Sort.Equals("top") || Sort.Equals("controversial")))
+            {
+                Timescale = "hour";
+            }
+
             if (ProfileLoaded && !UserName.Equals(Account.Data.Name))
             {
                 ProfileLoaded = false;
@@ -140,10 +174,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 ProfileLoaded = true;
             }
 
-            if (string.IsNullOrWhiteSpace(ListingType))
-            {
-                ListingType = "overview";
-            }
             switch (GetListingType())
             {
                 case UserProfileListingType.Overview:
@@ -224,6 +254,8 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 Before = Before,
                 Count = Count ?? 0,
                 Limit = Limit ?? 25,
+                Sort = string.IsNullOrWhiteSpace(Sort) ? null : Sort.ToEnumFromDescriptionString<UsersListingSort>(),
+                Timescale = string.IsNullOrWhiteSpace(Timescale) ? null : Timescale.ToEnumFromDescriptionString<Timescale>(),
             };
         }
 
@@ -245,6 +277,39 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 UserProfileListingType.Saved => "Loading saved...",
                 _ => "Loading..."
             };
+        }
+
+        /// <summary>
+        /// OnChange event handler for the timescale select dropdown
+        /// </summary>
+        /// <param name="args">ChangeEventArgs</param>
+        /// <returns>awaitable task</returns>
+        protected async Task TimescaleSelect_OnChange(ChangeEventArgs args)
+        {
+            UsersListingParameters parameters = BuildUsersListingParameters();
+            parameters.Timescale = ((string)args.Value).ToEnumFromDescriptionString<Timescale>();
+            // reset the position of the of the listing
+            parameters.After = parameters.Before = null;
+            parameters.Count = 0;
+            string parametersString = await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync();
+            NavigationManager.NavigateTo($"{GetRelativeUrl()}?{parametersString}");
+        }
+
+        /// <summary>
+        /// OnChange event handler for the sort select dropdown
+        /// </summary>
+        /// <param name="args">ChangeEventArgs</param>
+        /// <returns>awaitable task</returns>
+        protected async Task SortSelect_OnChange(ChangeEventArgs args)
+        {
+            UsersListingParameters parameters = BuildUsersListingParameters();
+            parameters.Sort = ((string)args.Value).ToEnumFromDescriptionString<UsersListingSort>();
+            // reset the position of the of the listing
+            parameters.Timescale = null;
+            parameters.After = parameters.Before = null;
+            parameters.Count = 0;
+            string parametersString = await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync();
+            NavigationManager.NavigateTo($"{GetRelativeUrl()}?{parametersString}");
         }
     }
 }
