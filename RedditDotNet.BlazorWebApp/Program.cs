@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,25 +11,62 @@ using System.Threading.Tasks;
 namespace RedditDotNet.BlazorWebApp
 {
     public class Program
-	{
-		public static PasswordAuthenticationOptions PasswordAuthenticationOptions { get; } = new();
+    {
+        /// <summary>
+        /// Password auth options
+        /// </summary>
+        public static PasswordAuthenticationOptions PasswordAuthenticationOptions { get; } = new();
 
-		public static async Task Main(string[] args)
-		{
-			var builder = WebAssemblyHostBuilder.CreateDefault(args);
-			builder.RootComponents.Add<App>("#app");
+        public static async Task Main(string[] args)
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("#app");
 
-			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Configuration.GetSection(nameof(PasswordAuthenticationOptions)).Bind(PasswordAuthenticationOptions);
 
-			builder.Configuration.GetSection(nameof(PasswordAuthenticationOptions)).Bind(PasswordAuthenticationOptions);
-			Reddit reddit = new(string.Empty, new PasswordAuthentication(PasswordAuthenticationOptions));
-			builder.Services.AddScoped(sp => reddit);
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddScoped(sp =>
+            {
+                var localStorage = sp.GetService<ISyncLocalStorageService>();
+                return new Reddit(string.Empty,
+                    new CachedPasswordAuthentication(
+                        PasswordAuthenticationOptions,
+                        () => Load(localStorage),
+                        (TokenResponse value) => Save(localStorage, value)));
+            });
+            builder.Services.AddScoped(sp =>
+            {
+                var reddit = sp.GetService<Reddit>();
+                return new IdentityService(reddit);
+            });
+            builder.Services.AddBlazoredModal();
 
-			builder.Services.AddScoped(sp => new IdentityService(reddit));
+            await builder.Build().RunAsync();
+        }
 
-			builder.Services.AddBlazoredModal();
+        /// <summary>
+        /// Load cached auth from local storage
+        /// </summary>
+        /// <param name="localStorageService">Local storage service</param>
+        /// <returns>Cached TokenResponse</returns>
+        protected static TokenResponse Load(ISyncLocalStorageService localStorageService)
+        {
+            if (localStorageService.ContainKey("auth"))
+            {
+                return localStorageService.GetItem<TokenResponse>("auth");
+            }
+            return null;
+        }
 
-			await builder.Build().RunAsync();
-		}
-	}
+        /// <summary>
+        /// Save a TokenResponse to local storage
+        /// </summary>
+        /// <param name="localStorageService">Local storage service</param>
+        /// <param name="value">Value to save</param>
+        protected static void Save(ISyncLocalStorageService localStorageService, TokenResponse value)
+        {
+            localStorageService.SetItem("auth", value);
+        }
+    }
 }

@@ -10,6 +10,11 @@ namespace RedditDotNet.ConsoleApp
 	class AppSettings
 	{
 		/// <summary>
+		/// What authentication provider to use
+		/// </summary>
+		public static string Authentication { get; }
+
+		/// <summary>
 		/// Password authentication options
 		/// </summary>
 		public static PasswordAuthenticationOptions PasswordAuthenticationOptions { get; } = new();
@@ -25,6 +30,7 @@ namespace RedditDotNet.ConsoleApp
 				.AddUserSecrets<AppSettings>()
 				.Build();
 
+			Authentication = configRoot.GetValue<string>(nameof(Authentication));
 			configRoot.GetSection(nameof(PasswordAuthenticationOptions)).Bind(PasswordAuthenticationOptions);
 		}
 	}
