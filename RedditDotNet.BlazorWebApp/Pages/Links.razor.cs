@@ -3,6 +3,7 @@ using RedditDotNet.Extensions;
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Multis;
 using RedditDotNet.Models.Parameters;
 using System;
 using System.Linq;
@@ -104,6 +105,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected bool IsMultiReddit => !string.IsNullOrWhiteSpace(MultiName);
 
+        /// <summary>
+        /// MultiReddit info
+        /// </summary>
+        protected MultiReddit MultiReddit { get; set; }
+
+        /// <summary>
+        /// If the multireddit data is loaded or not
+        /// </summary>
+        protected bool MultiRedditLoaded { get; set; }
+
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
@@ -111,6 +122,19 @@ namespace RedditDotNet.BlazorWebApp.Pages
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
             LinkListing = null;
+
+            if (IsMultiReddit)
+            {
+                if (MultiRedditLoaded && !GetMultiRedditUrl(true).Equals(MultiReddit.Data.Path.TrimEnd('/')))
+                {
+                    MultiRedditLoaded = false;
+                }
+                if (!MultiRedditLoaded)
+                {
+                    MultiReddit = await Reddit.Multis.GetMulti(GetMultiRedditUrl(true), true);
+                    MultiRedditLoaded = true;
+                }
+            }
 
             if (string.IsNullOrWhiteSpace(Timescale))
             {
@@ -187,17 +211,21 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Get the MultiReddit base URL
         /// </summary>
         /// <returns>MultiReddit URL</returns>
-        protected string GetMultiRedditUrl()
+        protected string GetMultiRedditUrl(bool forceLongForm = false)
         {
             if (IsMultiReddit)
             {
                 if (!string.IsNullOrWhiteSpace(UserName))
                 {
-                    if (UserName.Equals(Identity?.Name))
+                    if (UserName.Equals(Identity?.Name) && !forceLongForm)
                     {
                         return $"/me/m/{MultiName}";
                     }
                     return $"/user/{UserName}/m/{MultiName}";
+                }
+                if (forceLongForm)
+                {
+                    return $"/user/{Identity?.Name}/m/{MultiName}";
                 }
                 return $"/me/m/{MultiName}";
             }
@@ -337,6 +365,24 @@ namespace RedditDotNet.BlazorWebApp.Pages
             parameters.Count = 0;
             string parametersString = await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync();
             NavigationManager.NavigateTo($"{GetRelativeUrl()}?{parametersString}");
+        }
+
+        /// <summary>
+        /// Event handler for when a multireddit is deleted
+        /// </summary>
+        /// <param name="multiPath">Multireddit path</param>
+        protected void OnMultiRedditDelete(string multiPath)
+        {
+            NavigationManager.NavigateTo("");
+        }
+
+        /// <summary>
+        /// Event handler for when a multireddit is copied
+        /// </summary>
+        /// <param name="multiReddit">Newly created multireddit</param>
+        protected void OnMultiRedditCopy(MultiReddit multiReddit)
+        {
+            NavigationManager.NavigateTo(multiReddit.Data.Path);
         }
     }
 }

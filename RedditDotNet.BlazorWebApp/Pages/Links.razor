@@ -17,7 +17,18 @@
 }
 else if (IsMultiReddit)
 {
-    <h2>@GetMultiRedditUrl()</h2>
+    @if (!MultiRedditLoaded)
+    {
+        <h2>@GetMultiRedditUrl()</h2>
+    }
+    else
+    {
+        <MultiRedditCard MultiReddit="@MultiReddit"
+                 OnMultiRedditDelete="OnMultiRedditDelete"
+                 OnMultiRedditCopy="OnMultiRedditCopy" />
+        <hr />
+    }
+
 }
 
 <div class="row">
