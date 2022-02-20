@@ -53,6 +53,17 @@ namespace RedditDotNet.Controllers
             return await Get<bool>($"/api/username_available", parameters);
         }
 
+        #region Friend operations
+        /// <summary>
+        /// Stop being friends with a user.
+        /// </summary>
+        /// <param name="username">A valid, existing reddit username</param>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task RemoveFriend(string username)
+        {
+            await Delete($"/api/v1/me/friends/{username}");
+        }
+
         /// <summary>
         /// Get information about a specific 'friend', such as notes.
         /// </summary>
@@ -63,6 +74,28 @@ namespace RedditDotNet.Controllers
         {
             return await Get<User>($"/api/v1/me/friends/{username}");
         }
+
+        /// <summary>
+        /// Create or update a 'friend' relationship. 
+        /// </summary>
+        /// <param name="username">A valid, existing reddit username</param>
+        /// <param name="note">A string no longer than 300 characters</param>
+        /// <returns>User object</returns>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task<User> UpdateFriend(string username, string note = "")
+        {
+            Dictionary<string, string> content = new()
+            {
+                {
+                    "json",
+                    $"{{ \"name\": \"{username}\"" +
+                        (!string.IsNullOrWhiteSpace(note) ? $", \"note\": \"{note}\"" : "") +
+                        $" }}"
+                }
+            };
+            return await Put<User>($"/api/v1/me/friends/{username}", content);
+        }
+        #endregion
 
         /// <summary>
         /// Return a list of trophies for the a given user.
@@ -109,7 +142,7 @@ namespace RedditDotNet.Controllers
         /// <returns>Listing of Links</returns>
         /// <exception cref="RedditApiException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<Link>> GetSubmitted(string username, 
+        public async Task<Listing<Link>> GetSubmitted(string username,
             UsersListingParameters parameters = null)
         {
             return await Get<Listing<Link>>($"/user/{username}/submitted", parameters);
