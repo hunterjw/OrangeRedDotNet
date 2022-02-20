@@ -27,7 +27,7 @@
                 </h6>
                 @if (!string.IsNullOrWhiteSpace(Description))
                 {
-                    <p>@Description</p>
+                    @((MarkupString)HttpUtility.HtmlDecode(Description))
                 }
             </div>
         </div>
