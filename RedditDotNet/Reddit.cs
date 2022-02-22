@@ -91,5 +91,21 @@ namespace RedditDotNet
             }
         }
 		private UsersController UsersController = null;
+
+		/// <summary>
+		/// Link and Comment operations
+		/// </summary>
+		public LinksAndCommentsController LinksAndComments
+        {
+            get
+            {
+				if (LinksAndCommentsController == null)
+                {
+					LinksAndCommentsController = new LinksAndCommentsController(UserAgent, RedditAuthentication);
+                }
+				return LinksAndCommentsController;
+            }
+        }
+		private LinksAndCommentsController LinksAndCommentsController = null;
 	}
 }
