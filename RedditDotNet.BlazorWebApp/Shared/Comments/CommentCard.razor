@@ -34,17 +34,12 @@
         </div>
         <div class="card-footer">
             <div class="row">
-                <div class="col-auto d-flex justify-content-center flex-column">
-                    <span class="@(commentData.Likes.HasValue ? (commentData.Likes.Value ? "upvoted" : "downvoted") : "")">
-                        @if (commentData.ScoreHidden)
-                        {
-                            <span>Score Hidden</span>
-                        }
-                        else
-                        {
-                            @commentData.Score.ToDisplayString()
-                        }
-                    </span>
+                <div class="col-auto">
+                    <VoteInput Likes="@commentData.Likes"
+                           Score="@commentData.Score"
+                           ScoreHidden="@commentData.ScoreHidden"
+                           Id="@commentData.Name"
+                           Archived="@commentData.Archived" />
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-light" @onclick="RepliesCollapsedButton_OnClick">

@@ -1,0 +1,18 @@
+﻿<div class="input-group">
+    <button class="btn btn-light" @onclick="UpButton_OnClick" disabled="@(Archived)">
+        <span class="oi oi-arrow-thick-top @(Likes.HasValue ? (Likes.Value ? "upvoted" : "") : "")"></span>
+    </button>
+    <span class="input-group-text bg-light border-light @(Likes.HasValue ? (Likes.Value ? "upvoted" : "downvoted") : "")">
+        @if (ScoreHidden)
+        {
+            <span>Score Hidden</span>
+        }
+        else
+        {
+            @Score.ToDisplayString()
+        }
+    </span>
+    <button class="btn btn-light" @onclick="DownButton_OnClick" disabled="@(Archived)">
+        <span class="oi oi-arrow-thick-bottom @(Likes.HasValue ? (Likes.Value ? "" : "downvoted") : "")"></span>
+    </button>
+</div>

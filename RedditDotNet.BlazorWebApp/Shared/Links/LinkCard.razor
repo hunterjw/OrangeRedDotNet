@@ -77,17 +77,12 @@
     </div>
     <div class="card-footer">
         <div class="row">
-            <div class="col-auto d-flex justify-content-center flex-column">
-                <span class="@(Link.Data.Likes.HasValue ? (Link.Data.Likes.Value ? "upvoted" : "downvoted") : "")">
-                    @if (Link.Data.HideScore)
-                    {
-                        <span>Score Hidden</span>
-                    }
-                    else
-                    {
-                        @Link.Data.Score.ToDisplayString()
-                    }
-                </span>
+            <div class="col-auto">
+                <VoteInput Likes="@Link.Data.Likes"
+                           Score="@Link.Data.Score"
+                           ScoreHidden="@Link.Data.HideScore"
+                           Id="@Link.Data.Name"
+                           Archived="@Link.Data.Archived" />
             </div>
             <div class="col-auto">
                 @switch (Link.GetLinkType())
