@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Users
 {
@@ -15,9 +16,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Users
         public string Username { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            reddit.Users.RemoveFriend(Username).Wait();
+            await reddit.Users.RemoveFriend(Username);
             return string.Empty;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Multi
 {
@@ -21,9 +22,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Multi
         public string Subreddit { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            reddit.Multis.DeleteSubreddit(Path, Subreddit).Wait();
+            await reddit.Multis.DeleteSubreddit(Path, Subreddit);
             return string.Empty;
         }
     }

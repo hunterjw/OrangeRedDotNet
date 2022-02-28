@@ -2,6 +2,7 @@
 using RedditDotNet.Authentication;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs
 {
@@ -85,11 +86,11 @@ namespace RedditDotNet.ConsoleApp.Verbs
         /// Run this verb
         /// </summary>
         /// <returns>Output for the standard output stream</returns>
-        public string Run()
+        public async Task<string> Run()
         {
             IRedditAuthentication auth = GetAuthentication();
             var reddit = new Reddit("C# Test 1.0.0", auth); // TODO need to generate proper user agent string here
-            string result = Run(reddit);
+            string result = await Run(reddit);
             CleanupAuthentication(auth);
             return result;
         }
@@ -99,6 +100,6 @@ namespace RedditDotNet.ConsoleApp.Verbs
         /// </summary>
         /// <param name="reddit">Reddit instance to use to run the verb</param>
         /// <returns>Output for the standard output stream</returns>
-        public abstract string Run(Reddit reddit);
+        public abstract Task<string> Run(Reddit reddit);
     }
 }

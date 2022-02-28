@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Users
 {
@@ -21,9 +22,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Users
         public string Note { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Users.UpdateFriend(Username, Note).Result.ToJson();
+            return (await reddit.Users.UpdateFriend(Username, Note)).ToJson();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Multi
 {
@@ -16,9 +17,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Multi
         public string Path { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Multis.GetDescription(Path).Result.ToJson();
+            return (await reddit.Multis.GetDescription(Path)).ToJson();
         }
     }
 }

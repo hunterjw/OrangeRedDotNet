@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Parameters;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
 {
@@ -31,9 +32,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
         [Option(HelpText = "Subreddit name")]
         public string Subreddit { get; set; }
 
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Listings.GetDuplicates(ArticleId, BuildDuplicateListingParameters()).Result.ToJson();
+            return (await reddit.Listings.GetDuplicates(ArticleId, BuildDuplicateListingParameters())).ToJson();
         }
 
         /// <summary>

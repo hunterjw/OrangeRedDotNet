@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Multis;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Multi
 {
@@ -29,9 +30,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Multi
         public string Model { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Multis.UpdateMulti(Path, Model.FromJson<MultiRedditUpdate>(), ExpandSubreddits).Result.ToJson();
+            return (await reddit.Multis.UpdateMulti(Path, Model.FromJson<MultiRedditUpdate>(), ExpandSubreddits)).ToJson();
         }
     }
 }

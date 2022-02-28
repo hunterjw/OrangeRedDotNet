@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Account
 {
@@ -11,9 +12,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Account
 	internal class GetKarmaBreakdownVerb : VerbBase
 	{
 		/// <inheritdoc/>
-		public override string Run(Reddit reddit)
+		public override async Task<string> Run(Reddit reddit)
 		{
-			return reddit.Account.GetKarmaBreakdown().Result.ToJson();
+			return (await reddit.Account.GetKarmaBreakdown()).ToJson();
 		}
 	}
 }

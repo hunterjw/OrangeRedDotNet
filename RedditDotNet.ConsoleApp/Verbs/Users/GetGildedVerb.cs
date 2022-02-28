@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Users
 {
@@ -10,9 +11,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Users
     internal class GetGildedVerb : UsersListingVerb
     {
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Users.GetGilded(Username, BuildUsersListingParameters()).Result.ToJson();
+            return (await reddit.Users.GetGilded(Username, BuildUsersListingParameters())).ToJson();
         }
     }
 }

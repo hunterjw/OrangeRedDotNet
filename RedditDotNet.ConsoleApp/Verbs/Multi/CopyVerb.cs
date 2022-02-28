@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Multi
 {
@@ -40,11 +41,11 @@ namespace RedditDotNet.ConsoleApp.Verbs.Multi
         public bool? ExpandSubreddits { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Multis.CopyMulti(
+            return (await reddit.Multis.CopyMulti(
                 From, To, DisplayName, Description, 
-                ExpandSubreddits).Result.ToJson();
+                ExpandSubreddits)).ToJson();
         }
     }
 }

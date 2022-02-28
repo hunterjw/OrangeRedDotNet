@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.LinksAndComments
 {
@@ -27,9 +28,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.LinksAndComments
         public int Rank { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            reddit.LinksAndComments.Vote(Id, Dir, Rank).Wait();
+            await reddit.LinksAndComments.Vote(Id, Dir, Rank);
             return string.Empty;
         }
     }

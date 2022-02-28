@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Parameters;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
 {
@@ -87,9 +88,13 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		public string Theme { get; set; }
 
 		/// <inheritdoc/>
-		public override string Run(Reddit reddit)
+		public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Listings.GetComments(ArticleId, subreddit: Subreddit, parameters: BuildCommentListingParameters()).Result.ToJson();
+            return (await reddit.Listings.GetComments(
+					ArticleId, 
+					subreddit: Subreddit, 
+					parameters: BuildCommentListingParameters()))
+				.ToJson();
         }
 
 		/// <summary>

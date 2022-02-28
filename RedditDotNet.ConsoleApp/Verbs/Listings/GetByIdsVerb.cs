@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Listings
 {
@@ -17,9 +18,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Listings
 		public IEnumerable<string> Ids { get; set; }
 
 		/// <inheritdoc/>
-		public override string Run(Reddit reddit)
+		public override async Task<string> Run(Reddit reddit)
 		{
-			return reddit.Listings.GetByIds(Ids).Result.ToJson();
+			return (await reddit.Listings.GetByIds(Ids)).ToJson();
 		}
 	}
 }

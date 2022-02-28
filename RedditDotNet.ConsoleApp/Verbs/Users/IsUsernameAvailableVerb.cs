@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using RedditDotNet.Extensions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Users
 {
@@ -16,9 +17,9 @@ namespace RedditDotNet.ConsoleApp.Verbs.Users
         public string Username { get; set; }
 
         /// <inheritdoc/>
-        public override string Run(Reddit reddit)
+        public override async Task<string> Run(Reddit reddit)
         {
-            return reddit.Users.IsUsernameAvailable(Username).Result.ToJson();
+            return (await reddit.Users.IsUsernameAvailable(Username)).ToJson();
         }
     }
 }
