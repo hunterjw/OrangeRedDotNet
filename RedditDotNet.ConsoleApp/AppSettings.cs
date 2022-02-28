@@ -20,6 +20,11 @@ namespace RedditDotNet.ConsoleApp
 		public static PasswordAuthenticationOptions PasswordAuthenticationOptions { get; } = new();
 
 		/// <summary>
+		/// Application only authenticaiton options
+		/// </summary>
+		public static ApplicationOnlyAuthenticationOptions ApplicationOnlyAuthenticationOptions { get; } = new();
+
+		/// <summary>
 		/// Static constructor
 		/// </summary>
 		static AppSettings()
@@ -31,7 +36,10 @@ namespace RedditDotNet.ConsoleApp
 				.Build();
 
 			Authentication = configRoot.GetValue<string>(nameof(Authentication));
-			configRoot.GetSection(nameof(PasswordAuthenticationOptions)).Bind(PasswordAuthenticationOptions);
+			configRoot.GetSection(nameof(PasswordAuthenticationOptions))
+				.Bind(PasswordAuthenticationOptions);
+			configRoot.GetSection(nameof(ApplicationOnlyAuthenticationOptions))
+				.Bind(ApplicationOnlyAuthenticationOptions);
 		}
 	}
 }

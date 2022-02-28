@@ -55,6 +55,10 @@ namespace RedditDotNet.ConsoleApp.Verbs
             {
                 passwordAuthentication.Dispose();
             }
+            else if (authentication is ApplicationOnlyAuthentication applicationOnlyAuthentication)
+            {
+                applicationOnlyAuthentication.Dispose();
+            }
         }
 
         /// <summary>
@@ -71,6 +75,8 @@ namespace RedditDotNet.ConsoleApp.Verbs
                     AppSettings.PasswordAuthenticationOptions,
                     Load,
                     Save),
+                nameof(ApplicationOnlyAuthentication) => new ApplicationOnlyAuthentication(
+                    AppSettings.ApplicationOnlyAuthenticationOptions),
                 _ => null,
             };
         }

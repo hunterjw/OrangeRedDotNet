@@ -1,62 +1,31 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Authentication
 {
-	/// <summary>
-	/// Reddit authentication with a username and password
-	/// </summary>
-	/// <remarks>
-	/// This is not secure, OAuth should be used instead
-	/// </remarks>
-	public class PasswordAuthentication : IRedditAuthentication, IDisposable
+    /// <summary>
+    /// Reddit authentication with a username and password
+    /// </summary>
+    /// <remarks>
+    /// This is not secure, OAuth should be used instead
+    /// </remarks>
+    public class PasswordAuthentication : AuthenticationBase, IDisposable
 	{
-		/// <summary>
-		/// HttpClient instance
-		/// </summary>
-		private static readonly HttpClient _httpClient = new();
-
-		/// <summary>
-		/// Builds a request message to send to Reddit
-		/// </summary>
-		/// <param name="httpMethod">HTTP method to use</param>
-		/// <param name="requestUrl">URL for the request</param>
-		/// <param name="options"></param>
-		/// <returns></returns>
-		internal static HttpRequestMessage BuildRequestMessage(HttpMethod httpMethod, string requestUrl, PasswordAuthenticationOptions options)
-		{
-			HttpRequestMessage request = new(httpMethod, new Uri(requestUrl));
-			request.Headers.Authorization = new AuthenticationHeaderValue(
-				"Basic",
-				Convert.ToBase64String(Encoding.ASCII.GetBytes($"{options.ClientId}:{options.ClientSecret}"))
-			);
-			return request;
-		}
-
 		/// <summary>
 		/// Get a fresh token from Reddit
 		/// </summary>
+		/// <param name="options">Password authentication options</param>
 		/// <returns>Auth token</returns>
 		internal static async Task<TokenResponse> GetFreshToken(PasswordAuthenticationOptions options)
 		{
-			HttpRequestMessage request = BuildRequestMessage(HttpMethod.Post, "https://www.reddit.com/api/v1/access_token", options);
-			request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-			{
+            Dictionary<string, string> requestContent = new()
+            {
 				{ "grant_type", "password"},
 				{ "username", options.Username },
 				{ "password", options.Password }
-			});
-
-			var response = await _httpClient.SendAsync(request);
-			response.EnsureSuccessStatusCode();
-
-			string contentString = await response.Content.ReadAsStringAsync();
-			return JsonConvert.DeserializeObject<TokenResponse>(contentString);
+			};
+			return await GetFreshToken(options.ClientId, options.ClientSecret, requestContent);
 		}
 
 		/// <summary>
@@ -64,14 +33,6 @@ namespace RedditDotNet.Authentication
 		/// </summary>
 		private readonly PasswordAuthenticationOptions _options;
 
-		/// <summary>
-		/// The latest token retrieved
-		/// </summary>
-		private TokenResponse _latestTokenResponse = null;
-		/// <summary>
-		/// When the latest token expires
-		/// </summary>
-		private DateTime _latestTokenExpires = DateTime.MinValue;
 		/// <summary>
 		/// If this object is disposed or not
 		/// </summary>
@@ -87,19 +48,13 @@ namespace RedditDotNet.Authentication
 		}
 
 		/// <inheritdoc/>
-		public async Task<string> GetBearerToken()
-		{
-			// TODO Need to add proper error handling if token retrieval fails
-			if (DateTime.Now >= _latestTokenExpires)
-			{
-				_latestTokenResponse = await GetFreshToken(_options);
-				_latestTokenExpires = DateTime.Now.AddSeconds(_latestTokenResponse.ExpiresIn);
-			}
-			return _latestTokenResponse.AccessToken;
-		}
+        public override async Task<TokenResponse> GetFreshToken()
+        {
+			return await GetFreshToken(_options);
+        }
 
-		/// <inheritdoc/>
-		protected virtual void Dispose(bool disposing)
+        /// <inheritdoc/>
+        protected virtual void Dispose(bool disposing)
 		{
 			if (!_disposed)
 			{
@@ -107,13 +62,11 @@ namespace RedditDotNet.Authentication
 				{
 					try
 					{
-						var request = BuildRequestMessage(HttpMethod.Post, "https://www.reddit.com/api/v1/revoke_token", _options);
-						request.Content = new FormUrlEncodedContent(new Dictionary<string, string> 
-						{
-							{ "token", _latestTokenResponse.AccessToken },
-							{ "token_type_hint", "access_token" }
-						});
-						var response = _httpClient.SendAsync(request).Result;
+						RevokeToken(_latestTokenResponse.AccessToken, 
+								_options.ClientId, 
+								_options.ClientSecret, 
+								"access_token")
+							.Wait();
 					}
 					catch
 					{
