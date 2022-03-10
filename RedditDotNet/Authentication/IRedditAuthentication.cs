@@ -12,5 +12,11 @@ namespace RedditDotNet.Authentication
 		/// </summary>
 		/// <returns>Bearer token</returns>
 		Task<string> GetBearerToken();
+
+		/// <summary>
+		/// Revoke the latest retrieved token
+		/// </summary>
+		/// <returns>Awaitable task</returns>
+		Task RevokeToken();
 	}
 }

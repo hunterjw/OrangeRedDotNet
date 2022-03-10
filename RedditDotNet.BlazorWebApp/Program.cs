@@ -30,7 +30,7 @@ namespace RedditDotNet.BlazorWebApp
             {
                 var localStorage = sp.GetService<ISyncLocalStorageService>();
                 return new Reddit(string.Empty,
-                    new CachedPasswordAuthentication(
+                    new PasswordAuthentication(
                         PasswordAuthenticationOptions,
                         () => Load(localStorage),
                         (TokenResponse value) => Save(localStorage, value)));

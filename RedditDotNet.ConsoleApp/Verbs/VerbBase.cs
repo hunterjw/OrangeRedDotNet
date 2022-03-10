@@ -47,22 +47,6 @@ namespace RedditDotNet.ConsoleApp.Verbs
         }
 
         /// <summary>
-        /// Cleanup the authentication after running the verb
-        /// </summary>
-        /// <param name="authentication">Authentication to cleanup</param>
-        private static void CleanupAuthentication(IRedditAuthentication authentication)
-        {
-            if (authentication is PasswordAuthentication passwordAuthentication)
-            {
-                passwordAuthentication.Dispose();
-            }
-            else if (authentication is ApplicationOnlyAuthentication applicationOnlyAuthentication)
-            {
-                applicationOnlyAuthentication.Dispose();
-            }
-        }
-
-        /// <summary>
         /// Get the authentication object to access reddit
         /// </summary>
         /// <returns>Reddit authentication</returns>
@@ -71,13 +55,13 @@ namespace RedditDotNet.ConsoleApp.Verbs
             return AppSettings.Authentication switch
             {
                 nameof(PasswordAuthentication) => new PasswordAuthentication(
-                    AppSettings.PasswordAuthenticationOptions),
-                nameof(CachedPasswordAuthentication) => new CachedPasswordAuthentication(
                     AppSettings.PasswordAuthenticationOptions,
                     Load,
                     Save),
                 nameof(ApplicationOnlyAuthentication) => new ApplicationOnlyAuthentication(
-                    AppSettings.ApplicationOnlyAuthenticationOptions),
+                    AppSettings.ApplicationOnlyAuthenticationOptions,
+                    Load,
+                    Save),
                 _ => null,
             };
         }
@@ -91,7 +75,6 @@ namespace RedditDotNet.ConsoleApp.Verbs
             IRedditAuthentication auth = GetAuthentication();
             var reddit = new Reddit("C# Test 1.0.0", auth); // TODO need to generate proper user agent string here
             string result = await Run(reddit);
-            CleanupAuthentication(auth);
             return result;
         }
 

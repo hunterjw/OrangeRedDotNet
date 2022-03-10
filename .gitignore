@@ -32,3 +32,6 @@ _ReSharper*/
 packages/
 #Development app settings config
 *[Aa]ppsettings.Development.json
+
+#Debug console app verb
+/RedditDotNet.ConsoleApp/Verbs/DebugVerb.cs
