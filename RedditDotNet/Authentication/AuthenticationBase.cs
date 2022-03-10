@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Authentication
@@ -97,6 +98,10 @@ namespace RedditDotNet.Authentication
         /// Action to save auth
         /// </summary>
         private readonly Action<TokenResponse> _save;
+        /// <summary>
+        /// Locking semaphore for refreshing the token
+        /// </summary>
+        private readonly SemaphoreSlim _refreshTokenLock = new(1, 1);
 
         /// <summary>
         /// When the latest token expires
@@ -134,25 +139,38 @@ namespace RedditDotNet.Authentication
             // TODO Need to add proper error handling if token retrieval fails
             if (DateTime.Now >= _latestTokenExpires)
             {
-                if (_load != null)
+                // Prevent more than one thread from refeshing a token
+                await _refreshTokenLock.WaitAsync();
+                try
                 {
-                    TokenResponse loadedToken = _load();
-                    if (_latestTokenResponse == null || 
-                        _latestTokenResponse.Expires < loadedToken?.Expires)
+                    // Recheck once we have the lock, in case it was refreshed while we didn't have the lock
+                    if (DateTime.Now >= _latestTokenExpires)
                     {
-                        _latestTokenResponse = loadedToken;
+                        if (_load != null)
+                        {
+                            TokenResponse loadedToken = _load();
+                            if (_latestTokenResponse == null ||
+                                _latestTokenResponse.Expires < loadedToken?.Expires)
+                            {
+                                _latestTokenResponse = loadedToken;
+                            }
+                        }
+                        if (_latestTokenResponse == null ||
+                            DateTime.Now >= _latestTokenResponse.Expires)
+                        {
+                            _latestTokenResponse = await GetFreshToken();
+                            _latestTokenResponse.Retrieved = DateTime.Now;
+                            _latestTokenResponse.Expires = _latestTokenResponse.Retrieved
+                                .AddSeconds(_latestTokenResponse.ExpiresIn);
+                            _save?.Invoke(_latestTokenResponse);
+                        }
+                        _latestTokenExpires = _latestTokenResponse.Expires;
                     }
                 }
-                if (_latestTokenResponse == null || 
-                    DateTime.Now >= _latestTokenResponse.Expires)
+                finally
                 {
-                    _latestTokenResponse = await GetFreshToken();
-                    _latestTokenResponse.Retrieved = DateTime.Now;
-                    _latestTokenResponse.Expires = _latestTokenResponse.Retrieved
-                        .AddSeconds(_latestTokenResponse.ExpiresIn);
-                    _save?.Invoke(_latestTokenResponse);
+                    _refreshTokenLock.Release();
                 }
-                _latestTokenExpires = _latestTokenResponse.Expires;
             }
             return _latestTokenResponse.AccessToken;
         }
