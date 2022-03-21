@@ -18,7 +18,7 @@ namespace RedditDotNet.Models.Subreddits
         public bool RestrictPosting { get; set; }
 
         [JsonProperty("user_is_banned")]
-        public bool UserIsBanned { get; set; }
+        public bool? UserIsBanned { get; set; }
 
         [JsonProperty("free_form_reports")]
         public bool FreeFormReports { get; set; }
@@ -33,7 +33,7 @@ namespace RedditDotNet.Models.Subreddits
         public string Description { get; set; }
 
         [JsonProperty("user_is_muted")]
-        public bool UserIsMuted { get; set; }
+        public bool? UserIsMuted { get; set; }
 
         [JsonProperty("display_name")]
         public string DisplayName { get; set; }
@@ -48,7 +48,7 @@ namespace RedditDotNet.Models.Subreddits
         public List<string> PreviousNames { get; set; }
 
         [JsonProperty("user_is_moderator")]
-        public bool UserIsModerator { get; set; }
+        public bool? UserIsModerator { get; set; }
 
         [JsonProperty("over_18")]
         public bool Over18 { get; set; }
@@ -108,7 +108,7 @@ namespace RedditDotNet.Models.Subreddits
         public List<int> BannerSize { get; set; }
 
         [JsonProperty("user_is_contributor")]
-        public bool UserIsContributor { get; set; }
+        public bool? UserIsContributor { get; set; }
 
         [JsonProperty("accept_followers")]
         public bool AcceptFollowers { get; set; }
@@ -126,6 +126,6 @@ namespace RedditDotNet.Models.Subreddits
         public string SubredditType { get; set; }
 
         [JsonProperty("user_is_subscriber")]
-        public bool UserIsSubscriber { get; set; }
+        public bool? UserIsSubscriber { get; set; }
     }
 }

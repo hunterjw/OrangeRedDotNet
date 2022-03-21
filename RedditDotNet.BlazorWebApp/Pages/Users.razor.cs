@@ -21,13 +21,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
-
-        /// <summary>
-        /// Identity service
-        /// </summary>
-        [Inject]
-        public IdentityService IdentityService { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Navigation manager
@@ -140,6 +134,8 @@ namespace RedditDotNet.BlazorWebApp.Pages
             Comments = null;
             Links = null;
 
+            Reddit redditClient = RedditService.GetClient();
+
             if (string.IsNullOrWhiteSpace(ListingType))
             {
                 ListingType = "overview";
@@ -161,14 +157,14 @@ namespace RedditDotNet.BlazorWebApp.Pages
 
             if (!ProfileLoaded)
             {
-                Account = await Reddit.Users.GetAbout(UserName);
-                Trophies = await Reddit.Users.GetTrophies(Account.Data.Name);
+                Account = await redditClient.Users.GetAbout(UserName);
+                Trophies = await redditClient.Users.GetTrophies(Account.Data.Name);
 
-                AccountData identity = await IdentityService.GetIdentity();
-                if (Account.Data.Name.Equals(identity.Name))
+                if (RedditService.Identity != null 
+                    && Account.Data.Name.Equals(RedditService.Identity.Name))
                 {
                     IsSelf = true;
-                    KarmaBreakdown = await Reddit.Account.GetKarmaBreakdown();
+                    KarmaBreakdown = await redditClient.Account.GetKarmaBreakdown();
                 }
 
                 ProfileLoaded = true;
@@ -177,28 +173,28 @@ namespace RedditDotNet.BlazorWebApp.Pages
             switch (GetListingType())
             {
                 case UserProfileListingType.Overview:
-                    LinksOrComments = await Reddit.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Comments:
-                    Comments = await Reddit.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
+                    Comments = await redditClient.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Submitted:
-                    Links = await Reddit.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
+                    Links = await redditClient.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Gilded:
-                    LinksOrComments = await Reddit.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Upvoted:
-                    LinksOrComments = await Reddit.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Downvoted:
-                    LinksOrComments = await Reddit.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Hidden:
-                    LinksOrComments = await Reddit.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
                     break;
                 case UserProfileListingType.Saved:
-                    LinksOrComments = await Reddit.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
+                    LinksOrComments = await redditClient.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
                     break;
             }
             ListingLoaded = true;

@@ -7,13 +7,13 @@ namespace RedditDotNet.BlazorWebApp.Pages.Account
     public partial class Friends
 	{
 		[Inject]
-		public Reddit Reddit { get; set; }
+		public RedditService RedditService { get; set; }
 
 		public UserList Users { get; set; }
 
 		protected override async Task OnInitializedAsync()
 		{
-			Users = await Reddit.Account.GetFriends();
+			Users = await RedditService.GetClient().Account.GetFriends();
 		}
 	}
 }

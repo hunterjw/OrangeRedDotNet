@@ -1,7 +1,6 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Multis;
 using System;
 using System.Collections.Generic;
@@ -24,13 +23,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// Injected Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
-
-        /// <summary>
-        /// Identity service
-        /// </summary>
-        [Inject]
-        public IdentityService IdentityService { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// MultiReddit to display
@@ -75,6 +68,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// <param name="subreddit">Name of the Subreddit to remove</param>
         protected async void RemoveSubredditButton_OnClick(string subreddit)
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             var parameters = new ModalParameters();
             parameters.Add("MultiRedditName", MultiReddit.Data.DisplayName);
             parameters.Add("SubredditName", subreddit);
@@ -86,7 +83,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             ModalResult result = await modal.Result;
             if (!result.Cancelled)
             {
-                await Reddit.Multis.DeleteSubreddit(MultiReddit.Data.Path, subreddit);
+                await RedditService.GetClient().Multis.DeleteSubreddit(MultiReddit.Data.Path, subreddit);
                 MultiReddit.Data.Subreddits.RemoveAll(_ => _.Name.Equals(subreddit));
                 StateHasChanged();
             }
@@ -97,15 +94,20 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         protected async void AddSubredditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
+            var reddit = RedditService.GetClient();
             // TODO make this more resiliant and add feedback to user when something goes wrong
             if (!string.IsNullOrWhiteSpace(AddSubredditName)
                 && !MultiReddit.Data.Subreddits.Any(_ =>
                     _.Name.Equals(AddSubredditName, StringComparison.OrdinalIgnoreCase)))
             {
-                MultiSubreddit result = await Reddit.Multis.AddSubreddit(MultiReddit.Data.Path, AddSubredditName);
+                MultiSubreddit result = await reddit.Multis.AddSubreddit(MultiReddit.Data.Path, AddSubredditName);
                 MultiReddit.Data.Subreddits.Add(result);
                 StateHasChanged();
-                MultiReddit = await Reddit.Multis.GetMulti(MultiReddit.Data.Path, true);
+                MultiReddit = await reddit.Multis.GetMulti(MultiReddit.Data.Path, true);
                 AddSubredditName = string.Empty;
                 StateHasChanged();
             }
@@ -116,6 +118,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         protected async void DeleteMultiRedditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             var parameters = new ModalParameters();
             parameters.Add("MultiRedditName", MultiReddit.Data.DisplayName);
             var options = new ModalOptions
@@ -126,7 +132,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             ModalResult result = await modal.Result;
             if (!result.Cancelled)
             {
-                await Reddit.Multis.DeleteMulti(MultiReddit.Data.Path);
+                await RedditService.GetClient().Multis.DeleteMulti(MultiReddit.Data.Path);
                 OnMultiRedditDelete(MultiReddit.Data.Path);
             }
         }
@@ -136,6 +142,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         protected async void EditMultiRedditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             var updateModel = new MultiRedditUpdate
             {
                 DescriptionMd = MultiReddit.Data.DescriptionMd,
@@ -159,7 +169,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                MultiReddit = await Reddit.Multis.UpdateMulti(MultiReddit.Data.Path, updateModelResult, true);
+                MultiReddit = await RedditService.GetClient().Multis.UpdateMulti(MultiReddit.Data.Path, updateModelResult, true);
                 StateHasChanged();
             }
         }
@@ -169,6 +179,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         protected async void CopyMultiRedditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             var updateModel = new MultiRedditUpdate()
             {
                 DescriptionMd = "",
@@ -189,9 +203,8 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                AccountData identity = await IdentityService.GetIdentity();
-                string newPath = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
-                var copiedMultiReddit = await Reddit.Multis.CopyMulti(
+                string newPath = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
+                var copiedMultiReddit = await RedditService.GetClient().Multis.CopyMulti(
                     MultiReddit.Data.Path, 
                     newPath, 
                     updateModelResult.DisplayName, 

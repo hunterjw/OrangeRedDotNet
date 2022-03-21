@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models.Account;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared
@@ -10,15 +9,16 @@ namespace RedditDotNet.BlazorWebApp.Shared
     public partial class NavMenu
     {
         /// <summary>
-        /// Identity Service
+        /// Reddit Service
         /// </summary>
         [Inject]
-        public IdentityService IdentityService { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
-        /// Current user identity
+        /// Navigation manager
         /// </summary>
-        protected AccountData Identity { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         /// <summary>
         /// To have the nav menu collapsed or not
@@ -38,7 +38,10 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            Identity = await IdentityService.GetIdentity();
+            RedditService.LoginFinished += RefreshComponent;
+            RedditService.LogoutFinished += RefreshComponent;
+            // ensure identity is loaded on initial load
+            await RedditService.LoadIdentity();
         }
 
         /// <summary>
@@ -50,12 +53,29 @@ namespace RedditDotNet.BlazorWebApp.Shared
         }
 
         /// <summary>
-        /// Get the URL for the current user profile
+        /// On click event handler for the login button
         /// </summary>
-        /// <returns>User profile URL</returns>
-        protected string GetProfileUrl()
+        protected void LogInButton_OnClick()
         {
-            return $"user/{Identity?.Name}";
+            NavigationManager.NavigateTo("login");
+        }
+
+        /// <summary>
+        /// On click event handler for the logout button
+        /// </summary>
+        protected void LogOutButton_OnClick()
+        {
+            NavigationManager.NavigateTo("logout");
+        }
+
+        /// <summary>
+        /// Handler for when to refresh this component
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="args">Args object</param>
+        void RefreshComponent(object sender, object args)
+        {
+            StateHasChanged();
         }
     }
 }

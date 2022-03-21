@@ -30,10 +30,10 @@ namespace RedditDotNet.Authentication
         private static HttpRequestMessage BuildRequestMessage(HttpMethod httpMethod, 
             string requestUrl, string clientId, string clientSecret = null)
         {
-            string authString = $"{clientId}";
+            string authString = $"{clientId}:";
             if (!string.IsNullOrWhiteSpace(clientSecret))
             {
-                authString += $":{clientSecret}";
+                authString += $"{clientSecret}";
             }
             HttpRequestMessage request = new(httpMethod, new Uri(requestUrl));
             request.Headers.Authorization = new AuthenticationHeaderValue(
@@ -59,6 +59,7 @@ namespace RedditDotNet.Authentication
                 requestContent ?? new Dictionary<string, string>());
 
             var response = await _httpClient.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
 
             string contentString = await response.Content.ReadAsStringAsync();
@@ -93,11 +94,11 @@ namespace RedditDotNet.Authentication
         /// <summary>
         /// Function to load cached auth
         /// </summary>
-        private readonly Func<TokenResponse> _load;
+        protected readonly Func<TokenResponse> _load;
         /// <summary>
         /// Action to save auth
         /// </summary>
-        private readonly Action<TokenResponse> _save;
+        protected readonly Action<TokenResponse> _save;
         /// <summary>
         /// Locking semaphore for refreshing the token
         /// </summary>
@@ -156,7 +157,7 @@ namespace RedditDotNet.Authentication
                             }
                         }
                         if (_latestTokenResponse == null ||
-                            DateTime.Now >= _latestTokenResponse.Expires)
+                            DateTime.Now >= _latestTokenResponse?.Expires)
                         {
                             _latestTokenResponse = await GetFreshToken();
                             _latestTokenResponse.Retrieved = DateTime.Now;

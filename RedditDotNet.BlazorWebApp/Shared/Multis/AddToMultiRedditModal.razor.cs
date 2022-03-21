@@ -1,7 +1,6 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
-using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Multis;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +17,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
-
-        /// <summary>
-        /// Identity service
-        /// </summary>
-        [Inject]
-        public IdentityService IdentityService { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Modal instance
@@ -56,7 +49,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            var multiReddits = await Reddit.Multis.GetMine();
+            var multiReddits = await RedditService.GetClient().Multis.GetMine();
             MultiRedditStates = new List<MultiRedditState>();
             foreach (var multi in multiReddits)
             {
@@ -121,9 +114,8 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 KeyColor = "",
                 Subreddits = new List<MultiSubredditUpdate>()
             };
-            AccountData identity = await IdentityService.GetIdentity();
-            string path = $"user/{identity.Name}/m/{NewMultiName.FormatNewMultiName()}";
-            MultiReddit newMulti = await Reddit.Multis.CreateMulti(path, updateModel);
+            string path = $"user/{RedditService.Identity.Name}/m/{NewMultiName.FormatNewMultiName()}";
+            MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModel);
             MultiRedditStates.Add(new MultiRedditState
             {
                 MultiReddit = newMulti,

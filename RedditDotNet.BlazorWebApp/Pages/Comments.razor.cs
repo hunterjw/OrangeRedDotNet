@@ -15,10 +15,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
     {
         #region Injected services
         /// <summary>
-        /// Reddit client
+        /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
+        public RedditService RedditService { get; set; }
         
         /// <summary>
         /// Navigation manager
@@ -65,7 +65,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 Sort = "confidence";
             }
 
-            LinkWithComments = await Reddit.Listings.GetComments(
+            LinkWithComments = await RedditService.GetClient().Listings.GetComments(
                 ArticleId,
                 subreddit: Subreddit,
                 parameters: BuildCommentListingParameters());

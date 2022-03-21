@@ -1,5 +1,5 @@
 ﻿<div class="input-group">
-    <button class="btn btn-light" @onclick="UpButton_OnClick" disabled="@(Archived)">
+    <button class="btn btn-light" @onclick="UpButton_OnClick" disabled="@(Archived || !RedditService.LoggedIn)">
         <span class="oi oi-arrow-thick-top @(Likes.HasValue ? (Likes.Value ? "upvoted" : "") : "")"></span>
     </button>
     <span class="input-group-text bg-light border-light @(Likes.HasValue ? (Likes.Value ? "upvoted" : "downvoted") : "")">
@@ -12,7 +12,7 @@
             @Score.ToDisplayString()
         }
     </span>
-    <button class="btn btn-light" @onclick="DownButton_OnClick" disabled="@(Archived)">
+    <button class="btn btn-light" @onclick="DownButton_OnClick" disabled="@(Archived || !RedditService.LoggedIn)">
         <span class="oi oi-arrow-thick-bottom @(Likes.HasValue ? (Likes.Value ? "" : "downvoted") : "")"></span>
     </button>
 </div>

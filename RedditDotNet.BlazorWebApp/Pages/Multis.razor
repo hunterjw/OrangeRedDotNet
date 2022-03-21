@@ -8,10 +8,13 @@
 }
 else
 {
-    <button class="btn btn-primary mb-1" @onclick="NewMultiRedditButton_OnClick">
-        New MultiReddit
-    </button>
+    @if (RedditService.LoggedIn)
+    {
+        <button class="btn btn-primary mb-1" @onclick="NewMultiRedditButton_OnClick">
+            New MultiReddit
+        </button>
+    }
     <MultiRedditList MultiReddits="@MultiReddits"
                  OnMultiRedditDelete="OnMultiRedditDelete"
-                 OnMultiRedditCopy="OnMultiRedditCopy"/>
+                 OnMultiRedditCopy="OnMultiRedditCopy" />
 }

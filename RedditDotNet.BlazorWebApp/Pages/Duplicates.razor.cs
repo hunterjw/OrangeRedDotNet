@@ -13,10 +13,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
     {
         #region Injected services
         /// <summary>
-        /// Reddit client
+        /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
+        public RedditService RedditService { get; set; }
         #endregion
 
         #region Route parameters
@@ -69,7 +69,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             DuplicateLinks = null;
 
-            DuplicateLinks = await Reddit.Listings.GetDuplicates(
+            DuplicateLinks = await RedditService.GetClient().Listings.GetDuplicates(
                 ArticleId,
                 BuildDuplicateListingParameters());
 

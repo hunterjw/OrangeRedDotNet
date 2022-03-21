@@ -97,11 +97,14 @@
                         </button>
                     </div>
                 }
-                <div class="col-auto">
-                    <button class="btn btn-light" @onclick="CopyMultiRedditButton_OnClick">
-                        Copy
-                    </button>
-                </div>
+                @if (RedditService.LoggedIn)
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="CopyMultiRedditButton_OnClick">
+                            Copy
+                        </button>
+                    </div>
+                }
                 @if (MultiReddit.Data.CanEdit)
                 {
                     <div class="col-auto">

@@ -12,7 +12,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Current score on the votable thing
@@ -50,6 +50,10 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         protected async Task UpButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             if (!Likes.HasValue || !Likes.Value)
             {
                 await Upvote();
@@ -66,6 +70,10 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         protected async Task DownButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             if (!Likes.HasValue || Likes.Value)
             {
                 await Downvote();
@@ -82,7 +90,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task Upvote()
         {
-            await Reddit.LinksAndComments.Vote(Id, 1, 2);
+            await RedditService.GetClient().LinksAndComments.Vote(Id, 1, 2);
             Likes = true;
         }
 
@@ -92,7 +100,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task Downvote()
         {
-            await Reddit.LinksAndComments.Vote(Id, -1, 2);
+            await RedditService.GetClient().LinksAndComments.Vote(Id, -1, 2);
             Likes = false;
         }
 
@@ -102,7 +110,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task ClearVote()
         {
-            await Reddit.LinksAndComments.Vote(Id, 0, 2);
+            await RedditService.GetClient().LinksAndComments.Vote(Id, 0, 2);
             Likes = null;
         }
     }

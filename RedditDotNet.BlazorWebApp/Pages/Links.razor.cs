@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Extensions;
-using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Multis;
@@ -16,16 +15,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
     {
         #region Injected Services
         /// <summary>
-        /// Reddit client
+        /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
-
-        /// <summary>
-        /// Identity service
-        /// </summary>
-        [Inject]
-        public IdentityService IdentityService { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Navigation manager
@@ -96,11 +89,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
         protected Listing<Link> LinkListing { get; set; }
 
         /// <summary>
-        /// Current user identity
-        /// </summary>
-        protected AccountData Identity { get; set; }
-
-        /// <summary>
         /// If the listing is a MultiReddit or not
         /// </summary>
         protected bool IsMultiReddit => !string.IsNullOrWhiteSpace(MultiName);
@@ -118,6 +106,8 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
+            Reddit redditClient = RedditService.GetClient();
+
             // Do this so when loading the next page the previous content isn't visible
             // (When navigating to the same page with different parameters, the entire 
             // page isn't disposed)
@@ -131,7 +121,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 }
                 if (!MultiRedditLoaded)
                 {
-                    MultiReddit = await Reddit.Multis.GetMulti(GetMultiRedditUrl(true), true);
+                    MultiReddit = await redditClient.Multis.GetMulti(GetMultiRedditUrl(true), true);
                     MultiRedditLoaded = true;
                 }
             }
@@ -140,8 +130,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 Timescale = "hour";
             }
-
-            Identity = await IdentityService.GetIdentity();
 
             var listingTypeEnum = GetListingType();
             if (string.IsNullOrWhiteSpace(ListingType))
@@ -166,32 +154,32 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 case LinkListingType.Best:
                     Subreddit = string.Empty;
-                    LinkListing = await Reddit.Listings.GetBest(BuildListingParameters());
+                    LinkListing = await redditClient.Listings.GetBest(BuildListingParameters());
                     break;
                 case LinkListingType.Hot:
                     LinkListing = IsMultiReddit ?
-                        await Reddit.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) : 
-                        await Reddit.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
+                        await redditClient.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) : 
+                        await redditClient.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
                     break;
                 case LinkListingType.New:
                     LinkListing = IsMultiReddit ?
-                        await Reddit.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) : 
-                        await Reddit.Listings.GetNew(BuildListingParameters(), Subreddit);
+                        await redditClient.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) : 
+                        await redditClient.Listings.GetNew(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Rising:
                     LinkListing = IsMultiReddit ?
-                        await Reddit.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) : 
-                        await Reddit.Listings.GetRising(BuildListingParameters(), Subreddit);
+                        await redditClient.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) : 
+                        await redditClient.Listings.GetRising(BuildListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Controversial:
                     LinkListing = IsMultiReddit ?
-                        await Reddit.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) : 
-                        await Reddit.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
+                        await redditClient.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) : 
+                        await redditClient.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
                     break;
                 case LinkListingType.Top:
                     LinkListing = IsMultiReddit ?
-                        await Reddit.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) : 
-                        await Reddit.Listings.GetTop(BuildSortListingParameters(), Subreddit);
+                        await redditClient.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) : 
+                        await redditClient.Listings.GetTop(BuildSortListingParameters(), Subreddit);
                     break;
                 default:
                     throw new ArgumentException();
@@ -217,7 +205,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 if (!string.IsNullOrWhiteSpace(UserName))
                 {
-                    if (UserName.Equals(Identity?.Name) && !forceLongForm)
+                    if (UserName.Equals(RedditService.Identity?.Name) && !forceLongForm)
                     {
                         return $"/me/m/{MultiName}";
                     }
@@ -225,7 +213,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 }
                 if (forceLongForm)
                 {
-                    return $"/user/{Identity?.Name}/m/{MultiName}";
+                    return $"/user/{RedditService.Identity?.Name}/m/{MultiName}";
                 }
                 return $"/me/m/{MultiName}";
             }

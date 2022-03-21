@@ -20,6 +20,9 @@ namespace RedditDotNet.Authentication
 		[JsonProperty("error")]
 		public string Error { get; set; }
 
+		[JsonProperty("refresh_token")]
+		public string RefreshToken { get; set; }
+
 		public DateTime Retrieved { get; set; } = DateTime.MinValue;
 
 		public DateTime Expires { get; set; } = DateTime.MinValue;

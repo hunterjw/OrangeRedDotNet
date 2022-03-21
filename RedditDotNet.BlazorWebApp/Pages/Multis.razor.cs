@@ -2,7 +2,6 @@
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
-using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Multis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Injected Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Injected Modal service
@@ -27,10 +26,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
         public IModalService ModalService { get; set; }
 
         /// <summary>
-        /// Identity service
+        /// Navigation manager
         /// </summary>
         [Inject]
-        public IdentityService IdentityService { get; set; }
+        public NavigationManager NavigationManager { get; set; }
 
         /// <summary>
         /// MultiReddit list
@@ -40,7 +39,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            MultiReddits = await Reddit.Multis.GetMine(true);
+            if (!RedditService.LoggedIn)
+            {
+                NavigationManager.NavigateTo("");
+            }
+            MultiReddits = await RedditService.GetClient().Multis.GetMine(true);
         }
 
         /// <summary>
@@ -48,6 +51,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected async void NewMultiRedditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
             var updateModel = new MultiRedditUpdate()
             {
                 DescriptionMd = "",
@@ -67,9 +74,8 @@ namespace RedditDotNet.BlazorWebApp.Pages
             if (!result.Cancelled)
             {
                 var updateModelResult = result.Data as MultiRedditUpdate;
-                AccountData identity = await IdentityService.GetIdentity();
-                string path = $"user/{identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
-                MultiReddit newMulti = await Reddit.Multis.CreateMulti(path, updateModelResult, true);
+                string path = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
+                MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModelResult, true);
                 MultiReddits.Add(newMulti);
                 StateHasChanged();
             }

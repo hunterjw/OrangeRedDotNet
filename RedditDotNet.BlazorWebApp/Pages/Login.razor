@@ -1,0 +1,9 @@
+﻿@page "/login"
+
+<h2>Login</h2>
+
+@if (!string.IsNullOrWhiteSpace(Error))
+{
+    <h3>Error</h3>
+    <p>@Error</p>
+}

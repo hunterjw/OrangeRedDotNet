@@ -22,7 +22,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// Reddit service
         /// </summary>
         [Inject]
-        public Reddit Reddit { get; set; }
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Account data
@@ -64,6 +64,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         protected async Task AddToMultiRedditButton_OnClick()
         {
+            if (!RedditService.LoggedIn)
+            {
+                return;
+            }
+            Reddit reddit = RedditService.GetClient();
             var parameters = new ModalParameters();
             parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
             IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters);
@@ -77,11 +82,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
                     {
                         if (multiState.CurrentState)
                         {
-                            await Reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                            await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
                         }
                         else
                         {
-                            await Reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                            await reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
                         }
                     }
                 }
