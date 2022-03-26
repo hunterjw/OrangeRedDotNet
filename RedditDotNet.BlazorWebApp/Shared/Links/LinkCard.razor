@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-auto d-flex justify-content-center flex-column w-25 link-preview-row">
                 <div class="rounded w-100 h-100 link-preview-img"
-                     style="background-image: url(@PreviewUrl);">
+                     style="background-image: url(@GetPreviewUrl(Link));">
                 </div>
             </div>
             <div class="col">
@@ -45,11 +45,11 @@
             </div>
         </div>
         <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
-            @if (Link.Data.Spoiler && !SpoilerAcknowledged)
+            @if (Link.Data.Spoiler && !SpoilerAcknowledged && Link.GetLinkType() != LinkType.Crosspost)
             {
                 <button class="btn btn-secondary w-100" @onclick="SpoilerButton_OnClick">Show Spoiler</button>
             }
-            else if (Link.Data.Over18 && !NsfwAcknowledged)
+            else if (Link.Data.Over18 && !NsfwAcknowledged && Link.GetLinkType() != LinkType.Crosspost)
             {
                 <button class="btn btn-danger w-100" @onclick="NsfwButton_OnClick">Show NSFW</button>
             }
@@ -65,11 +65,17 @@
                         <p>Video support to be added later</p>
                         break;
                     case LinkType.Gallery:
-                        @*TODO*@
-                        <p>Gallery support to be added later</p>
+                        <Gallery 
+                            LinkId="@Link.Data.Id" 
+                            GalleryData="@Link.Data.GalleryData" 
+                            MediaMetadata="@Link.Data.MediaMetadata" />
                         break;
                     case LinkType.Text:
                         @((MarkupString)HttpUtility.HtmlDecode(Link.Data.SelftextHtml))
+                        break;
+                    case LinkType.Crosspost:
+                        <LinkCard Link="@(new Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
+                            ContentCollapsed="@ContentCollapsed" />
                         break;
                 }
             }
@@ -95,6 +101,7 @@
                     case LinkType.Image:
                     case LinkType.Video:
                     case LinkType.Gallery:
+                    case LinkType.Crosspost:
                         <button class="btn btn-light" @onclick="ContentCollapsedButton_OnClick">
                             @if (ContentCollapsed)
                             {
@@ -107,7 +114,6 @@
                         </button>
                         break;
                     case LinkType.Poll:
-                    case LinkType.Crosspost:
                         @*TODO*@
                         <button class="btn btn-light">
                             <span class="oi oi-question-mark"></span>

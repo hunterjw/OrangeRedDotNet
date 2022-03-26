@@ -23,7 +23,7 @@ namespace RedditDotNet.Models
         public bool IsNew { get; set; }
 
         [JsonProperty("days_of_drip_extension")]
-        public int DaysOfDripExtension { get; set; }
+        public int? DaysOfDripExtension { get; set; }
 
         [JsonProperty("coin_price")]
         public int CoinPrice { get; set; }
@@ -41,7 +41,7 @@ namespace RedditDotNet.Models
         public string IconUrl { get; set; }
 
         [JsonProperty("days_of_premium")]
-        public int DaysOfPremium { get; set; }
+        public int? DaysOfPremium { get; set; }
 
         [JsonProperty("icon_height")]
         public int IconHeight { get; set; }

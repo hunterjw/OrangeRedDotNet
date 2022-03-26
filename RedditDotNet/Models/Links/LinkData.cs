@@ -362,5 +362,11 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("num_duplicates")]
         public int? NumDuplicates { get; set; }
+
+        [JsonProperty("gallery_data")]
+        public GalleryData GalleryData { get; set; }
+
+        [JsonProperty("media_metadata")]
+        public Dictionary<string, MediaMetadata> MediaMetadata { get; set; }
     }
 }

@@ -7,7 +7,8 @@
 			"destination": "wwwroot/lib/twitter-bootstrap/",
 			"files": [
 				"css/bootstrap.min.css",
-				"css/bootstrap.min.css.map"
+				"css/bootstrap.min.css.map",
+				"js/bootstrap.min.js"
 			]
 		}
 	]

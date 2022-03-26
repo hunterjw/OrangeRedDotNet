@@ -36,31 +36,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         protected bool NsfwAcknowledged { get; set; }
 
-        /// <summary>
-        /// Get a preview image URL
-        /// </summary>
-        protected string PreviewUrl
-        {
-            get
-            {
-                if (Link?.Data?.Preview?.Images?.Count > 0)
-                {
-                    PreviewImage image = Link.Data.Preview.Images.First();
-                    if ((Link?.Data?.Over18 ?? false) && (image.Variants?.ContainsKey("nsfw") ?? false))
-                    {
-                        image = image.Variants["nsfw"];
-                    }
-                    if ((Link?.Data?.Spoiler ?? false) && (image.Variants?.ContainsKey("obfuscated") ?? false))
-                    {
-                        image = image.Variants["obfuscated"];
-                    }
-                    return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
-                }
-                // TODO replace this with locally hosted resource
-                return "https://via.placeholder.com/256";
-            }
-        }
-
         /// <inheritdoc/>
         protected override void OnParametersSet()
         {
@@ -69,10 +44,60 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                 !(linkType == LinkType.Image ||
                 linkType == LinkType.Gallery ||
                 linkType == LinkType.Video ||
-                linkType == LinkType.Text))
+                linkType == LinkType.Text ||
+                linkType == LinkType.Crosspost))
             {
                 ContentCollapsed = true;
             }
+        }
+
+        /// <summary>
+        /// Helper function to get a preview imager URL
+        /// </summary>
+        /// <param name="link">Link object</param>
+        /// <returns>preview URL</returns>
+        protected string GetPreviewUrl(Link link)
+        {
+            LinkType linkType = link.GetLinkType();
+            if (link?.Data?.Preview?.Images?.Count > 0)
+            {
+                PreviewImage image = link.Data.Preview.Images.First();
+                if ((link?.Data?.Over18 ?? false) && (image.Variants?.ContainsKey("nsfw") ?? false))
+                {
+                    image = image.Variants["nsfw"];
+                }
+                if ((link?.Data?.Spoiler ?? false) && (image.Variants?.ContainsKey("obfuscated") ?? false))
+                {
+                    image = image.Variants["obfuscated"];
+                }
+                return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
+            }
+
+            if (linkType == LinkType.Gallery)
+            {
+                MediaMetadata first = link.Data.MediaMetadata.Values.First();
+                MediaMetadataImage image;
+                if (first.Obscured?.Count > 0)
+                {
+                    image = first.Obscured.First();
+                }
+                else
+                {
+                    image = first.Previews.First();
+                }
+                return HttpUtility.HtmlDecode(image.Url);
+            }
+            else if (linkType == LinkType.Crosspost)
+            {
+                return GetPreviewUrl(new Link
+                {
+                    Kind = link.Kind,
+                    Data = link.Data.CrosspostParentList.First()
+                });
+            }
+
+            // TODO replace this with locally hosted resource
+            return "https://via.placeholder.com/256";
         }
 
         /// <summary>
