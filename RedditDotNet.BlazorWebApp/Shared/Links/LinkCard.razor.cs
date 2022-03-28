@@ -45,7 +45,8 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                 linkType == LinkType.Gallery ||
                 linkType == LinkType.Video ||
                 linkType == LinkType.Text ||
-                linkType == LinkType.Crosspost))
+                linkType == LinkType.Crosspost ||
+                linkType == LinkType.EmbeddedMedia))
             {
                 ContentCollapsed = true;
             }
@@ -98,6 +99,39 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
 
             // TODO replace this with locally hosted resource
             return "https://via.placeholder.com/256";
+        }
+
+        /// <summary>
+        /// Get the markup string for this links embedded media
+        /// </summary>
+        /// <returns>HTML markup string</returns>
+        public MarkupString GetEmbeddedMediaContent()
+        {
+            string content = null;
+            int width = 0;
+            int height = 0;
+            if (Link.Data.SecureMediaEmbed != null)
+            {
+                content = HttpUtility.HtmlDecode(Link.Data.SecureMediaEmbed.Content);
+                width = Link.Data.SecureMediaEmbed.Width;
+                height = Link.Data.SecureMediaEmbed.Height;
+            }
+            else if (Link.Data.MediaEmbed != null)
+            {
+                content = HttpUtility.HtmlDecode(Link.Data.MediaEmbed.Content);
+                width = Link.Data.MediaEmbed.Width;
+                height = Link.Data.MediaEmbed.Height;
+            }
+            if (!string.IsNullOrWhiteSpace(content))
+            {
+                return (MarkupString)($"<div " +
+                    $"class=\"rounded\" " +
+                    $"style=\"width:{width}px; height:{height}px; " +
+                    $"position:relative; overflow:hidden;\">" +
+                    $"{content}" +
+                    $"</div>");
+            }
+            return default;
         }
 
         /// <summary>

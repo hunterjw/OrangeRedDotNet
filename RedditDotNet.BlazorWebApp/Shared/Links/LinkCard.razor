@@ -77,6 +77,9 @@
                         <LinkCard Link="@(new Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
                             ContentCollapsed="@ContentCollapsed" />
                         break;
+                    case LinkType.EmbeddedMedia:
+                        @GetEmbeddedMediaContent();
+                        break;
                 }
             }
         </div>
@@ -102,6 +105,7 @@
                     case LinkType.Video:
                     case LinkType.Gallery:
                     case LinkType.Crosspost:
+                    case LinkType.EmbeddedMedia:
                         <button class="btn btn-light" @onclick="ContentCollapsedButton_OnClick">
                             @if (ContentCollapsed)
                             {

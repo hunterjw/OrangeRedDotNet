@@ -88,10 +88,6 @@ namespace RedditDotNet.Models.Links
         [JsonProperty("total_awards_received")]
         public int TotalAwardsReceived { get; set; }
 
-        // TODO
-        //[JsonProperty("media_embed")]
-        //public object MediaEmbed { get; set; }
-
         [JsonProperty("thumbnail_width")]
         public int? ThumbnailWidth { get; set; }
 
@@ -105,10 +101,6 @@ namespace RedditDotNet.Models.Links
         //[JsonProperty("user_reports")]
         //public List<object> UserReports { get; set; }
 
-        // TODO
-        //[JsonProperty("secure_media")]
-        //public object SecureMedia { get; set; }
-
         [JsonProperty("is_reddit_media_domain")]
         public bool IsRedditMediaDomain { get; set; }
 
@@ -117,10 +109,6 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("category")]
         public string Category { get; set; }
-
-        // TODO
-        //[JsonProperty("secure_media_embed")]
-        //public object SecureMediaEmbed { get; set; }
 
         [JsonProperty("link_flair_text")]
         public string LinkFlairText { get; set; }
@@ -341,10 +329,6 @@ namespace RedditDotNet.Models.Links
         [JsonProperty("num_crossposts")]
         public int NumCrossposts { get; set; }
 
-        // TODO
-        //[JsonProperty("media")]
-        //public object Media { get; set; }
-
         [JsonProperty("is_video")]
         public bool IsVideo { get; set; }
 
@@ -368,5 +352,17 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("media_metadata")]
         public Dictionary<string, MediaMetadata> MediaMetadata { get; set; }
+
+        [JsonProperty("media")]
+        public Media Media { get; set; }
+
+        [JsonProperty("secure_media")]
+        public Media SecureMedia { get; set; }
+
+        [JsonProperty("media_embed")]
+        public MediaEmbed MediaEmbed { get; set; }
+
+        [JsonProperty("secure_media_embed")]
+        public MediaEmbed SecureMediaEmbed { get; set; }
     }
 }

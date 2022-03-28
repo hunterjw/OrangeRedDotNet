@@ -36,6 +36,10 @@
         /// <summary>
         /// Text link (aka self post)
         /// </summary>
-        Text
+        Text,
+        /// <summary>
+        /// Link with embedded media
+        /// </summary>
+        EmbeddedMedia
     }
 }

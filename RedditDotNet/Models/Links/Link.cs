@@ -41,6 +41,11 @@ namespace RedditDotNet.Models.Links
             {
                 return LinkType.Text;
             }
+            else if (Data.MediaEmbed != null ||
+                Data.SecureMediaEmbed != null)
+            {
+                return LinkType.EmbeddedMedia;
+            }
             return LinkType.Link;
         }
     }
