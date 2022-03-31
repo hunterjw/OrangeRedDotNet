@@ -135,6 +135,26 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         }
 
         /// <summary>
+        /// Get a RedditVideo object for the current link (if there is one)
+        /// </summary>
+        /// <returns>RedditVideo object</returns>
+        protected RedditVideo GetRedditVideoObject()
+        {
+            if (Link.GetLinkType() == LinkType.Video)
+            {
+                if (Link.Data.SecureMedia != null)
+                {
+                    return Link.Data.SecureMedia.RedditVideo;
+                }
+                else if (Link.Data.Media != null)
+                {
+                    return Link.Data.Media.RedditVideo;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// OnClick handler for buttons that toggle the collapsable region
         /// </summary>
         /// <param name="e">Event arguments</param>

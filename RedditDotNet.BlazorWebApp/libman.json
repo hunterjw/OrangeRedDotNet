@@ -1,15 +1,36 @@
 {
-	"version": "1.0",
-	"defaultProvider": "cdnjs",
-	"libraries": [
-		{
-			"library": "twitter-bootstrap@5.1.3",
-			"destination": "wwwroot/lib/twitter-bootstrap/",
-			"files": [
-				"css/bootstrap.min.css",
-				"css/bootstrap.min.css.map",
-				"js/bootstrap.min.js"
-			]
-		}
-	]
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "twitter-bootstrap@5.1.3",
+      "destination": "wwwroot/lib/twitter-bootstrap/",
+      "files": [
+        "css/bootstrap.min.css",
+        "css/bootstrap.min.css.map",
+        "js/bootstrap.min.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "hls.js@1.1.5",
+      "destination": "wwwroot/lib/hls.js/",
+      "files": [
+        "hls.min.js",
+        "hls.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "plyr@3.6.12",
+      "destination": "wwwroot/lib/plyr/",
+      "files": [
+        "plyr.js",
+        "plyr.min.js",
+        "plyr.min.js.map",
+        "plyr.css",
+        "plyr.min.css"
+      ]
+    }
+  ]
 }

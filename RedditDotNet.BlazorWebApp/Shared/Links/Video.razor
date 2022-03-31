@@ -1,0 +1,8 @@
+﻿@using System.Web
+
+<div class="rounded reddit-video-container" style="width: @(RedditVideo.Width)px; height: @(RedditVideo.Height)px;">
+    <video controls crossorigin playsinline id="@($"{LinkId}-video")">
+        <source type="application/x-mpegURL"
+                src="@HttpUtility.HtmlDecode(RedditVideo.HlsUrl)">
+    </video>
+</div>

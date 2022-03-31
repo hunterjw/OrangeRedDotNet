@@ -9,5 +9,8 @@ namespace RedditDotNet.Models.Links
 
         [JsonProperty("oembed")]
         public Oembed Oembed { get; set; }
+
+        [JsonProperty("reddit_video")]
+        public RedditVideo RedditVideo { get; set; }
     }
 }

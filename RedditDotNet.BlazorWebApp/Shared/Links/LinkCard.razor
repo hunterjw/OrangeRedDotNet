@@ -61,24 +61,23 @@
                         <img class="rounded link-content-img" src="@Link.Data.Url" alt="@Link.Data.Title" />
                         break;
                     case LinkType.Video:
-                        @*TODO*@
-                        <p>Video support to be added later</p>
+                        <Video LinkId="@Link.Data.Id" RedditVideo="@GetRedditVideoObject()" />
+
                         break;
                     case LinkType.Gallery:
-                        <Gallery 
-                            LinkId="@Link.Data.Id" 
-                            GalleryData="@Link.Data.GalleryData" 
-                            MediaMetadata="@Link.Data.MediaMetadata" />
+                        <Gallery LinkId="@Link.Data.Id"
+                     GalleryData="@Link.Data.GalleryData"
+                     MediaMetadata="@Link.Data.MediaMetadata" />
                         break;
                     case LinkType.Text:
                         @((MarkupString)HttpUtility.HtmlDecode(Link.Data.SelftextHtml))
                         break;
                     case LinkType.Crosspost:
-                        <LinkCard Link="@(new Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
-                            ContentCollapsed="@ContentCollapsed" />
+                        <LinkCard Link="@(new RedditDotNet.Models.Links.Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
+                      ContentCollapsed="@ContentCollapsed" />
                         break;
                     case LinkType.EmbeddedMedia:
-                        @GetEmbeddedMediaContent();
+                        @GetEmbeddedMediaContent()
                         break;
                 }
             }
