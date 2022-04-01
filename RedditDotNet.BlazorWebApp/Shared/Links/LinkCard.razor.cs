@@ -71,7 +71,14 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                 {
                     image = image.Variants["obfuscated"];
                 }
-                return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
+                if (image.Resolutions?.Count > 0)
+                {
+                    return HttpUtility.HtmlDecode(image.Resolutions.Last().Url);
+                }
+                if (image.Source != null)
+                {
+                    return HttpUtility.HtmlDecode(image.Source.Url);
+                }
             }
 
             if (linkType == LinkType.Gallery)
