@@ -15,12 +15,6 @@ namespace RedditDotNet.BlazorWebApp.Shared
         public RedditService RedditService { get; set; }
 
         /// <summary>
-        /// Navigation manager
-        /// </summary>
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-
-        /// <summary>
         /// To have the nav menu collapsed or not
         /// </summary>
         protected bool CollapseNavMenu = true;
@@ -52,20 +46,13 @@ namespace RedditDotNet.BlazorWebApp.Shared
             CollapseNavMenu = !CollapseNavMenu;
         }
 
-        /// <summary>
-        /// On click event handler for the login button
-        /// </summary>
-        protected void LogInButton_OnClick()
-        {
-            NavigationManager.NavigateTo("login");
-        }
 
         /// <summary>
-        /// On click event handler for the logout button
+        /// Close the nav menu
         /// </summary>
-        protected void LogOutButton_OnClick()
+        protected void CloseNavMenu()
         {
-            NavigationManager.NavigateTo("logout");
+            CollapseNavMenu = true;
         }
 
         /// <summary>
