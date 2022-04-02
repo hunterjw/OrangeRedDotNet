@@ -184,15 +184,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 default:
                     throw new ArgumentException();
             }
-
-            if (!string.IsNullOrWhiteSpace(Subreddit))
-            {
-                var linkSubredditName = LinkListing?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
-                if (!string.IsNullOrWhiteSpace(linkSubredditName))
-                {
-                    Subreddit = linkSubredditName;
-                }
-            }
         }
 
         /// <summary>
