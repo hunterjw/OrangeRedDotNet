@@ -1,0 +1,23 @@
+﻿@page "/settings/blocked"
+
+<SettingsHeader ActiveTab="SettingsNavTab.Blocked" />
+
+<h3>Blocked Users</h3>
+@if (MyBlocked == null)
+{
+	<p>Loading blocked list...</p>
+}
+else
+{
+	<UserList Users="@MyBlocked" DateLabel="User blocked on" />
+}
+
+<h3>Trusted Users</h3>
+@if (MyBlocked == null)
+{
+	<p>Loading trusted list...</p>
+}
+else
+{
+	<UserList Users="@MyTrusted" DateLabel="User trusted on" />
+}

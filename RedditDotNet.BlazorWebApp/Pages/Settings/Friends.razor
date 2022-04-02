@@ -1,0 +1,14 @@
+﻿@page "/settings"
+@page "/settings/friends"
+
+<SettingsHeader ActiveTab="SettingsNavTab.Friends" />
+
+<h3>My Friends</h3>
+@if (MyFriends == null)
+{
+	<p>Loading friends list...</p>
+}
+else
+{
+	<UserList Users="@MyFriends" DateLabel="Friend added on" />
+}

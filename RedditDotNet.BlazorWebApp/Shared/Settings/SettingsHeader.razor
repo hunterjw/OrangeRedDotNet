@@ -1,0 +1,16 @@
+﻿<h2>Settings</h2>
+
+<ul class="nav nav-pills mb-2">
+    <li class="nav-item">
+        <a class="@(ActiveTab == SettingsNavTab.Friends ? "nav-link active" : "nav-link")"
+           href="/settings/friends">
+            Friends
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="@(ActiveTab == SettingsNavTab.Blocked ? "nav-link active" : "nav-link")"
+           href="/settings/blocked">
+            Blocked
+        </a>
+    </li>
+</ul>
