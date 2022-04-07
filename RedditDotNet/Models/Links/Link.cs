@@ -15,8 +15,8 @@ namespace RedditDotNet.Models.Links
             {
                 return LinkType.Unknown;
             }
-            else if (!string.IsNullOrWhiteSpace(Data.PostHint)
-                && Data.PostHint.Equals("image", StringComparison.OrdinalIgnoreCase))
+            else if (!string.IsNullOrWhiteSpace(Data.PostHint) &&
+                Data.PostHint.Equals("image", StringComparison.OrdinalIgnoreCase))
             {
                 return LinkType.Image;
             }
@@ -41,8 +41,8 @@ namespace RedditDotNet.Models.Links
             {
                 return LinkType.Text;
             }
-            else if (Data.MediaEmbed != null ||
-                Data.SecureMediaEmbed != null)
+            else if ((Data.MediaEmbed != null && !string.IsNullOrWhiteSpace(Data.MediaEmbed.Content)) ||
+                (Data.SecureMediaEmbed != null && !string.IsNullOrWhiteSpace(Data.SecureMediaEmbed.Content)))
             {
                 return LinkType.EmbeddedMedia;
             }

@@ -41,7 +41,8 @@
                        Spoiler="@Link.Data.Spoiler"
                        Stickied="@Link.Data.Stickied"
                        Locked="@Link.Data.Locked"
-                       Archived="Link.Data.Archived" />
+                       Archived="Link.Data.Archived"
+                       LinkType="@Link.GetLinkType()" />
             </div>
         </div>
         <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">

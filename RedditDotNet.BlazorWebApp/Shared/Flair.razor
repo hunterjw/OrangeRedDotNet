@@ -2,6 +2,10 @@
 @using RedditDotNet.Models.Links
 @using System.Web
 
+@if (LinkType != null)
+{
+    <span class="badge bg-primary me-1">@LinkType.ToString()</span>
+}
 @if (Over18)
 {
     <span class="badge bg-danger me-1">NSFW</span>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models;
+using RedditDotNet.Models.Links;
 using System;
 using System.Collections.Generic;
 
@@ -65,6 +66,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Parameter]
         public List<FlairRichtext> FlairRichtext { get; set; }
+        /// <summary>
+        /// The type of the Link this flair is attached to
+        /// </summary>
+        [Parameter]
+        public LinkType? LinkType { get; set; } = null;
 
         /// <summary>
         /// Get the css class(es) for the flair badge
