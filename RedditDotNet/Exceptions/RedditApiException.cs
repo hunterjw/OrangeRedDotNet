@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RedditDotNet.Extensions;
+using RedditDotNet.Models;
+using System;
 using System.Net;
 using System.Net.Http;
 
@@ -30,9 +32,13 @@ namespace RedditDotNet.Exceptions
         /// </summary>
         public HttpStatusCode ResponseStatusCode { get; private set; }
         /// <summary>
-        /// Response Content
+        /// Response Content string
         /// </summary>
-        public string ResponseContent { get; private set; }
+        public string ResponseContentString { get; private set; }
+        /// <summary>
+        /// Response Content object
+        /// </summary>
+        public RedditApiError ResponseContent { get; private set; }
         #endregion
 
         /// <inheritdoc/>
@@ -48,9 +54,9 @@ namespace RedditDotNet.Exceptions
                     {
                         _message += $"Request content: {RequestContent}{Environment.NewLine}";
                     }
-                    if (!string.IsNullOrWhiteSpace(ResponseContent))
+                    if (!string.IsNullOrWhiteSpace(ResponseContentString))
                     {
-                        _message += $"Response content: {ResponseContent}{Environment.NewLine}";
+                        _message += $"Response content: {ResponseContentString}{Environment.NewLine}";
                     }
                 }
                 return _message;
@@ -68,7 +74,9 @@ namespace RedditDotNet.Exceptions
             RequestMethod = httpResponse.RequestMessage.Method.Method;
             ResponseStatusCode = httpResponse.StatusCode;
             RequestContent = httpResponse.RequestMessage.Content?.ReadAsStringAsync().Result;
-            ResponseContent = httpResponse.Content.ReadAsStringAsync().Result;
+            ResponseContentString = httpResponse.Content.ReadAsStringAsync().Result;
+
+            ResponseContent = ResponseContentString.FromJson<RedditApiError>();
         }
     }
 }
