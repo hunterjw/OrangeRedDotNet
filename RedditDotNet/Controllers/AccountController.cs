@@ -1,6 +1,8 @@
 ﻿using RedditDotNet.Authentication;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Extensions;
 using RedditDotNet.Models.Account;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Controllers
@@ -48,6 +50,18 @@ namespace RedditDotNet.Controllers
 		{
 			return await Get<Preferences>("/api/v1/me/prefs");
 		}
+
+		/// <summary>
+		/// Set the preferences for the current user
+		/// </summary>
+		/// <param name="preferences">User preferences</param>
+		/// <returns>Updated user preferences</returns>
+		/// <exception cref="RedditApiException"></exception>
+		public async Task<Preferences> SetPreferences(Preferences preferences)
+        {
+			return await Patch<Preferences>("/api/v1/me/prefs", 
+				new Dictionary<string, string> { { "json", preferences.ToJson() } });
+        }
 
 		/// <summary>
 		/// Get awards for the current user

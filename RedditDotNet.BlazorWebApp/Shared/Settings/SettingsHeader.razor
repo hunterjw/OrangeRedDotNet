@@ -2,6 +2,12 @@
 
 <ul class="nav nav-pills mb-2">
     <li class="nav-item">
+        <a class="@(ActiveTab == SettingsNavTab.RedditSettings ? "nav-link active" : "nav-link")"
+           href="/settings/reddit">
+            Reddit Settings
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="@(ActiveTab == SettingsNavTab.Friends ? "nav-link active" : "nav-link")"
            href="/settings/friends">
             Friends

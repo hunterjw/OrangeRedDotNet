@@ -1,19 +1,23 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace RedditDotNet.Models.Parameters
 {
     /// <summary>
     /// Comment sort enum
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum CommentSort
     {
-        [Description("confidence")] Confidence,
-        [Description("top")] Top,
-        [Description("new")] New,
-        [Description("controversial")] Controversial,
-        [Description("old")] Old,
-        [Description("random")] Random,
-        [Description("qa")] QA,
-        [Description("live")] Live
+        [EnumMember(Value = "confidence")] [Description("confidence")] Confidence,
+        [EnumMember(Value = "top")] [Description("top")] Top,
+        [EnumMember(Value = "new")] [Description("new")] New,
+        [EnumMember(Value = "controversial")] [Description("controversial")] Controversial,
+        [EnumMember(Value = "old")] [Description("old")] Old,
+        [EnumMember(Value = "random")] [Description("random")] Random,
+        [EnumMember(Value = "qa")] [Description("qa")] QA,
+        [EnumMember(Value = "live")] [Description("live")] Live
     }
 }

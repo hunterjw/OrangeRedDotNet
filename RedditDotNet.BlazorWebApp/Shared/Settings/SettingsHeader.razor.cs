@@ -7,6 +7,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Settings
     /// </summary>
     public enum SettingsNavTab
     {
+        RedditSettings,
         Friends,
         Blocked
     }

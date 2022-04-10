@@ -270,5 +270,50 @@ namespace RedditDotNet.Controllers
             return await DeserializeToObject<T>(await Post(relativeUrl, queryParameters));
         }
         #endregion
+
+        #region Patch
+        /// <summary>
+        /// HTTP Patch
+        /// </summary>
+        /// <param name="relativeUrl">Relative URL</param>
+        /// <param name="queryParameters">Query parameters (sent as request content, form URL encoded)</param>
+        /// <returns>HttpResponseMessage</returns>
+        /// <exception cref="RedditApiException"></exception>
+        internal async Task<HttpResponseMessage> Patch(string relativeUrl, IDictionary<string, string> queryParameters)
+        {
+            UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
+            HttpRequestMessage request = new(HttpMethod.Patch, builder.ToString());
+            var token = await RedditAuthentication.GetBearerToken();
+            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            if (!string.IsNullOrWhiteSpace(UserAgent))
+            {
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+            }
+            request.Content = new FormUrlEncodedContent(queryParameters);
+
+            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new RedditApiException(response);
+            }
+
+            string responseJson = await response.Content.ReadAsStringAsync();
+
+            return response;
+        }
+
+        /// <summary>
+        /// HTTP Patch with the content deserialized to <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type to deserialize to</typeparam>
+        /// <param name="relativeUrl">Relative URL</param>
+        /// <param name="queryParameters">Query parameters (sent as request content, form URL encoded)</param>
+        /// <returns><typeparamref name="T"/> object</returns>
+        /// <exception cref="RedditApiException"></exception>
+        internal async Task<T> Patch<T>(string relativeUrl, IDictionary<string, string> queryParameters)
+        {
+            return await DeserializeToObject<T>(await Patch(relativeUrl, queryParameters));
+        }
+        #endregion
     }
 }
