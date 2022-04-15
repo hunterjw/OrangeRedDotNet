@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared
@@ -13,6 +15,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Current score on the votable thing
@@ -90,8 +97,15 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task Upvote()
         {
-            await RedditService.GetClient().LinksAndComments.Vote(Id, 1, 2);
-            Likes = true;
+            try
+            {
+                await RedditService.GetClient().LinksAndComments.Vote(Id, 1, 2);
+                Likes = true;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error upvoting"));
+            }
         }
 
         /// <summary>
@@ -100,8 +114,15 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task Downvote()
         {
-            await RedditService.GetClient().LinksAndComments.Vote(Id, -1, 2);
-            Likes = false;
+            try
+            {
+                await RedditService.GetClient().LinksAndComments.Vote(Id, -1, 2);
+                Likes = false;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error downvoting"));
+            }
         }
 
         /// <summary>
@@ -110,8 +131,15 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <returns>Awaitable task</returns>
         private async Task ClearVote()
         {
-            await RedditService.GetClient().LinksAndComments.Vote(Id, 0, 2);
-            Likes = null;
+            try
+            {
+                await RedditService.GetClient().LinksAndComments.Vote(Id, 0, 2);
+                Likes = null;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error clearing vote"));
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Multis;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Modal instance
@@ -35,12 +42,10 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// State of selected MultiReddits
         /// </summary>
         protected List<MultiRedditState> MultiRedditStates { get; set; }
-
         /// <summary>
         /// If the create new multi input group is active or not
         /// </summary>
         protected bool CreateNewActive { get; set; } = false;
-
         /// <summary>
         /// New MultiReddit name
         /// </summary>
@@ -49,17 +54,24 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            var multiReddits = await RedditService.GetClient().Multis.GetMine();
-            MultiRedditStates = new List<MultiRedditState>();
-            foreach (var multi in multiReddits)
+            try
             {
-                bool alreadyAdded = multi.Data.Subreddits.Any(_ => _.Name.Equals(SubredditName));
-                MultiRedditStates.Add(new MultiRedditState
+                var multiReddits = await RedditService.GetClient().Multis.GetMine();
+                MultiRedditStates = new List<MultiRedditState>();
+                foreach (var multi in multiReddits)
                 {
-                    MultiReddit = multi,
-                    OriginalState = alreadyAdded,
-                    CurrentState = alreadyAdded
-                });
+                    bool alreadyAdded = multi.Data.Subreddits.Any(_ => _.Name.Equals(SubredditName));
+                    MultiRedditStates.Add(new MultiRedditState
+                    {
+                        MultiReddit = multi,
+                        OriginalState = alreadyAdded,
+                        CurrentState = alreadyAdded
+                    });
+                }
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error getting multireddits"));
             }
         }
 
@@ -106,26 +118,34 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// <returns>Awaitable task</returns>
         protected async Task CreateNewSubmittButton_OnClick()
         {
-            var updateModel = new MultiRedditUpdate()
+            try
             {
-                DescriptionMd = "",
-                DisplayName = NewMultiName,
-                Visibility = "private",
-                KeyColor = "",
-                Subreddits = new List<MultiSubredditUpdate>()
-            };
-            string path = $"user/{RedditService.Identity.Name}/m/{NewMultiName.FormatNewMultiName()}";
-            MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModel);
-            MultiRedditStates.Add(new MultiRedditState
-            {
-                MultiReddit = newMulti,
-                OriginalState = false,
-                CurrentState = true,
-            });
-            StateHasChanged();
+                var updateModel = new MultiRedditUpdate()
+                {
+                    DescriptionMd = "",
+                    DisplayName = NewMultiName,
+                    Visibility = "private",
+                    KeyColor = "",
+                    Subreddits = new List<MultiSubredditUpdate>()
+                };
+                string path = $"user/{RedditService.Identity.Name}/m/{NewMultiName.FormatNewMultiName()}";
+                MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModel);
+                MultiRedditStates.Add(new MultiRedditState
+                {
+                    MultiReddit = newMulti,
+                    OriginalState = false,
+                    CurrentState = true,
+                });
+                StateHasChanged();
 
-            NewMultiName = string.Empty;
-            CreateNewButton_OnClick();
+                NewMultiName = string.Empty;
+                CreateNewButton_OnClick();
+                ToastService.ShowSuccess("Multireddit created");
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error creating multireddit"));
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Account;
 using System.Threading.Tasks;
 
@@ -14,6 +16,11 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Current user preferences
@@ -23,7 +30,14 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            Preferences = await RedditService.GetClient().Account.GetPreferences();
+            try
+            {
+                Preferences = await RedditService.GetClient().Account.GetPreferences();
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading preferences"));
+            }
         }
 
         /// <summary>
@@ -32,7 +46,15 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// <returns>Awaitable task</returns>
         protected async Task HandleValidSubmit()
         {
-            Preferences = await RedditService.GetClient().Account.SetPreferences(Preferences);
+            try
+            {
+                Preferences = await RedditService.GetClient().Account.SetPreferences(Preferences);
+                ToastService.ShowSuccess("Preferences saved");
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error saving preferences"));
+            }
         }
     }
 }

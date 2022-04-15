@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedditDotNet.Exceptions;
+using System;
 using System.Linq;
 
 namespace RedditDotNet.BlazorWebApp
@@ -44,5 +45,24 @@ namespace RedditDotNet.BlazorWebApp
         /// <returns>Path component</returns>
         public static string FormatNewMultiName(this string input) =>
             new(input.ToLower().Select(_ => char.IsWhiteSpace(_) ? '_' : _).ToArray());
+
+        /// <summary>
+        /// Make an error message to show to the user
+        /// </summary>
+        /// <param name="redditApiException">Reddit API exception</param>
+        /// <param name="error">Error description</param>
+        /// <returns>Error message</returns>
+        public static string MakeErrorMessage(this RedditApiException redditApiException, string error)
+        {
+            string message = string.Empty;
+            message += error;
+            if (!string.IsNullOrWhiteSpace(error) &&
+                !string.IsNullOrWhiteSpace(redditApiException?.ResponseContent?.Explanation))
+            {
+                message += ": ";
+            }
+            message += redditApiException?.ResponseContent?.Explanation;
+            return message;
+        }
     }
 }

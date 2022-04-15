@@ -1,7 +1,9 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Multis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,18 +20,21 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
-
         /// <summary>
         /// Injected Modal service
         /// </summary>
         [Inject]
         public IModalService ModalService { get; set; }
-
         /// <summary>
         /// Navigation manager
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// MultiReddit list
@@ -43,7 +48,14 @@ namespace RedditDotNet.BlazorWebApp.Pages
             {
                 NavigationManager.NavigateTo("");
             }
-            MultiReddits = await RedditService.GetClient().Multis.GetMine(true);
+            try
+            {
+                MultiReddits = await RedditService.GetClient().Multis.GetMine(true);
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading multireddits"));
+            }
         }
 
         /// <summary>
@@ -73,11 +85,19 @@ namespace RedditDotNet.BlazorWebApp.Pages
             ModalResult result = await modal.Result;
             if (!result.Cancelled)
             {
-                var updateModelResult = result.Data as MultiRedditUpdate;
-                string path = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
-                MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModelResult, true);
-                MultiReddits.Add(newMulti);
-                StateHasChanged();
+                try
+                {
+                    var updateModelResult = result.Data as MultiRedditUpdate;
+                    string path = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
+                    MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModelResult, true);
+                    MultiReddits.Add(newMulti);
+                    StateHasChanged();
+                    ToastService.ShowSuccess("Multireddit added");
+                }
+                catch (RedditApiException rex)
+                {
+                    ToastService.ShowError(rex.MakeErrorMessage("Error adding multireddit"));
+                }
             }
         }
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Account;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages.Settings
@@ -15,6 +17,11 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Friended users
@@ -24,19 +31,18 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// New friend username
         /// </summary>
         protected string NewFriend { get; set; } = string.Empty;
-        /// <summary>
-        /// If adding a new friend was successful
-        /// </summary>
-        protected bool? NewFriendSuccess { get; set; }
-        /// <summary>
-        /// New friend error string
-        /// </summary>
-        protected string NewFriendError { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            MyFriends = await RedditService.GetClient().Account.GetFriends();
+            try
+            {
+                MyFriends = await RedditService.GetClient().Account.GetFriends();
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading friends"));
+            }
         }
 
         /// <summary>
@@ -45,25 +51,21 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// <returns>Awaitable task</returns>
         protected async Task HandleValidNewFriendSubmit()
         {
-            NewFriendSuccess = null;
-            NewFriendError = null;
             if (!string.IsNullOrWhiteSpace(NewFriend))
             {
                 try
                 {
                     var newFriend = await RedditService.GetClient().Users.UpdateFriend(NewFriend);
-                    MyFriends.Data.Children.Add(newFriend);
+                    if (MyFriends?.Data?.Children?.Count(_ => _.Name.Equals(newFriend.Name)) < 1)
+                    {
+                        MyFriends.Data.Children.Add(newFriend);
+                        ToastService.ShowSuccess("Friend added");
+                    }
                     NewFriend = string.Empty;
-                    NewFriendSuccess = true;
                 }
                 catch (RedditApiException rex)
                 {
-                    NewFriendError = $"Error adding new friend";
-                    if (!string.IsNullOrWhiteSpace(rex.ResponseContent?.Explanation))
-                    {
-                        NewFriendError += $": {rex.ResponseContent?.Explanation}";
-                    }
-                    NewFriendSuccess = false;
+                    ToastService.ShowError(rex.MakeErrorMessage("Error adding new friend"));
                 }
             }
         }

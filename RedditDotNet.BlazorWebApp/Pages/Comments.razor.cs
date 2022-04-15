@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Parameters;
@@ -19,12 +21,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
-        
         /// <summary>
         /// Navigation manager
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
         #endregion
 
         #region Route parameters
@@ -58,22 +64,29 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            LinkWithComments = null;
-
-            if (string.IsNullOrWhiteSpace(Sort))
+            try
             {
-                Sort = "confidence";
+                LinkWithComments = null;
+
+                if (string.IsNullOrWhiteSpace(Sort))
+                {
+                    Sort = "confidence";
+                }
+
+                LinkWithComments = await RedditService.GetClient().Listings.GetComments(
+                    ArticleId,
+                    subreddit: Subreddit,
+                    parameters: BuildCommentListingParameters());
+
+                var linkSubredditName = LinkWithComments?.Links?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
+                if (!string.IsNullOrWhiteSpace(linkSubredditName))
+                {
+                    Subreddit = linkSubredditName;
+                }
             }
-
-            LinkWithComments = await RedditService.GetClient().Listings.GetComments(
-                ArticleId,
-                subreddit: Subreddit,
-                parameters: BuildCommentListingParameters());
-
-            var linkSubredditName = LinkWithComments?.Links?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
-            if (!string.IsNullOrWhiteSpace(linkSubredditName))
+            catch (RedditApiException rex)
             {
-                Subreddit = linkSubredditName;
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading comments"));
             }
         }
 

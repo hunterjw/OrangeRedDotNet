@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Account;
 using System.Threading.Tasks;
 
@@ -14,6 +16,11 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Blocked users
@@ -27,8 +34,22 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// <inheritdoc/>
         protected override async Task OnInitializedAsync()
         {
-            MyBlocked = await RedditService.GetClient().Account.GetBlocked();
-            MyTrusted = await RedditService.GetClient().Account.GetTrusted();
+            try
+            {
+                MyBlocked = await RedditService.GetClient().Account.GetBlocked();
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading blocked users"));
+            }
+            try
+            {
+                MyTrusted = await RedditService.GetClient().Account.GetTrusted();
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading trusted users"));
+            }
         }
     }
 }

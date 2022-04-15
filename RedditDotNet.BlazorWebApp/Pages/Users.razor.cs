@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
@@ -22,12 +24,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
-
         /// <summary>
         /// Navigation manager
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         #region Route Parameters
         /// <summary>
@@ -84,43 +90,35 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <summary>
         /// Account 
         /// </summary>
-        protected Models.Account.Account Account { get; set; }
-
+        protected Account Account { get; set; }
         /// <summary>
         /// Trophies for the current account
         /// </summary>
         protected TrophyList Trophies { get; set; }
-
         /// <summary>
         /// Results for the user link/comment listings
         /// </summary>
         protected Listing<ILinkOrComment> LinksOrComments { get; set; }
-
         /// <summary>
         /// Results for the comments
         /// </summary>
         protected Listing<CommentBase> Comments { get; set; }
-
         /// <summary>
         /// Results for the links
         /// </summary>
         protected Listing<Link> Links { get; set; }
-
         /// <summary>
         /// If the profile is loaded or not
         /// </summary>
         protected bool ProfileLoaded { get; set; } = false;
-
         /// <summary>
         /// If the listing is loaded or not
         /// </summary>
         protected bool ListingLoaded { get; set; } = false;
-
         /// <summary>
         /// If the current profile is the current user
         /// </summary>
         protected bool IsSelf { get; set; } = false;
-
         /// <summary>
         /// Karma breakdown for the current user (if the user is self)
         /// </summary>
@@ -133,6 +131,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             LinksOrComments = null;
             Comments = null;
             Links = null;
+
 
             Reddit redditClient = RedditService.GetClient();
 
@@ -157,47 +156,61 @@ namespace RedditDotNet.BlazorWebApp.Pages
 
             if (!ProfileLoaded)
             {
-                Account = await redditClient.Users.GetAbout(UserName);
-                Trophies = await redditClient.Users.GetTrophies(Account.Data.Name);
-
-                if (RedditService.Identity != null 
-                    && Account.Data.Name.Equals(RedditService.Identity.Name))
+                try
                 {
-                    IsSelf = true;
-                    KarmaBreakdown = await redditClient.Account.GetKarmaBreakdown();
+                    Account = await redditClient.Users.GetAbout(UserName);
+                    Trophies = await redditClient.Users.GetTrophies(Account.Data.Name);
+
+                    if (RedditService.Identity != null
+                        && Account.Data.Name.Equals(RedditService.Identity.Name))
+                    {
+                        IsSelf = true;
+                        KarmaBreakdown = await redditClient.Account.GetKarmaBreakdown();
+                    }
+
+                    ProfileLoaded = true;
                 }
-
-                ProfileLoaded = true;
+                catch (RedditApiException rex)
+                {
+                    ToastService.ShowError(rex.MakeErrorMessage("Error loading profile"));
+                }
             }
 
-            switch (GetListingType())
+            try
             {
-                case UserProfileListingType.Overview:
-                    LinksOrComments = await redditClient.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Comments:
-                    Comments = await redditClient.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Submitted:
-                    Links = await redditClient.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Gilded:
-                    LinksOrComments = await redditClient.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Upvoted:
-                    LinksOrComments = await redditClient.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Downvoted:
-                    LinksOrComments = await redditClient.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Hidden:
-                    LinksOrComments = await redditClient.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
-                    break;
-                case UserProfileListingType.Saved:
-                    LinksOrComments = await redditClient.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
-                    break;
+                switch (GetListingType())
+                {
+                    case UserProfileListingType.Overview:
+                        LinksOrComments = await redditClient.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Comments:
+                        Comments = await redditClient.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Submitted:
+                        Links = await redditClient.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Gilded:
+                        LinksOrComments = await redditClient.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Upvoted:
+                        LinksOrComments = await redditClient.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Downvoted:
+                        LinksOrComments = await redditClient.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Hidden:
+                        LinksOrComments = await redditClient.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                    case UserProfileListingType.Saved:
+                        LinksOrComments = await redditClient.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
+                        break;
+                }
+                ListingLoaded = true;
             }
-            ListingLoaded = true;
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading content"));
+            }
         }
 
         /// <summary>

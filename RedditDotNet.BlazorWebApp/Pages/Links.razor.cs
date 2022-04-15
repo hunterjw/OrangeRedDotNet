@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Multis;
 using RedditDotNet.Models.Parameters;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -19,12 +20,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
-
         /// <summary>
         /// Navigation manager
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
         #endregion
 
         #region Query Parameters
@@ -87,17 +92,14 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// Links displayed on this page
         /// </summary>
         protected Listing<Link> LinkListing { get; set; }
-
         /// <summary>
         /// If the listing is a MultiReddit or not
         /// </summary>
         protected bool IsMultiReddit => !string.IsNullOrWhiteSpace(MultiName);
-
         /// <summary>
         /// MultiReddit info
         /// </summary>
         protected MultiReddit MultiReddit { get; set; }
-
         /// <summary>
         /// If the multireddit data is loaded or not
         /// </summary>
@@ -106,83 +108,90 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            Reddit redditClient = RedditService.GetClient();
-
-            // Do this so when loading the next page the previous content isn't visible
-            // (When navigating to the same page with different parameters, the entire 
-            // page isn't disposed)
-            LinkListing = null;
-
-            if (IsMultiReddit)
+            try
             {
-                if (MultiRedditLoaded && !GetMultiRedditUrl(true).Equals(MultiReddit.Data.Path.TrimEnd('/')))
+                Reddit redditClient = RedditService.GetClient();
+
+                // Do this so when loading the next page the previous content isn't visible
+                // (When navigating to the same page with different parameters, the entire 
+                // page isn't disposed)
+                LinkListing = null;
+
+                if (IsMultiReddit)
                 {
-                    MultiRedditLoaded = false;
+                    if (MultiRedditLoaded && !GetMultiRedditUrl(true).Equals(MultiReddit.Data.Path.TrimEnd('/')))
+                    {
+                        MultiRedditLoaded = false;
+                    }
+                    if (!MultiRedditLoaded)
+                    {
+                        MultiReddit = await redditClient.Multis.GetMulti(GetMultiRedditUrl(true), true);
+                        MultiRedditLoaded = true;
+                    }
                 }
-                if (!MultiRedditLoaded)
+
+                if (string.IsNullOrWhiteSpace(Timescale))
                 {
-                    MultiReddit = await redditClient.Multis.GetMulti(GetMultiRedditUrl(true), true);
-                    MultiRedditLoaded = true;
+                    Timescale = "hour";
+                }
+
+                var listingTypeEnum = GetListingType();
+                if (string.IsNullOrWhiteSpace(ListingType))
+                {
+                    if (listingTypeEnum == LinkListingType.Best)
+                    {
+                        // This means we're on the home page, which is "best"
+                        ListingType = "best";
+                    }
+                    else if (listingTypeEnum == LinkListingType.Hot)
+                    {
+                        // This means we're on a subreddit landing page, which is "hot"
+                        ListingType = "hot";
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                }
+
+                switch (listingTypeEnum)
+                {
+                    case LinkListingType.Best:
+                        Subreddit = string.Empty;
+                        LinkListing = await redditClient.Listings.GetBest(BuildListingParameters());
+                        break;
+                    case LinkListingType.Hot:
+                        LinkListing = IsMultiReddit ?
+                            await redditClient.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) :
+                            await redditClient.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
+                        break;
+                    case LinkListingType.New:
+                        LinkListing = IsMultiReddit ?
+                            await redditClient.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) :
+                            await redditClient.Listings.GetNew(BuildListingParameters(), Subreddit);
+                        break;
+                    case LinkListingType.Rising:
+                        LinkListing = IsMultiReddit ?
+                            await redditClient.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) :
+                            await redditClient.Listings.GetRising(BuildListingParameters(), Subreddit);
+                        break;
+                    case LinkListingType.Controversial:
+                        LinkListing = IsMultiReddit ?
+                            await redditClient.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) :
+                            await redditClient.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
+                        break;
+                    case LinkListingType.Top:
+                        LinkListing = IsMultiReddit ?
+                            await redditClient.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) :
+                            await redditClient.Listings.GetTop(BuildSortListingParameters(), Subreddit);
+                        break;
+                    default:
+                        throw new ArgumentException();
                 }
             }
-
-            if (string.IsNullOrWhiteSpace(Timescale))
+            catch (RedditApiException rex)
             {
-                Timescale = "hour";
-            }
-
-            var listingTypeEnum = GetListingType();
-            if (string.IsNullOrWhiteSpace(ListingType))
-            {
-                if (listingTypeEnum == LinkListingType.Best)
-                {
-                    // This means we're on the home page, which is "best"
-                    ListingType = "best";
-                }
-                else if (listingTypeEnum == LinkListingType.Hot)
-                {
-                    // This means we're on a subreddit landing page, which is "hot"
-                    ListingType = "hot";
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
-            }
-
-            switch (listingTypeEnum)
-            {
-                case LinkListingType.Best:
-                    Subreddit = string.Empty;
-                    LinkListing = await redditClient.Listings.GetBest(BuildListingParameters());
-                    break;
-                case LinkListingType.Hot:
-                    LinkListing = IsMultiReddit ?
-                        await redditClient.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) : 
-                        await redditClient.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
-                    break;
-                case LinkListingType.New:
-                    LinkListing = IsMultiReddit ?
-                        await redditClient.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) : 
-                        await redditClient.Listings.GetNew(BuildListingParameters(), Subreddit);
-                    break;
-                case LinkListingType.Rising:
-                    LinkListing = IsMultiReddit ?
-                        await redditClient.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) : 
-                        await redditClient.Listings.GetRising(BuildListingParameters(), Subreddit);
-                    break;
-                case LinkListingType.Controversial:
-                    LinkListing = IsMultiReddit ?
-                        await redditClient.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) : 
-                        await redditClient.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
-                    break;
-                case LinkListingType.Top:
-                    LinkListing = IsMultiReddit ?
-                        await redditClient.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) : 
-                        await redditClient.Listings.GetTop(BuildSortListingParameters(), Subreddit);
-                    break;
-                default:
-                    throw new ArgumentException();
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading links"));
             }
         }
 

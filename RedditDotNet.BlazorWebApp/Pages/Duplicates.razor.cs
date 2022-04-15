@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Parameters;
 using System.Linq;
@@ -17,6 +19,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
         #endregion
 
         #region Route parameters
@@ -67,16 +74,23 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
-            DuplicateLinks = null;
-
-            DuplicateLinks = await RedditService.GetClient().Listings.GetDuplicates(
-                ArticleId,
-                BuildDuplicateListingParameters());
-
-            var linkSubredditName = DuplicateLinks?.Originals?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
-            if (!string.IsNullOrWhiteSpace(linkSubredditName))
+            try
             {
-                Subreddit = linkSubredditName;
+                DuplicateLinks = null;
+
+                DuplicateLinks = await RedditService.GetClient().Listings.GetDuplicates(
+                    ArticleId,
+                    BuildDuplicateListingParameters());
+
+                var linkSubredditName = DuplicateLinks?.Originals?.Data?.Children?.FirstOrDefault()?.Data?.Subreddit;
+                if (!string.IsNullOrWhiteSpace(linkSubredditName))
+                {
+                    Subreddit = linkSubredditName;
+                }
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error loading duplicates"));
             }
         }
 

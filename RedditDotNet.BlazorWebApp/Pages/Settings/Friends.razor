@@ -12,17 +12,6 @@
 		<InputText class="form-control" id="friendName" @bind-Value="NewFriend" />
         <button type="submit" class="btn btn-primary">Add</button>
 	</div>
-	@if (NewFriendSuccess != null)
-	{
-		@if (NewFriendSuccess ?? false)
-		{
-			<p class="text-success">New friend added</p>
-		}
-		else
-		{
-			<p class="text-danger">@NewFriendError</p>
-		}
-	}
 </EditForm>
 
 <h3>My Friends</h3>

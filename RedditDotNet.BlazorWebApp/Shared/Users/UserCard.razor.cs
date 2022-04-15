@@ -1,7 +1,9 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
+using RedditDotNet.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,12 +19,16 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         [Inject]
         public IModalService ModalService { get; set; }
-
         /// <summary>
         /// Reddit service
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Toast service
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
 
         /// <summary>
         /// Account data
@@ -34,7 +40,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// User title
         /// </summary>
         protected string Title { get; set; } = null;
-
         /// <summary>
         /// User description
         /// </summary>
@@ -64,32 +69,39 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         protected async Task AddToMultiRedditButton_OnClick()
         {
-            if (!RedditService.LoggedIn)
+            try
             {
-                return;
-            }
-            Reddit reddit = RedditService.GetClient();
-            var parameters = new ModalParameters();
-            parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
-            IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters);
-            ModalResult result = await modal.Result;
-            if (!result.Cancelled)
-            {
-                var multiRedditStates = result.Data as List<MultiRedditState>;
-                foreach (var multiState in multiRedditStates)
+                if (!RedditService.LoggedIn)
                 {
-                    if (multiState.OriginalState != multiState.CurrentState)
+                    return;
+                }
+                Reddit reddit = RedditService.GetClient();
+                var parameters = new ModalParameters();
+                parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
+                IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters);
+                ModalResult result = await modal.Result;
+                if (!result.Cancelled)
+                {
+                    var multiRedditStates = result.Data as List<MultiRedditState>;
+                    foreach (var multiState in multiRedditStates)
                     {
-                        if (multiState.CurrentState)
+                        if (multiState.OriginalState != multiState.CurrentState)
                         {
-                            await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
-                        }
-                        else
-                        {
-                            await reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                            if (multiState.CurrentState)
+                            {
+                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                            }
+                            else
+                            {
+                                await reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                            }
                         }
                     }
                 }
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error updating multireddits"));
             }
         }
     }
