@@ -34,9 +34,9 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         }
 
         /// <summary>
-        /// OnClick event handler for the Save button
+        /// Handler for the Save button
         /// </summary>
-        protected void SaveButton_OnClick()
+        protected void HandleValidSubmit()
         {
             ModalInstance.CloseAsync(ModalResult.Ok(UpdateModel));
         }

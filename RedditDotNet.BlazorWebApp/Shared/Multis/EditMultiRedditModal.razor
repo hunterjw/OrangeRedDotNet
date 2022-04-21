@@ -1,29 +1,31 @@
-﻿<form>
+﻿<EditForm Model="UpdateModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+
     <div class="mb-3">
         <label for="nameInput" class="form-label">Name</label>
-        <input type="text" class="form-control" id="nameInput" @bind="UpdateModel.DisplayName">
+        <InputText class="form-control" id="nameInput" @bind-Value="UpdateModel.DisplayName"></InputText>
     </div>
     <div class="mb-3">
         <label for="descriptionInput" class="form-label">Description</label>
-        <textarea class="form-control" id="descriptionInput" rows="3" @bind="UpdateModel.DescriptionMd"></textarea>
+        <InputTextArea class="form-control" id="descriptionInput" rows="3" @bind-Value="UpdateModel.DescriptionMd"></InputTextArea>
     </div>
     @if (!HideVisibility)
     {
         <div class="mb-3">
             <label for="visibilitySelect" class="form-label">Privacy</label>
-            <select class="form-select" id="visibilitySelect" @bind="UpdateModel.Visibility">
+            <InputSelect class="form-select" id="visibilitySelect" @bind-Value="UpdateModel.Visibility">
                 <option value="private">Private</option>
                 <option value="public">Public</option>
-            </select>
+            </InputSelect>
         </div>
     }
     <div class="btn-group" role="group" style="width: 100%;">
         <button type="button" class="btn btn-secondary" @onclick="CancelButton_OnClick">
             Cancel
         </button>
-        <button type="button" class="btn btn-success" @onclick="SaveButton_OnClick">
+        <button type="submit" class="btn btn-success">
             Save
         </button>
     </div>
-</form>
+</EditForm>
 
