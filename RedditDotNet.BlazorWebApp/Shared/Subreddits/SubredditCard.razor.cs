@@ -4,26 +4,29 @@ using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Models;
+using RedditDotNet.Models.Subreddits;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace RedditDotNet.BlazorWebApp.Shared.Users
+namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
 {
     /// <summary>
-    /// User profile card component
+    /// Subreddit card
     /// </summary>
-    public partial class UserCard
+    public partial class SubredditCard
     {
-        /// <summary>
-        /// Injected Modal service
-        /// </summary>
-        [Inject]
-        public IModalService ModalService { get; set; }
         /// <summary>
         /// Reddit service
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Modal service
+        /// </summary>
+        [Inject]
+        public IModalService ModalService { get; set; }
         /// <summary>
         /// Toast service
         /// </summary>
@@ -31,37 +34,32 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         public IToastService ToastService { get; set; }
 
         /// <summary>
-        /// Account data
+        /// Subreddit details
         /// </summary>
         [Parameter]
-        public Models.Account.AccountData AccountData { get; set; }
+        public Thing<Subreddit> SubredditDetails { get; set; }
 
         /// <summary>
-        /// User title
+        /// If the content is collapsed
         /// </summary>
-        protected string Title { get; set; } = null;
-        /// <summary>
-        /// User description
-        /// </summary>
-        protected string Description { get; set; } = null;
+        protected bool ContentCollapsed { get; set; } = true;
 
-        /// <inheritdoc/>
-        protected override void OnParametersSet()
+        /// <summary>
+        /// Get the icon URL for this subreddit
+        /// </summary>
+        /// <returns>Image URL</returns>
+        protected string GetIconUrl()
         {
-            // Title
-            if (!string.IsNullOrWhiteSpace(AccountData?.Subreddit?.Title))
+            if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.IconImg))
             {
-                Title = AccountData.Subreddit.Title;
+                return SubredditDetails.Data.IconImg;
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.CommunityIcon))
             {
-                Title = AccountData.Name;
+                return HttpUtility.HtmlDecode(SubredditDetails.Data.CommunityIcon);
             }
-            // Description
-            if (!string.IsNullOrWhiteSpace(AccountData?.Subreddit?.PublicDescription))
-            {
-                Description = AccountData.Subreddit.PublicDescription;
-            }
+            // TODO replace this with locally hosted resource
+            return "https://via.placeholder.com/256";
         }
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
                 }
                 Reddit reddit = RedditService.GetClient();
                 var parameters = new ModalParameters();
-                parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
+                parameters.Add("SubredditName", SubredditDetails.Data.DisplayName);
                 IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters);
                 ModalResult result = await modal.Result;
                 if (!result.Cancelled)
@@ -89,11 +87,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
                         {
                             if (multiState.CurrentState)
                             {
-                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, SubredditDetails.Data.DisplayName);
                             }
                             else
                             {
-                                await reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                                await reddit.Multis.DeleteSubreddit(multiState.MultiReddit.Data.Path, SubredditDetails.Data.DisplayName);
                             }
                         }
                     }

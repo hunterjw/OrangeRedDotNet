@@ -13,7 +13,16 @@
 
 @if (!string.IsNullOrWhiteSpace(Subreddit))
 {
-    <h2>@Subreddit</h2>
+    @if (!SubredditDetailsLoaded)
+    {
+        <h2>@Subreddit</h2>
+    }
+    else
+    {
+        <SubredditCard SubredditDetails="@SubredditDetails" />
+        <SubredditRulesCard Rules="@Rules" />
+        <hr />
+    }
 }
 else if (IsMultiReddit)
 {

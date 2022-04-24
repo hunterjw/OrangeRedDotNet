@@ -28,7 +28,7 @@
                            FlairType="@Link.Data.AuthorFlairType" />
                 </h6>
                 <h6 class="card-subtitle text-muted mb-1">
-                    @Link.Data.CreatedUtc.ToDateTimeUtc()
+                    @Link.Data.CreatedUtc.ToLocalDateTime()
                 </h6>
                 <Awardings Data="@Link.Data.AllAwardings" />
                 <Flair FlairBackgroundColor="@Link.Data.LinkFlairBackgroundColor"

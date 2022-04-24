@@ -28,11 +28,11 @@ namespace RedditDotNet.BlazorWebApp
         }
 
         /// <summary>
-        /// Convert a unix timestamp to a UTC DateTime
+        /// Convert a unix timestamp to a local DateTime
         /// </summary>
         /// <param name="timestampUtc">Unix timestamp</param>
-        /// <returns>UTC DateTime</returns>
-        public static DateTime ToDateTimeUtc(this double timestampUtc)
+        /// <returns>Local DateTime</returns>
+        public static DateTime ToLocalDateTime(this double timestampUtc)
         {
             return DateTimeOffset.FromUnixTimeSeconds((long)timestampUtc)
                 .ToLocalTime().DateTime;

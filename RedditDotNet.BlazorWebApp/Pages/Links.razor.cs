@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
+using RedditDotNet.Models;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Multis;
 using RedditDotNet.Models.Parameters;
+using RedditDotNet.Models.Subreddits;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -104,6 +106,18 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// If the multireddit data is loaded or not
         /// </summary>
         protected bool MultiRedditLoaded { get; set; }
+        /// <summary>
+        /// Subreddit details
+        /// </summary>
+        protected Thing<Subreddit> SubredditDetails { get; set; }
+        /// <summary>
+        /// Subreddit rules
+        /// </summary>
+        protected RulesResponse Rules { get; set; }
+        /// <summary>
+        /// If the subreddit details are loaded or not
+        /// </summary>
+        protected bool SubredditDetailsLoaded { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -117,7 +131,21 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 // page isn't disposed)
                 LinkListing = null;
 
-                if (IsMultiReddit)
+                if (!string.IsNullOrWhiteSpace(Subreddit) && 
+                    !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
+                    {
+                        SubredditDetailsLoaded = false;
+                    }
+                    if (!SubredditDetailsLoaded)
+                    {
+                        SubredditDetails = await redditClient.Subreddits.GetAbout(Subreddit);
+                        Rules = await redditClient.Subreddits.GetRules(Subreddit);
+                        SubredditDetailsLoaded = true;
+                    }
+                }
+                else if (IsMultiReddit)
                 {
                     if (MultiRedditLoaded && !GetMultiRedditUrl(true).Equals(MultiReddit.Data.Path.TrimEnd('/')))
                     {

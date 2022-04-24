@@ -107,5 +107,21 @@ namespace RedditDotNet
             }
         }
 		private LinksAndCommentsController LinksAndCommentsController = null;
+
+		/// <summary>
+		/// Subreddit operations
+		/// </summary>
+		public SubredditsController Subreddits
+        {
+			get
+            {
+				if (SubredditsController == null)
+                {
+					SubredditsController = new SubredditsController(UserAgent, RedditAuthentication);
+                }
+				return SubredditsController;
+            }
+        }
+		private SubredditsController SubredditsController = null;
 	}
 }
