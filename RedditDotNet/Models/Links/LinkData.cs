@@ -333,7 +333,7 @@ namespace RedditDotNet.Models.Links
         public bool IsVideo { get; set; }
 
         [JsonProperty("sr_detail")]
-        public Subreddit SubredditDetail { get; set; }
+        public SubredditData SubredditDetail { get; set; }
 
         [JsonProperty("crosspost_parent_list")]
         public List<LinkData> CrosspostParentList { get; set; }

@@ -20,10 +20,10 @@ namespace RedditDotNet.Models.Links
         public int ThumbnailWidth { get; set; }
 
         [JsonProperty("height")]
-        public int Height { get; set; }
+        public int? Height { get; set; }
 
         [JsonProperty("width")]
-        public int Width { get; set; }
+        public int? Width { get; set; }
 
         [JsonProperty("html")]
         public string Html { get; set; }

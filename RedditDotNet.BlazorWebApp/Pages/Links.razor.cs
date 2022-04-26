@@ -109,7 +109,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// <summary>
         /// Subreddit details
         /// </summary>
-        protected Thing<Subreddit> SubredditDetails { get; set; }
+        protected Subreddit SubredditDetails { get; set; }
         /// <summary>
         /// Subreddit rules
         /// </summary>

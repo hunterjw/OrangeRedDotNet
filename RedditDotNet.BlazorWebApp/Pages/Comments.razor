@@ -1,10 +1,8 @@
 ﻿@page "/r/{subreddit}/comments/{articleId}"
-@using RedditDotNet.Models.Links
-
-<h2>@Subreddit</h2>
 
 @if (LinkWithComments == null)
 {
+    <h2>@Subreddit</h2>
     <p>Loading...</p>
 }
 else

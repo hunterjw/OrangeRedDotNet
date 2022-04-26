@@ -4,7 +4,6 @@ using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
 using RedditDotNet.Exceptions;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Subreddits;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,12 +36,22 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
         /// Subreddit details
         /// </summary>
         [Parameter]
-        public Thing<Subreddit> SubredditDetails { get; set; }
+        public Subreddit SubredditDetails { get; set; }
 
         /// <summary>
         /// If the content is collapsed
         /// </summary>
         protected bool ContentCollapsed { get; set; } = true;
+        /// <summary>
+        /// If the subreddit is a user profile
+        /// </summary>
+        protected bool IsUser
+        {
+            get
+            {
+                return SubredditDetails?.Data?.DisplayName?.StartsWith("u_") ?? false;
+            }
+        }
 
         /// <summary>
         /// Get the icon URL for this subreddit
@@ -52,7 +61,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
         {
             if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.IconImg))
             {
-                return SubredditDetails.Data.IconImg;
+                return HttpUtility.HtmlDecode(SubredditDetails.Data.IconImg);
             }
             else if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.CommunityIcon))
             {
@@ -60,6 +69,19 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
             }
             // TODO replace this with locally hosted resource
             return "https://via.placeholder.com/256";
+        }
+
+        /// <summary>
+        /// Get the tile for the subreddit
+        /// </summary>
+        /// <returns></returns>
+        protected string GetTitle()
+        {
+            if (!string.IsNullOrWhiteSpace(SubredditDetails?.Data?.Title))
+            {
+                return SubredditDetails.Data.Title;
+            }
+            return SubredditDetails.Data.DisplayName;
         }
 
         /// <summary>

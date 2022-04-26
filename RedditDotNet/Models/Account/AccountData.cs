@@ -31,7 +31,7 @@ namespace RedditDotNet.Models.Account
         public bool PrefShowTrending { get; set; }
 
         [JsonProperty("subreddit")]
-        public Subreddit Subreddit { get; set; }
+        public SubredditData Subreddit { get; set; }
 
         [JsonProperty("pref_show_presence")]
         public bool PrefShowPresence { get; set; }

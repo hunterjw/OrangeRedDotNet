@@ -14,14 +14,20 @@
                         </a>
                     </h6>
                     <h4 class="card-title">
-                        @SubredditDetails.Data.DisplayName
+                        @GetTitle()
                     </h4>
-                    <h6 class="card-subtitle text-muted mb-1">
-                        @SubredditDetails.Data.Subscribers.ToDisplayString() subscribers
-                    </h6>
-                    <h6 class="card-subtitle text-muted mb-1">
-                        @SubredditDetails.Data.AccountsActive.ToDisplayString() online
-                    </h6>
+                    @if (!IsUser)
+                    {
+                        <h6 class="card-subtitle text-muted mb-1">
+                            @SubredditDetails.Data.Subscribers.ToDisplayString() subscribers
+                        </h6>
+                    }
+                    @if (SubredditDetails.Data.AccountsActive.HasValue)
+                    {
+                        <h6 class="card-subtitle text-muted mb-1">
+                            @SubredditDetails.Data.AccountsActive.Value.ToDisplayString() online
+                        </h6>
+                    }
                     <h6 class="card-subtitle text-muted mb-1">
                         Created @SubredditDetails.Data.CreatedUtc.ToLocalDateTime()
                     </h6>
@@ -29,24 +35,30 @@
                     @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.PublicDescriptionHtml))
                 </div>
             </div>
-            <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
-                @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.DescriptionHtml))
-            </div>
+            @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
+            {
+                <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
+                    @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.DescriptionHtml))
+                </div>
+            }
         </div>
         <div class="card-footer">
             <div class="row">
-                <div class="col-auto">
-                    <button class="btn btn-light" @onclick="() => ContentCollapsed = !ContentCollapsed">
-                        @if (ContentCollapsed)
-                        {
-                            <span class="oi oi-chevron-bottom"></span>
-                        }
-                        else
-                        {
-                            <span class="oi oi-chevron-top"></span>
-                        }
-                    </button>
-                </div>
+                @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                            @if (ContentCollapsed)
+                            {
+                                <span class="oi oi-chevron-bottom"></span>
+                            }
+                            else
+                            {
+                                <span class="oi oi-chevron-top"></span>
+                            }
+                        </button>
+                    </div>
+                }
                 @if (RedditService.LoggedIn)
                 {
                     <div class="col-auto">

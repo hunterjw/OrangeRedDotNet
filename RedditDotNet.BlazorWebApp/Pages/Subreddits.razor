@@ -1,0 +1,21 @@
+﻿@page "/subreddits"
+@page "/subreddits/mine/{mySubredditsType}"
+@page "/subreddits/{subredditsType}"
+
+<SubredditsNavTabs ActiveMySubredditsTab="@GetMySubredditsType()" ActiveSubredditsTab="@GetSubredditsType()" />
+
+@if (SubredditsListing == null)
+{
+    <p>Loading subreddits...</p>
+}
+else
+{
+    @foreach (var subreddit in SubredditsListing.Data.Children)
+    {
+        <SubredditCard SubredditDetails="@subreddit" />
+    }
+    <ListingPagination After="@SubredditsListing?.Data?.After"
+                   Before="@SubredditsListing?.Data?.Before"
+                   CurrentPageParameters="@BuildListingParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+}

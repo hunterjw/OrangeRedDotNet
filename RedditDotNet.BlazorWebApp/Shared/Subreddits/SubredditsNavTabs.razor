@@ -1,0 +1,25 @@
+﻿@using RedditDotNet.Models.Parameters
+
+<ul class="nav nav-pills mb-2">
+    <li class="nav-item">
+        <a class="@(ActiveSubredditsTab == SubredditsType.Popular || (ActiveSubredditsTab == null && ActiveMySubredditsTab == null) ? "nav-link active" : "nav-link")" href="/subreddits/popular">Popular</a>
+    </li>
+    <li class="nav-item">
+        <a class="@(ActiveSubredditsTab == SubredditsType.New ? "nav-link active" : "nav-link")" href="/subreddits/new">New</a>
+    </li>
+    <li class="nav-item">
+        <a class="@(ActiveSubredditsTab == SubredditsType.Default ? "nav-link active" : "nav-link")" href="/subreddits/default">Default</a>
+    </li>
+    @if (RedditService.LoggedIn)
+    {
+        <li class="nav-item">
+            <a class="@(ActiveMySubredditsTab == MySubredditsType.Subscriber ? "nav-link active" : "nav-link")" href="/subreddits/mine/subscriber">Subscriber</a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ActiveMySubredditsTab == MySubredditsType.Contributor ? "nav-link active" : "nav-link")" href="/subreddits/mine/contributor">Contributor</a>
+        </li>
+        <li class="nav-item">
+            <a class="@(ActiveMySubredditsTab == MySubredditsType.Moderator ? "nav-link active" : "nav-link")" href="/subreddits/mine/moderator">Moderator</a>
+        </li>
+    }
+</ul>

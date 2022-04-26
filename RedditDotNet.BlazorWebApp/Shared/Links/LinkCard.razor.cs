@@ -11,6 +11,9 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
     /// </summary>
     public partial class LinkCard
     {
+        /// <summary>
+        /// Navigation manager
+        /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
@@ -19,7 +22,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         [Parameter]
         public Link Link { get; set; }
-
         /// <summary>
         /// If the content of the Link is collapsed or not
         /// </summary>
@@ -30,7 +32,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// If the spoiler has been acknowledged or not
         /// </summary>
         protected bool SpoilerAcknowledged { get; set; }
-
         /// <summary>
         /// If NSFW has been acknowledged or not
         /// </summary>
@@ -81,7 +82,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                 }
             }
 
-            if (linkType == LinkType.Gallery)
+            if (linkType == LinkType.Gallery && link.Data.MediaMetadata?.Count > 0)
             {
                 MediaMetadata first = link.Data.MediaMetadata.Values.First();
                 MediaMetadataImage image;
