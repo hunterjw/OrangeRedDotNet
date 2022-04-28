@@ -4,8 +4,6 @@ using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
-using RedditDotNet.Models.Comments;
-using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
 using System.Net.Http;
@@ -100,14 +98,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         protected Listing<ILinkOrComment> LinksOrComments { get; set; }
         /// <summary>
-        /// Results for the comments
-        /// </summary>
-        protected Listing<CommentBase> Comments { get; set; }
-        /// <summary>
-        /// Results for the links
-        /// </summary>
-        protected Listing<Link> Links { get; set; }
-        /// <summary>
         /// If the profile is loaded or not
         /// </summary>
         protected bool ProfileLoaded { get; set; } = false;
@@ -129,9 +119,6 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             ListingLoaded = false;
             LinksOrComments = null;
-            Comments = null;
-            Links = null;
-
 
             Reddit redditClient = RedditService.GetClient();
 
@@ -178,33 +165,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
 
             try
             {
-                switch (GetListingType())
-                {
-                    case UserProfileListingType.Overview:
-                        LinksOrComments = await redditClient.Users.GetOverview(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Comments:
-                        Comments = await redditClient.Users.GetComments(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Submitted:
-                        Links = await redditClient.Users.GetSubmitted(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Gilded:
-                        LinksOrComments = await redditClient.Users.GetGilded(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Upvoted:
-                        LinksOrComments = await redditClient.Users.GetUpvoted(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Downvoted:
-                        LinksOrComments = await redditClient.Users.GetDownvoted(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Hidden:
-                        LinksOrComments = await redditClient.Users.GetHidden(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                    case UserProfileListingType.Saved:
-                        LinksOrComments = await redditClient.Users.GetSaved(Account.Data.Name, BuildUsersListingParameters());
-                        break;
-                }
+                LinksOrComments = await redditClient.Users.GetListing(
+                    UserName, 
+                    ListingType.ToEnumFromDescriptionString<UserProfileListingType>(), 
+                    BuildUsersListingParameters());
                 ListingLoaded = true;
             }
             catch (RedditApiException rex)

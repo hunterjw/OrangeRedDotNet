@@ -1,4 +1,6 @@
-﻿<ul class="nav nav-pills mb-2">
+﻿@using RedditDotNet.Models.Parameters
+
+<ul class="nav nav-pills mb-2">
     <li class="nav-item">
         <a class="@(ActiveTab == UserProfileListingType.Overview ? "nav-link active" : "nav-link")"
            href="/user/@UserName/overview">

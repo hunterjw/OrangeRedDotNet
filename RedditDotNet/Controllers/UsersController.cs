@@ -1,5 +1,6 @@
 ﻿using RedditDotNet.Authentication;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Extensions;
 using RedditDotNet.Interfaces;
 using RedditDotNet.Models.Account;
 using RedditDotNet.Models.Comments;
@@ -119,115 +120,17 @@ namespace RedditDotNet.Controllers
 
         #region Profile Page Listings
         /// <summary>
-        /// Get an overview listing of user submissions
+        /// Get a listing from a users page
         /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetOverview(string username,
-            UsersListingParameters parameters = null)
+        /// <param name="username">Account username</param>
+        /// <param name="listingType">Listing type (overview, submitted, 
+        /// comments, upvoted, downvoted, hidden, saved, gilded)</param>
+        /// <param name="parameters">Listing parameters</param>
+        /// <returns>Listing of Links and/or Comments</returns>
+        public async Task<Listing<ILinkOrComment>> GetListing(string username, 
+            UserProfileListingType listingType, UsersListingParameters parameters = null)
         {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/overview", parameters);
-        }
-
-        /// <summary>
-        /// Get submitted links for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<Link>> GetSubmitted(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<Link>>($"/user/{username}/submitted", parameters);
-        }
-
-        /// <summary>
-        /// Get submitted comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<CommentBase>> GetComments(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<CommentBase>>($"/user/{username}/comments", parameters);
-        }
-
-        /// <summary>
-        /// Get upvoted Links/Comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetUpvoted(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/upvoted", parameters);
-        }
-
-        /// <summary>
-        /// Get downvoted Links/Comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetDownvoted(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/downvoted", parameters);
-        }
-
-        /// <summary>
-        /// Get hidden Links/Comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetHidden(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/hidden", parameters);
-        }
-
-        /// <summary>
-        /// Get saved Links/Comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetSaved(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/saved", parameters);
-        }
-
-        /// <summary>
-        /// Get gilded Links/Comments for a user
-        /// </summary>
-        /// <param name="username">Reddit username</param>
-        /// <param name="parameters">Optional parameters</param>
-        /// <returns>Listing of Links/Comments</returns>
-        /// <exception cref="RedditApiException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public async Task<Listing<ILinkOrComment>> GetGilded(string username,
-            UsersListingParameters parameters = null)
-        {
-            return await Get<Listing<ILinkOrComment>>($"/user/{username}/gilded", parameters);
+            return await Get<Listing<ILinkOrComment>>($"/user/{username}/{listingType.ToDescriptionString()}", parameters);
         }
         #endregion
     }

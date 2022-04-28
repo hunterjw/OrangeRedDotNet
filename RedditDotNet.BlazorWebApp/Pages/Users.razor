@@ -1,4 +1,6 @@
-﻿@page "/u/{userName}"
+﻿@using RedditDotNet.Models.Parameters
+
+@page "/u/{userName}"
 @page "/u/{userName}/{listingType}"
 @page "/user/{userName}"
 @page "/user/{userName}/{listingType}"
@@ -63,33 +65,9 @@ else
 }
 else
 {
-    @switch (GetListingType())
-    {
-        case UserProfileListingType.Overview:
-        case UserProfileListingType.Gilded:
-        case UserProfileListingType.Upvoted:
-        case UserProfileListingType.Downvoted:
-        case UserProfileListingType.Hidden:
-        case UserProfileListingType.Saved:
-            <LinkOrCommentList Listing="@LinksOrComments" />
-            <ListingPagination After="@LinksOrComments?.Data?.After"
+    <LinkOrCommentList Listing="@LinksOrComments" />
+    <ListingPagination After="@LinksOrComments?.Data?.After"
                    Before="@LinksOrComments?.Data?.Before"
                    CurrentPageParameters="@BuildParameters()"
                    RelativeUrl="@GetRelativeUrl()" />
-            break;
-        case UserProfileListingType.Comments:
-            <CommentList Comments="@Comments" />
-            <ListingPagination After="@Comments?.Data?.After"
-                   Before="@Comments?.Data?.Before"
-                   CurrentPageParameters="@BuildParameters()"
-                   RelativeUrl="@GetRelativeUrl()" />
-            break;
-        case UserProfileListingType.Submitted:
-            <LinkList Links="@Links" ContentCollapsed="true" />
-            <ListingPagination After="@Links?.Data?.After"
-                   Before="@Links?.Data?.Before"
-                   CurrentPageParameters="@BuildParameters()"
-                   RelativeUrl="@GetRelativeUrl()" />
-            break;
-    }
 }

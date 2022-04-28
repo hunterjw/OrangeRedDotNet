@@ -1,49 +1,22 @@
 ﻿using CommandLine;
+using RedditDotNet.ConsoleApp.Verbs.Listings;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Parameters;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.ConsoleApp.Verbs.Users
 {
     /// <summary>
     /// Abstract class for Users Listing verbs
     /// </summary>
-    internal abstract class UsersListingVerb : VerbBase
+    [Verb("users-get-listing")]
+    internal class GetListingVerb : ListingVerb
     {
         /// <summary>
         /// Reddit username
         /// </summary>
         [Option(Required = true, HelpText = "Reddit username")]
         public string Username { get; set; }
-        /// <summary>
-        /// Fullname of a thing
-        /// </summary>
-        [Option(HelpText = "Fullname of a thing")]
-        public string After { get; set; }
-        /// <summary>
-        /// Fullname of a thing
-        /// </summary>
-        [Option(HelpText = "Fullname of a thing")]
-        public string Before { get; set; }
-        /// <summary>
-        /// Number of items already retrieved
-        /// </summary>
-        [Option(HelpText = "Number of items already retrieved")]
-        public int Count { get; set; } = 0;
-        /// <summary>
-        /// Maximum number of things to return
-        /// </summary>
-        [Option(HelpText = "Maximum number of things to return")]
-        public int Limit { get; set; } = 25;
-        /// <summary>
-        /// To show all or not (bypasses preferences that would hide results)
-        /// </summary>
-        [Option(HelpText = "To show all or not (bypasses preferences that would hide results)")]
-        public bool? ShowAll { get; set; }
-        /// <summary>
-        /// Expand subreddit references into objects
-        /// </summary>
-        [Option(HelpText = "Expand subreddit references into objects")]
-        public bool? ExpandSubreddits { get; set; }
         /// <summary>
         /// Context to include for comments
         /// </summary>
@@ -64,6 +37,21 @@ namespace RedditDotNet.ConsoleApp.Verbs.Users
         /// </summary>
         [Option(HelpText = "Limit for what type of results to return (links, comments)")]
         public string Type { get; set; }
+        /// <summary>
+        /// Listing type (overview, submitted, comments, upvoted, downvoted, hidden, saved, gilded)
+        /// </summary>
+        [Option(Required = true, HelpText = "Listing type (overview, submitted, comments, upvoted, downvoted, hidden, saved, gilded)")]
+        public string ListingType { get; set; }
+
+        /// <inheritdoc/>
+        public override async Task<string> Run(Reddit reddit)
+        {
+            return (await reddit.Users.GetListing(
+                    Username, 
+                    ListingType.ToEnumFromDescriptionString<UserProfileListingType>(), 
+                    BuildUsersListingParameters()))
+                .ToJson();
+        }
 
         /// <summary>
         /// Build a parameter object from this object

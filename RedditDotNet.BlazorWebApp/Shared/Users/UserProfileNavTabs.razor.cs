@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.Models.Parameters;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Users
 {
