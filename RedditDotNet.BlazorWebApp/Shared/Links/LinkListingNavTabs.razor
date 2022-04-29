@@ -2,22 +2,22 @@
     @if (string.IsNullOrWhiteSpace(Subreddit) && string.IsNullOrWhiteSpace(MultiRedditPath))
     {
         <li class="nav-item">
-            <a class="@(ActiveTab == LinkListingType.Best ? "nav-link active" : "nav-link")" href="/best">Best</a>
+            <a class="@(ActiveTab.Equals("best") ? "nav-link active" : "nav-link")" href="/best">Best</a>
         </li>
     }
     <li class="nav-item">
-        <a class="@(ActiveTab == LinkListingType.Hot ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/hot">Hot</a>
+        <a class="@(ActiveTab.Equals("hot") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/hot">Hot</a>
     </li>
     <li class="nav-item">
-        <a class="@(ActiveTab == LinkListingType.New ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/new">New</a>
+        <a class="@(ActiveTab.Equals("new") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/new">New</a>
     </li>
     <li class="nav-item">
-        <a class="@(ActiveTab == LinkListingType.Rising ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/rising">Rising</a>
+        <a class="@(ActiveTab.Equals("rising") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/rising">Rising</a>
     </li>
     <li class="nav-item">
-        <a class="@(ActiveTab == LinkListingType.Controversial ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/controversial">Controversial</a>
+        <a class="@(ActiveTab.Equals("controversial") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/controversial">Controversial</a>
     </li>
     <li class="nav-item">
-        <a class="@(ActiveTab == LinkListingType.Top ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/top">Top</a>
+        <a class="@(ActiveTab.Equals("top") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/top">Top</a>
     </li>
 </ul>

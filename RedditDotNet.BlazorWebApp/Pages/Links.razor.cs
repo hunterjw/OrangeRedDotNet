@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
-using RedditDotNet.Models;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Multis;
@@ -118,6 +117,10 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// If the subreddit details are loaded or not
         /// </summary>
         protected bool SubredditDetailsLoaded { get; set; }
+        /// <summary>
+        /// If the listing is a subreddit or not
+        /// </summary>
+        protected bool IsSubreddit => !string.IsNullOrWhiteSpace(Subreddit);
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -131,8 +134,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 // page isn't disposed)
                 LinkListing = null;
 
-                if (!string.IsNullOrWhiteSpace(Subreddit) && 
-                    !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase))
+                if (IsSubreddit && !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase))
                 {
                     if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
                     {
@@ -163,64 +165,51 @@ namespace RedditDotNet.BlazorWebApp.Pages
                     Timescale = "hour";
                 }
 
-                var listingTypeEnum = GetListingType();
-                if (string.IsNullOrWhiteSpace(ListingType))
+                if (IsSubreddit)
                 {
-                    if (listingTypeEnum == LinkListingType.Best)
-                    {
-                        // This means we're on the home page, which is "best"
-                        ListingType = "best";
-                    }
-                    else if (listingTypeEnum == LinkListingType.Hot)
-                    {
-                        // This means we're on a subreddit landing page, which is "hot"
-                        ListingType = "hot";
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
+                    LinkListing = await redditClient.Listings.GetLinksForSubreddit(
+                        GetListingType().ToEnumFromDescriptionString<LinkListingType>(),
+                        Subreddit,
+                        BuildParameters());
                 }
-
-                switch (listingTypeEnum)
+                else if (IsMultiReddit)
                 {
-                    case LinkListingType.Best:
-                        Subreddit = string.Empty;
-                        LinkListing = await redditClient.Listings.GetBest(BuildListingParameters());
-                        break;
-                    case LinkListingType.Hot:
-                        LinkListing = IsMultiReddit ?
-                            await redditClient.Listings.GetHot(GetMultiRedditUrl(), BuildLocationListingParameters()) :
-                            await redditClient.Listings.GetHot(BuildLocationListingParameters(), Subreddit);
-                        break;
-                    case LinkListingType.New:
-                        LinkListing = IsMultiReddit ?
-                            await redditClient.Listings.GetNew(GetMultiRedditUrl(), BuildListingParameters()) :
-                            await redditClient.Listings.GetNew(BuildListingParameters(), Subreddit);
-                        break;
-                    case LinkListingType.Rising:
-                        LinkListing = IsMultiReddit ?
-                            await redditClient.Listings.GetRising(GetMultiRedditUrl(), BuildListingParameters()) :
-                            await redditClient.Listings.GetRising(BuildListingParameters(), Subreddit);
-                        break;
-                    case LinkListingType.Controversial:
-                        LinkListing = IsMultiReddit ?
-                            await redditClient.Listings.GetControversial(GetMultiRedditUrl(), BuildSortListingParameters()) :
-                            await redditClient.Listings.GetControversial(BuildSortListingParameters(), Subreddit);
-                        break;
-                    case LinkListingType.Top:
-                        LinkListing = IsMultiReddit ?
-                            await redditClient.Listings.GetTop(GetMultiRedditUrl(), BuildSortListingParameters()) :
-                            await redditClient.Listings.GetTop(BuildSortListingParameters(), Subreddit);
-                        break;
-                    default:
-                        throw new ArgumentException();
+                    LinkListing = await redditClient.Listings.GetLinksForMultireddit(
+                        GetListingType().ToEnumFromDescriptionString<LinkListingType>(),
+                        GetMultiRedditUrl(),
+                        BuildParameters());
+                }
+                else
+                {
+                    LinkListing = await redditClient.Listings.GetLinks(
+                        GetListingType().ToEnumFromDescriptionString<FrontPageListingType>(),
+                        BuildParameters());
                 }
             }
             catch (RedditApiException rex)
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Error loading links"));
             }
+        }
+
+        /// <summary>
+        /// Helper function to get the current listing type
+        /// </summary>
+        /// <returns>Listing type string</returns>
+        protected string GetListingType()
+        {
+            if (string.IsNullOrWhiteSpace(ListingType))
+            {
+                if (IsSubreddit || IsMultiReddit)
+                {
+                    ListingType = "hot";
+                }
+                else
+                {
+                    ListingType = "best";
+                }
+            }
+            return ListingType;
         }
 
         /// <summary>
@@ -256,13 +245,13 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             if (!string.IsNullOrWhiteSpace(Subreddit))
             {
-                return $"/r/{Subreddit}/{ListingType}";
+                return $"/r/{Subreddit}/{GetListingType()}";
             }
             else if (IsMultiReddit)
             {
-                return $"{GetMultiRedditUrl()}/{ListingType}";
+                return $"{GetMultiRedditUrl()}/{GetListingType()}";
             }
-            return $"/{ListingType}";
+            return $"/{GetListingType()}";
         }
 
         /// <summary>
@@ -273,32 +262,13 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             return GetListingType() switch
             {
-                LinkListingType.Best => BuildListingParameters(),
-                LinkListingType.Hot => BuildLocationListingParameters(),
-                LinkListingType.New => BuildListingParameters(),
-                LinkListingType.Rising => BuildListingParameters(),
-                LinkListingType.Controversial => BuildSortListingParameters(),
-                LinkListingType.Top => BuildSortListingParameters(),
+                "best" => BuildListingParameters(),
+                "hot" => BuildLocationListingParameters(),
+                "new" => BuildListingParameters(),
+                "rising" => BuildListingParameters(),
+                "controversial" => BuildSortListingParameters(),
+                "top" => BuildSortListingParameters(),
                 _ => throw new ArgumentException()
-            };
-        }
-
-        /// <summary>
-        /// Get the current type of this listing
-        /// </summary>
-        /// <returns>Listing type</returns>
-        protected LinkListingType GetListingType()
-        {
-            return ListingType switch
-            {
-                "best" => LinkListingType.Best,
-                "hot" => LinkListingType.Hot,
-                "new" => LinkListingType.New,
-                "rising" => LinkListingType.Rising,
-                "controversial" => LinkListingType.Controversial,
-                "top" => LinkListingType.Top,
-                _ => !string.IsNullOrWhiteSpace(Subreddit) || (IsMultiReddit) ? 
-                    LinkListingType.Hot : LinkListingType.Best,
             };
         }
 
@@ -310,12 +280,12 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             return GetListingType() switch
             {
-                LinkListingType.Best => "Loading the best of Reddit...",
-                LinkListingType.Hot => "Getting some hot posts straight from the oven...",
-                LinkListingType.New => "Getting the latest posts straight from the source...",
-                LinkListingType.Rising => "Getting the posts that rise to the top...",
-                LinkListingType.Controversial => "Getting the spiciest posts...",
-                LinkListingType.Top => "Getting the tippity top of Reddit...",
+                "best" => "Loading the best of Reddit...",
+                "hot" => "Getting some hot posts straight from the oven...",
+                "new" => "Getting the latest posts straight from the source...",
+                "rising" => "Getting the posts that rise to the top...",
+                "controversial" => "Getting the spiciest posts...",
+                "top" => "Getting the tippity top of Reddit...",
                 _ => throw new ArgumentException()
             };
         }

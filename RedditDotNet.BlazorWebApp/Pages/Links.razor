@@ -7,11 +7,7 @@
 @page "/me/m/{multiName}"
 @page "/me/m/{multiName}/{listingType}"
 
-@{
-    LinkListingType listingType = GetListingType();
-}
-
-@if (!string.IsNullOrWhiteSpace(Subreddit))
+@if (IsSubreddit)
 {
     @if (!SubredditDetailsLoaded)
     {
@@ -37,14 +33,13 @@ else if (IsMultiReddit)
                  OnMultiRedditCopy="OnMultiRedditCopy" />
         <hr />
     }
-
 }
 
 <div class="row">
     <div class="col-auto">
-        <LinkListingNavTabs ActiveTab="@listingType" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
+        <LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
     </div>
-    @if (listingType == LinkListingType.Controversial || listingType == LinkListingType.Top)
+    @if (GetListingType().Equals("controversial") || GetListingType().Equals("top"))
     {
         <div class="col-auto">
             <select value="@Timescale" class="form-select mb-2" style="width: auto;" @onchange="TimescaleSelect_OnChange">
@@ -58,8 +53,6 @@ else if (IsMultiReddit)
         </div>
     }
 </div>
-
-
 
 @if (LinkListing == null)
 {

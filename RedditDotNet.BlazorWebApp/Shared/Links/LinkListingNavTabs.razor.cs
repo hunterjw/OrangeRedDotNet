@@ -11,7 +11,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// The type of the active tab
         /// </summary>
         [Parameter]
-        public LinkListingType ActiveTab { get; set; }
+        public string ActiveTab { get; set; }
 
         /// <summary>
         /// Subreddit to link to (optional)
