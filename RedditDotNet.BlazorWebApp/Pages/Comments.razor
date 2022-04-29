@@ -18,5 +18,6 @@ else
         <option value="random">Random</option>
         <option value="qa">Q&A</option>
     </select>
-    <CommentsList Comments="@LinkWithComments.Comments" />
+    <CommentsList Comments="@LinkWithComments.Comments"
+        OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author" />
 }

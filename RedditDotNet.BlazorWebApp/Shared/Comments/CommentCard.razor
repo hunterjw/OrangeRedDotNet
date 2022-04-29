@@ -15,7 +15,8 @@
                            FlairRichtext="@commentData.AuthorFlairRichtext"
                            FlairText="@commentData.AuthorFlairText"
                            FlairTextColor="@commentData.AuthorFlairTextColor"
-                           FlairType="@commentData.AuthorFlairType" />
+                           FlairType="@commentData.AuthorFlairType"
+                           IsOriginalPoster="@(commentData.Author.Equals(OriginalPoster))" />
                     </h6>
                     <h6 class="card-subtitle mb-1 text-muted">
                         @commentData.CreatedUtc.ToLocalDateTime()
@@ -66,7 +67,8 @@
     {
         <div class="border-start border-secondary border-3">
             <div class="ms-2">
-                <CommentsList Comments="@commentData.Replies" />
+                <CommentsList Comments="@commentData.Replies"
+                      OriginalPoster="@OriginalPoster" />
             </div>
         </div>
     }

@@ -1,4 +1,5 @@
 ﻿@foreach (var comment in Comments.Data.Children)
 {
-    <CommentCard Comment="@comment" />
+    <CommentCard Comment="@comment"
+             OriginalPoster="@OriginalPoster" />
 }

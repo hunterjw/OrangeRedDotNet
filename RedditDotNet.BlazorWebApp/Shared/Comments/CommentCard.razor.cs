@@ -15,6 +15,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
         /// </summary>
         [Parameter]
         public CommentBase Comment { get; set; }
+        /// <summary>
+        /// The original poster for the parent link that this comment belongs to
+        /// </summary>
+        [Parameter]
+        public string OriginalPoster { get; set; }
         #endregion
 
         /// <summary>

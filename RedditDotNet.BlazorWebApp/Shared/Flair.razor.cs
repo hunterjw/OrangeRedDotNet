@@ -42,6 +42,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         [Parameter]
         public bool Archived { get; set; } = false;
         /// <summary>
+        /// If the user is the original poster or not
+        /// </summary>
+        [Parameter]
+        public bool IsOriginalPoster { get; set; } = false;
+        /// <summary>
         /// Type of flair
         /// </summary>
         [Parameter]

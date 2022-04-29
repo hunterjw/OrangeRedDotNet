@@ -2,6 +2,10 @@
 @using RedditDotNet.Models.Links
 @using System.Web
 
+@if(IsOriginalPoster)
+{
+    <span class="badge bg-primary me-1">OP</span>
+}
 @if (LinkType != null)
 {
     <span class="badge bg-primary me-1">@LinkType.ToString()</span>
