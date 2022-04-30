@@ -47,6 +47,31 @@ namespace RedditDotNet.BlazorWebApp.Shared
         [Parameter]
         public bool IsOriginalPoster { get; set; } = false;
         /// <summary>
+        /// If the user is banned
+        /// </summary>
+        [Parameter]
+        public bool Banned { get; set; } = false;
+        /// <summary>
+        /// If a user is a contributor
+        /// </summary>
+        [Parameter]
+        public bool Contributor { get; set; } = false;
+        /// <summary>
+        /// If a user is a moderator
+        /// </summary>
+        [Parameter]
+        public bool Moderator { get; set; } = false;
+        /// <summary>
+        /// If the user is muted
+        /// </summary>
+        [Parameter]
+        public bool Muted { get; set; } = false;
+        /// <summary>
+        /// If the user is subscribed
+        /// </summary>
+        [Parameter]
+        public bool Subscribed { get; set; } = false;
+        /// <summary>
         /// Type of flair
         /// </summary>
         [Parameter]

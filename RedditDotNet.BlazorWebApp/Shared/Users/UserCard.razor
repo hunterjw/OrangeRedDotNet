@@ -25,6 +25,14 @@
                     (@AccountData.LinkKarma.ToDisplayString() Link,
                     @AccountData.CommentKarma.ToDisplayString() Comment)
                 </h6>
+                <div>
+                    <Flair Over18="@(AccountData.Subreddit?.Over18 ?? false)"
+                           Banned="@(AccountData.Subreddit.UserIsBanned ?? false)"
+                           Contributor="@(AccountData.Subreddit.UserIsContributor ?? false)"
+                           Moderator="@(AccountData.Subreddit.UserIsModerator ?? false)"
+                           Muted="@(AccountData.Subreddit.UserIsMuted ?? false)"
+                           Subscribed="@(AccountData.Subreddit.UserIsSubscriber ?? false)" />
+                </div>
                 @if (!string.IsNullOrWhiteSpace(Description))
                 {
                     @((MarkupString)HttpUtility.HtmlDecode(Description))

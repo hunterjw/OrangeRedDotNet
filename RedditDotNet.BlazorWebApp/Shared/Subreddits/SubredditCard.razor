@@ -31,7 +31,12 @@
                     <h6 class="card-subtitle text-muted mb-1">
                         Created @SubredditDetails.Data.CreatedUtc.ToLocalDateTime()
                     </h6>
-                    <Flair Over18="@SubredditDetails.Data.Over18" />
+                    <Flair Over18="@SubredditDetails.Data.Over18"
+                       Banned="@(SubredditDetails.Data.UserIsBanned ?? false)"
+                       Contributor="@(SubredditDetails.Data.UserIsContributor ?? false)"
+                       Moderator="@(SubredditDetails.Data.UserIsModerator ?? false)"
+                       Muted="@(SubredditDetails.Data.UserIsMuted ?? false)"
+                       Subscribed="@(SubredditDetails.Data.UserIsSubscriber ?? false)" />
                     @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.PublicDescriptionHtml))
                 </div>
             </div>

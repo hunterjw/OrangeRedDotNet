@@ -34,6 +34,26 @@
 {
     <span class="badge bg-primary me-1">OC</span>
 }
+@if (Banned)
+{
+    <span class="badge bg-danger me-1">You are banned</span>
+}
+@if (Contributor)
+{
+    <span class="badge bg-success me-1">You are a contributor</span>
+}
+@if (Moderator)
+{
+    <span class="badge bg-success me-1">You are a moderator</span>
+}
+@if (Muted)
+{
+    <span class="badge bg-warning text-dark me-1">You are muted</span>
+}
+@if (Subscribed)
+{
+    <span class="badge bg-primary me-1">Subscribed</span>
+}
 
 @switch (FlairType?.ToLower())
 {
