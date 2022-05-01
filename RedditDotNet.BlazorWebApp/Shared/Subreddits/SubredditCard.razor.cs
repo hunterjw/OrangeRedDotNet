@@ -4,6 +4,7 @@ using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Models.Parameters;
 using RedditDotNet.Models.Subreddits;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -123,6 +124,26 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
             catch (RedditApiException rex)
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Error updating multireddits"));
+            }
+        }
+
+        /// <summary>
+        /// OnClick event handler for the subscribe button
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task SubscribeButton_OnClick()
+        {
+            try
+            {
+                bool subscribed = SubredditDetails.Data.UserIsSubscriber ?? false;
+                await RedditService.GetClient().Subreddits.Subscribe(
+                    SubredditDetails.Data.DisplayName, 
+                    subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe);
+                SubredditDetails.Data.UserIsSubscriber = !subscribed;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error updating subscription"));
             }
         }
     }

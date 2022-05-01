@@ -27,11 +27,11 @@
                 </h6>
                 <div>
                     <Flair Over18="@(AccountData.Subreddit?.Over18 ?? false)"
-                           Banned="@(AccountData.Subreddit.UserIsBanned ?? false)"
-                           Contributor="@(AccountData.Subreddit.UserIsContributor ?? false)"
-                           Moderator="@(AccountData.Subreddit.UserIsModerator ?? false)"
-                           Muted="@(AccountData.Subreddit.UserIsMuted ?? false)"
-                           Subscribed="@(AccountData.Subreddit.UserIsSubscriber ?? false)" />
+                           Banned="@(AccountData.Subreddit?.UserIsBanned ?? false)"
+                           Contributor="@(AccountData.Subreddit?.UserIsContributor ?? false)"
+                           Moderator="@(AccountData.Subreddit?.UserIsModerator ?? false)"
+                           Muted="@(AccountData.Subreddit?.UserIsMuted ?? false)"
+                           Subscribed="@(AccountData.Subreddit?.UserIsSubscriber ?? false)" />
                 </div>
                 @if (!string.IsNullOrWhiteSpace(Description))
                 {
@@ -44,6 +44,14 @@
         <div class="row">
             @if (RedditService.LoggedIn)
             {
+                @if (AccountData.Subreddit != null)
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="FollowButton_OnClick">
+                            @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
+                        </button>
+                    </div>
+                }
                 <div class="col-auto">
                     <button class="btn btn-light" @onclick="AddToMultiRedditButton_OnClick">
                         Add to MultiReddit

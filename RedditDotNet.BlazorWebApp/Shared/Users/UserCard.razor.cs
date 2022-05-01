@@ -4,6 +4,7 @@ using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.BlazorWebApp.Shared.Multis;
 using RedditDotNet.Exceptions;
+using RedditDotNet.Models.Parameters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -103,6 +104,29 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
             catch (RedditApiException rex)
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Error updating multireddits"));
+            }
+        }
+
+        /// <summary>
+        /// OnClick event handler for the follow button
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task FollowButton_OnClick()
+        {
+            try
+            {
+                if (AccountData.Subreddit != null)
+                {
+                    bool subscribed = AccountData.Subreddit.UserIsSubscriber ?? false;
+                    await RedditService.GetClient().Subreddits.Subscribe(
+                        AccountData.Subreddit.DisplayName,
+                        subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe);
+                    AccountData.Subreddit.UserIsSubscriber = !subscribed;
+                }
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error updating subscription"));
             }
         }
     }

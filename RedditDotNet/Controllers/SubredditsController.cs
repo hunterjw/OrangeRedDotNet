@@ -71,5 +71,27 @@ namespace RedditDotNet.Controllers
         {
             return await Get<Listing<Subreddit>>($"/subreddits/{type.ToDescriptionString()}", listingParameters);
         }
+
+        /// <summary>
+        /// Subscribe to or unsubscribe from a subreddit
+        /// </summary>
+        /// <param name="subredditName">Subreddit name</param>
+        /// <param name="action">Subscribe action</param>
+        /// <param name="skipInitialDefaults">
+        ///     Set to True to prevent automatically subscribing the user to the current set of 
+        ///     defaults when they take their first subscription action. Attempting to set it 
+        ///     for an unsubscribe action will result in an error.
+        /// </param>
+        /// <returns>Awaitable task</returns>
+        public async Task Subscribe(string subredditName, SubscribeAction action, bool skipInitialDefaults = false)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                { "sr_name", subredditName },
+                { "action", action.ToDescriptionString() },
+                { "skip_initial_defaults", $"{skipInitialDefaults}" },
+            };
+            await Post("/api/subscribe", parameters);
+        }
     }
 }

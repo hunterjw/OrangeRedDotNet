@@ -67,6 +67,11 @@
                 @if (RedditService.LoggedIn)
                 {
                     <div class="col-auto">
+                        <button class="btn btn-light" @onclick="SubscribeButton_OnClick">
+                            @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
+                        </button>
+                    </div>
+                    <div class="col-auto">
                         <button class="btn btn-light" @onclick="AddToMultiRedditButton_OnClick">
                             Add to MultiReddit
                         </button>
