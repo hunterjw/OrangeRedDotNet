@@ -1,4 +1,7 @@
-﻿@page "/r/{subreddit}/comments/{articleId}"
+﻿@using RedditDotNet.Extensions
+@using RedditDotNet.Models.Parameters
+
+@page "/r/{subreddit}/comments/{articleId}"
 
 @if (LinkWithComments == null)
 {
@@ -19,5 +22,7 @@ else
         <option value="qa">Q&A</option>
     </select>
     <CommentsList Comments="@LinkWithComments.Comments"
-        OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author" />
+              OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author"
+              LinkFullName="@LinkWithComments.Links.Data.Children.First().Data.Name"
+              CommentSort="@(string.IsNullOrWhiteSpace(Sort) ? null : Sort.ToEnumFromDescriptionString<CommentSort>())" />
 }

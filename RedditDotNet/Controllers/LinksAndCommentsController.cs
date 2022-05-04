@@ -1,5 +1,11 @@
 ﻿using RedditDotNet.Authentication;
+using RedditDotNet.Extensions;
+using RedditDotNet.Models.Comments;
+using RedditDotNet.Models.LinksAndComments;
+using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.Controllers
@@ -33,6 +39,42 @@ namespace RedditDotNet.Controllers
                 { "rank", $"{rank}" }
             };
             await Post("/api/vote", parameters);
+        }
+
+        /// <summary>
+        /// Retrieve additional comments omitted from a base comment tree.
+        /// </summary>
+        /// <param name="linkFullName">Fullname of the link whose comments are being fetched</param>
+        /// <param name="children">List of comment ID36s that need to be fetched</param>
+        /// <param name="sort">The sort on the comments returned</param>
+        /// <param name="depth">Maximum depth of subtrees in the thread to get</param>
+        /// <param name="limitChildren">Only return the children requested</param>
+        /// <returns>List of comment/more objects</returns>
+        public async Task<List<CommentBase>> GetMoreChildren(string linkFullName, IEnumerable<string> children,
+            CommentSort? sort = null, int? depth = null, bool? limitChildren = false)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                { "api_type", "json" },
+                { "children", string.Join(',', children) },
+                { "link_id", linkFullName },
+            };
+            if (sort.HasValue)
+            {
+                parameters.Add("sort", sort.Value.ToDescriptionString());
+            }
+            if (depth.HasValue)
+            {
+                parameters.Add("depth", $"{depth}");
+            }
+            if (limitChildren ?? false)
+            {
+                parameters.Add("limit_children", $"{limitChildren}");
+            }
+
+            var response = await Get<MoreChildrenResponse>("/api/morechildren", parameters);
+
+            return response.Json.Data.Things;
         }
     }
 }

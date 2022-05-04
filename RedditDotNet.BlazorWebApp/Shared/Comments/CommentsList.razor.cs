@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models.Comments;
 using RedditDotNet.Models.Listings;
+using RedditDotNet.Models.Parameters;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Comments
 {
@@ -20,6 +21,16 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
         /// </summary>
         [Parameter]
         public string OriginalPoster { get; set; }
+        /// <summary>
+        /// The full name of the link these comments belong to
+        /// </summary>
+        [Parameter]
+        public string LinkFullName { get; set; }
+        /// <summary>
+        /// The sort of the comments
+        /// </summary>
+        [Parameter]
+        public CommentSort? CommentSort { get; set; }
         #endregion
     }
 }

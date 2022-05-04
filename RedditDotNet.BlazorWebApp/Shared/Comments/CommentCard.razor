@@ -68,12 +68,34 @@
         <div class="border-start border-secondary border-3">
             <div class="ms-2">
                 <CommentsList Comments="@commentData.Replies"
-                      OriginalPoster="@OriginalPoster" />
+                      OriginalPoster="@OriginalPoster"
+                      LinkFullName="@LinkFullName"
+                      CommentSort="@CommentSort" />
             </div>
         </div>
     }
 }
-else
+else if (Comment.Data is MoreData moreData)
 {
-    <p>Comment has more @Comment.Data.Id</p>
+    @foreach (var comment in MoreComments)
+    {
+        <CommentCard Comment="@comment"
+             OriginalPoster="@OriginalPoster" 
+             LinkFullName="@LinkFullName" 
+             CommentSort="@CommentSort" />
+    }
+    @if (MoreLoaded)
+    {
+        @if (moreData.Children.Count > 0)
+        {
+            <button class="btn btn-link" @onclick="MoreCommentsButton_OnClick">
+                Load more comments (@moreData.Count replies)
+            </button>
+            <br />
+        }
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
 }

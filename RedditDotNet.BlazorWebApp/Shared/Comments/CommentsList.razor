@@ -1,5 +1,7 @@
 ﻿@foreach (var comment in Comments.Data.Children)
 {
     <CommentCard Comment="@comment"
-             OriginalPoster="@OriginalPoster" />
+             OriginalPoster="@OriginalPoster"
+             LinkFullName="@LinkFullName"
+             CommentSort="@CommentSort" />
 }
