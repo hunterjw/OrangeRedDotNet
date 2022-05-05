@@ -97,7 +97,7 @@ else if (Comment.Data is MoreData moreData)
     {
         @if (moreData.Children.Count > 0)
         {
-            <button class="btn btn-link" @onclick="MoreCommentsButton_OnClick">
+            <button class="btn btn-link text-decoration-none" @onclick="MoreCommentsButton_OnClick">
                 Load more comments (@moreData.Count replies)
             </button>
             <br />
