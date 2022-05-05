@@ -42,7 +42,8 @@
                        Stickied="@Link.Data.Stickied"
                        Locked="@Link.Data.Locked"
                        Archived="Link.Data.Archived"
-                       LinkType="@Link.GetLinkType()" />
+                       LinkType="@Link.GetLinkType()"
+                       Saved="@Link.Data.Saved" />
             </div>
         </div>
         <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
@@ -158,6 +159,14 @@
                     <button class="btn btn-light" @onclick="DuplicatesButton_OnClick">
                         <span class="oi oi-chat"></span>
                         <span>Other discussions (@Link.Data.NumDuplicates)</span>
+                    </button>
+                </div>
+            }
+            @if (RedditService.LoggedIn)
+            {
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="SaveToggleButton_OnClick">
+                        <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
                     </button>
                 </div>
             }

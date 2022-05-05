@@ -23,7 +23,8 @@
                     </h6>
                     <Awardings Data="@commentData.AllAwardings" />
                     <Flair Stickied="@commentData.Stickied"
-                       Locked="@commentData.Locked" />
+                       Locked="@commentData.Locked"
+                       Saved="@commentData.Saved" />
                     @if (!RepliesCollapsed)
                     {
                         <div class="row g-0">
@@ -54,6 +55,14 @@
                         }
                     </button>
                 </div>
+                @if (RedditService.LoggedIn)
+                {
+                    <div class="col-auto">
+                        <button class="btn btn-light" @onclick="SaveToggleButton_OnClick">
+                            <span class="oi oi-bookmark @(commentData.Saved ? "text-primary" : "")"></span>
+                        </button>
+                    </div>
+                }
                 @if (RepliesCollapsed)
                 {
                     <div class="col-auto d-flex justify-content-center flex-column">
@@ -80,8 +89,8 @@ else if (Comment.Data is MoreData moreData)
     @foreach (var comment in MoreComments)
     {
         <CommentCard Comment="@comment"
-             OriginalPoster="@OriginalPoster" 
-             LinkFullName="@LinkFullName" 
+             OriginalPoster="@OriginalPoster"
+             LinkFullName="@LinkFullName"
              CommentSort="@CommentSort" />
     }
     @if (MoreLoaded)

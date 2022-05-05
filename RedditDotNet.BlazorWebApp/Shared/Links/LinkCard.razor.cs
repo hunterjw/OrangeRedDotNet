@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Links;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Links
@@ -11,6 +14,16 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
     /// </summary>
     public partial class LinkCard
     {
+        /// <summary>
+        /// Reddit service
+        /// </summary>
+        [Inject]
+        public RedditService RedditService { get; set; }
+        /// <summary>
+        /// ToastService
+        /// </summary>
+        [Inject]
+        public IToastService ToastService { get; set; }
         /// <summary>
         /// Navigation manager
         /// </summary>
@@ -175,7 +188,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// On click event handler for the comments button
         /// </summary>
         /// <param name="e"></param>
-        protected void CommentsButton_OnClick(MouseEventArgs e)
+        protected void CommentsButton_OnClick()
         {
             NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}");
         }
@@ -184,7 +197,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// Double click event handler for the card
         /// </summary>
         /// <param name="e">Mouse event args</param>
-        protected void Card_OnDblClick(MouseEventArgs e)
+        protected void Card_OnDblClick()
         {
             LinkType linkType = Link.GetLinkType();
             if (linkType == LinkType.Image ||
@@ -200,7 +213,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// Button clicked event handler for the spoiler button
         /// </summary>
         /// <param name="e">Mouse event args</param>
-        protected void SpoilerButton_OnClick(MouseEventArgs e)
+        protected void SpoilerButton_OnClick()
         {
             SpoilerAcknowledged = !SpoilerAcknowledged;
         }
@@ -209,7 +222,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// Button clicked event handler for the NSFW button
         /// </summary>
         /// <param name="e">Mouse event args</param>
-        protected void NsfwButton_OnClick(MouseEventArgs e)
+        protected void NsfwButton_OnClick()
         {
             NsfwAcknowledged = !NsfwAcknowledged;
         }
@@ -218,9 +231,34 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// Button clicked event handler for the duplicates btton
         /// </summary>
         /// <param name="e">Mouse event args</param>
-        protected void DuplicatesButton_OnClick(MouseEventArgs e)
+        protected void DuplicatesButton_OnClick()
         {
             NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}");
+        }
+
+        /// <summary>
+        /// OnClick handler for the SaveToggleButton
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task SaveToggleButton_OnClick()
+        {
+            try
+            {
+                Reddit client = RedditService.GetClient();
+                if (Link.Data.Saved)
+                {
+                    await client.LinksAndComments.Unsave(Link.Data.Name);
+                }
+                else
+                {
+                    await client.LinksAndComments.Save(Link.Data.Name);
+                }
+                Link.Data.Saved = !Link.Data.Saved;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));   
+            }
         }
     }
 }

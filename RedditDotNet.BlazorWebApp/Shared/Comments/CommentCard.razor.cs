@@ -108,5 +108,33 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
                 ToastService.ShowError(rex.MakeErrorMessage("Error loading more comments"));
             }
         }
+
+        /// <summary>
+        /// OnClick handler for the SaveToggleButton
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task SaveToggleButton_OnClick()
+        {
+            try
+            {
+                if (Comment.Data is CommentData commentData)
+                {
+                    Reddit client = RedditService.GetClient();
+                    if (commentData.Saved)
+                    {
+                        await client.LinksAndComments.Unsave(commentData.Name);
+                    }
+                    else
+                    {
+                        await client.LinksAndComments.Save(commentData.Name);
+                    }
+                    commentData.Saved = !commentData.Saved;
+                }
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using RedditDotNet.Authentication;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Comments;
+using RedditDotNet.Exceptions;
 using RedditDotNet.Models.LinksAndComments;
 using RedditDotNet.Models.Listings;
 using RedditDotNet.Models.Parameters;
@@ -30,6 +31,7 @@ namespace RedditDotNet.Controllers
         /// <param name="dir">vote direction. one of (1, 0, -1)</param>
         /// <param name="rank">an integer greater than 1</param>
         /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
         public async Task Vote(string id, int dir, int rank)
         {
             Dictionary<string, string> parameters = new()
@@ -50,6 +52,7 @@ namespace RedditDotNet.Controllers
         /// <param name="depth">Maximum depth of subtrees in the thread to get</param>
         /// <param name="limitChildren">Only return the children requested</param>
         /// <returns>List of comment/more objects</returns>
+        /// <exception cref="RedditApiException"></exception>
         public async Task<List<CommentBase>> GetMoreChildren(string linkFullName, IEnumerable<string> children,
             CommentSort? sort = null, int? depth = null, bool? limitChildren = false)
         {
@@ -75,6 +78,36 @@ namespace RedditDotNet.Controllers
             var response = await Get<MoreChildrenResponse>("/api/morechildren", parameters);
 
             return response.Json.Data.Things;
+        }
+
+        /// <summary>
+        /// Save a link or comment.
+        /// </summary>
+        /// <param name="id">Fullname of a thing</param>
+        /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task Save(string id)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                {"id", id }
+            };
+            await Post("/api/save", parameters);
+        }
+
+        /// <summary>
+        /// Unsave a link or comment.
+        /// </summary>
+        /// <param name="id">Fullname of a thing</param>
+        /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task Unsave(string id)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                { "id", id }
+            };
+            await Post("/api/unsave", parameters);
         }
     }
 }

@@ -101,6 +101,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Parameter]
         public LinkType? LinkType { get; set; } = null;
+        /// <summary>
+        /// If the thing is saved or not
+        /// </summary>
+        [Parameter]
+        public bool Saved { get; set; } = false;
 
         /// <summary>
         /// Get the css class(es) for the flair badge
