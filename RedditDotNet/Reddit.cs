@@ -3,29 +3,34 @@ using RedditDotNet.Controllers;
 
 namespace RedditDotNet
 {
-	/// <summary>
-	/// Reddit, the frontpage of the internet
-	/// </summary>
-	public class Reddit
+    /// <summary>
+    /// Reddit, the frontpage of the internet
+    /// </summary>
+    public class Reddit
 	{
-		/// <summary>
-		/// Input user agent string
-		/// </summary>
-		private readonly string UserAgent;
 		/// <summary>
 		/// Input IRedditAuthentication instance
 		/// </summary>
 		private readonly IRedditAuthentication RedditAuthentication;
+		/// <summary>
+		/// Input RedditUserAgent
+		/// </summary>
+		private readonly RedditUserAgent RedditUserAgent;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		/// <param name="userAgent">User agent string</param>
-		/// <param name="redditAuthenticaiton">Authentication to use to connect to Reddit</param>
-		public Reddit(string userAgent, IRedditAuthentication redditAuthenticaiton)
+		/// <param name="redditAuthentication">Authentication to use to connect to Reddit</param>
+		/// <param name="redditUserAgent">
+		///		Reddit user agent.
+		///		If the reddit client is being used within a web application hosted in a browser 
+		///		(i.e. Blazor Webassembly), do not provide a user agent as the browsers user agent
+		///		will be used instead.
+		///	</param>
+		public Reddit(IRedditAuthentication redditAuthentication, RedditUserAgent redditUserAgent = null)
 		{
-			UserAgent = userAgent;
-			RedditAuthentication = redditAuthenticaiton;
+			RedditAuthentication = redditAuthentication;
+			RedditUserAgent = redditUserAgent;
 		}
 
 		/// <summary>
@@ -37,7 +42,7 @@ namespace RedditDotNet
 			{
 				if (AccountController == null)
 				{
-					AccountController = new AccountController(UserAgent, RedditAuthentication);
+					AccountController = new AccountController(RedditAuthentication, RedditUserAgent);
 				}
 				return AccountController;
 			}
@@ -53,7 +58,7 @@ namespace RedditDotNet
 			{
 				if (ListingsController == null)
 				{
-					ListingsController = new ListingsController(UserAgent, RedditAuthentication);
+					ListingsController = new ListingsController(RedditAuthentication, RedditUserAgent);
 				}
 				return ListingsController;
 			}
@@ -69,7 +74,7 @@ namespace RedditDotNet
             {
 				if (MultiController == null)
                 {
-					MultiController = new MultiController(UserAgent, RedditAuthentication);
+					MultiController = new MultiController(RedditAuthentication, RedditUserAgent);
                 }
 				return MultiController;
             }
@@ -85,7 +90,7 @@ namespace RedditDotNet
             {
 				if (UsersController == null)
                 {
-					UsersController = new UsersController(UserAgent, RedditAuthentication);
+					UsersController = new UsersController(RedditAuthentication, RedditUserAgent);
                 }
 				return UsersController;
             }
@@ -101,7 +106,7 @@ namespace RedditDotNet
             {
 				if (LinksAndCommentsController == null)
                 {
-					LinksAndCommentsController = new LinksAndCommentsController(UserAgent, RedditAuthentication);
+					LinksAndCommentsController = new LinksAndCommentsController(RedditAuthentication, RedditUserAgent);
                 }
 				return LinksAndCommentsController;
             }
@@ -117,7 +122,7 @@ namespace RedditDotNet
             {
 				if (SubredditsController == null)
                 {
-					SubredditsController = new SubredditsController(UserAgent, RedditAuthentication);
+					SubredditsController = new SubredditsController(RedditAuthentication, RedditUserAgent);
                 }
 				return SubredditsController;
             }

@@ -19,8 +19,18 @@ namespace RedditDotNet.Controllers
     /// </summary>
     public class UsersController : RedditController
     {
-        public UsersController(string userAgent, IRedditAuthentication redditAuthentication)
-            : base(userAgent, redditAuthentication) { }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="redditAuthentication">Authentication to use</param>
+        /// <param name="redditUserAgent">
+        ///		Reddit user agent.
+        ///		If the reddit client is being used within a web application hosted in a browser 
+        ///		(i.e. Blazor Webassembly), do not provide a user agent as the browsers user agent
+        ///		will be used instead.
+        ///	</param>
+        public UsersController(IRedditAuthentication redditAuthentication, RedditUserAgent redditUserAgent = null)
+            : base(redditAuthentication, redditUserAgent) { }
 
         /// <summary>
         /// Get user data by IDs

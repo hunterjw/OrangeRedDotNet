@@ -143,7 +143,7 @@ namespace RedditDotNet.BlazorWebApp
         {
             if (_reddit == default)
             {
-                _reddit = new(string.Empty, GetAuthentication());
+                _reddit = new(GetAuthentication());
             }
             return _reddit;
         }

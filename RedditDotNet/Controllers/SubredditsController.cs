@@ -21,10 +21,15 @@ namespace RedditDotNet.Controllers
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="userAgent">User agent string</param>
-        /// <param name="redditAuthentication">Reddit authentication to use</param>
-        public SubredditsController(string userAgent, IRedditAuthentication redditAuthentication)
-            : base(userAgent, redditAuthentication) { }
+        /// <param name="redditAuthentication">Authentication to use</param>
+        /// <param name="redditUserAgent">
+        ///		Reddit user agent.
+        ///		If the reddit client is being used within a web application hosted in a browser 
+        ///		(i.e. Blazor Webassembly), do not provide a user agent as the browsers user agent
+        ///		will be used instead.
+        ///	</param>
+        public SubredditsController(IRedditAuthentication redditAuthentication, RedditUserAgent redditUserAgent = null)
+            : base(redditAuthentication, redditUserAgent) { }
 
         /// <summary>
         /// Return information about the subreddit.

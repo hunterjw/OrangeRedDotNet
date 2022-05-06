@@ -73,7 +73,11 @@ namespace RedditDotNet.ConsoleApp.Verbs
         public async Task<string> Run()
         {
             IRedditAuthentication auth = GetAuthentication();
-            var reddit = new Reddit("C# Test 1.0.0", auth); // TODO need to generate proper user agent string here
+            var reddit = new Reddit(auth, new RedditUserAgent
+            {
+                Name = AppSettings.GetApplicationName(),
+                Version = AppSettings.GetApplicationVersion()
+            });
             string result = await Run(reddit);
             return result;
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RedditDotNet.Authentication;
 using System;
+using System.Reflection;
 
 namespace RedditDotNet.ConsoleApp
 {
@@ -41,5 +42,23 @@ namespace RedditDotNet.ConsoleApp
 			configRoot.GetSection(nameof(ApplicationOnlyAuthenticationOptions))
 				.Bind(ApplicationOnlyAuthenticationOptions);
 		}
+
+		/// <summary>
+		/// Get the application name
+		/// </summary>
+		/// <returns>Application name</returns>
+		public static string GetApplicationName()
+        {
+			return Assembly.GetEntryAssembly().GetName().Name;
+		}
+
+		/// <summary>
+		/// Get the application version
+		/// </summary>
+		/// <returns>Version string</returns>
+		public static string GetApplicationVersion()
+        {
+			return Assembly.GetEntryAssembly().GetName().Version.ToString(3);
+        }
 	}
 }

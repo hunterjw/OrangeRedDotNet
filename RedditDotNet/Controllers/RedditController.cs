@@ -27,23 +27,28 @@ namespace RedditDotNet.Controllers
         private static readonly HttpClient HttpClient = new();
 
         /// <summary>
-        /// Input user agent string
-        /// </summary>
-        private readonly string UserAgent;
-        /// <summary>
         /// Input reddit authentication
         /// </summary>
         private readonly IRedditAuthentication RedditAuthentication;
+        /// <summary>
+        /// Input RedditUserAgent
+        /// </summary>
+        private readonly RedditUserAgent RedditUserAgent;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="userAgent">User agent string</param>
         /// <param name="redditAuthentication">Reddit authentication to use</param>
-        public RedditController(string userAgent, IRedditAuthentication redditAuthentication)
+		/// <param name="redditUserAgent">
+		///		Reddit user agent.
+		///		If the reddit client is being used within a web application hosted in a browser 
+		///		(i.e. Blazor Webassembly), do not provide a user agent as the browsers user agent
+		///		will be used instead.
+		///	</param>
+        public RedditController(IRedditAuthentication redditAuthentication, RedditUserAgent redditUserAgent = null)
         {
-            UserAgent = userAgent;
             RedditAuthentication = redditAuthentication;
+            RedditUserAgent = redditUserAgent;
         }
 
         /// <summary>
@@ -89,9 +94,9 @@ namespace RedditDotNet.Controllers
             HttpRequestMessage request = new(HttpMethod.Get, builder.ToString());
             var token = await RedditAuthentication.GetBearerToken();
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (!string.IsNullOrWhiteSpace(UserAgent))
+            if (RedditUserAgent != null)
             {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
             }
 
             HttpResponseMessage response = await HttpClient.SendAsync(request);
@@ -169,9 +174,9 @@ namespace RedditDotNet.Controllers
             HttpRequestMessage request = new(HttpMethod.Put, builder.ToString());
             var token = await RedditAuthentication.GetBearerToken();
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (!string.IsNullOrWhiteSpace(UserAgent))
+            if (RedditUserAgent != null)
             {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
             }
             request.Content = new FormUrlEncodedContent(queryParameters);
 
@@ -213,9 +218,9 @@ namespace RedditDotNet.Controllers
             HttpRequestMessage request = new(HttpMethod.Delete, builder.ToString());
             var token = await RedditAuthentication.GetBearerToken();
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (!string.IsNullOrWhiteSpace(UserAgent))
+            if (RedditUserAgent != null)
             {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
             }
 
             HttpResponseMessage response = await HttpClient.SendAsync(request);
@@ -240,9 +245,9 @@ namespace RedditDotNet.Controllers
             HttpRequestMessage request = new(HttpMethod.Post, builder.ToString());
             var token = await RedditAuthentication.GetBearerToken();
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (!string.IsNullOrWhiteSpace(UserAgent))
+            if (RedditUserAgent != null)
             {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
             }
             request.Content = new FormUrlEncodedContent(queryParameters);
 
@@ -285,9 +290,9 @@ namespace RedditDotNet.Controllers
             HttpRequestMessage request = new(HttpMethod.Patch, builder.ToString());
             var token = await RedditAuthentication.GetBearerToken();
             request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (!string.IsNullOrWhiteSpace(UserAgent))
+            if (RedditUserAgent != null)
             {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue("CSharpRedditTest", "1.0.0")); // TODO this needs to be more robust/configurable
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
             }
             request.Content = new FormUrlEncodedContent(queryParameters);
 
