@@ -68,8 +68,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
             {
                 return HttpUtility.HtmlDecode(SubredditDetails.Data.CommunityIcon);
             }
-            // TODO replace this with locally hosted resource
-            return "https://via.placeholder.com/256";
+            return "icon-512.png";
         }
 
         /// <summary>

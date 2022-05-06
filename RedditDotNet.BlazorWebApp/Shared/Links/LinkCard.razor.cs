@@ -67,7 +67,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         }
 
         /// <summary>
-        /// Helper function to get a preview imager URL
+        /// Helper function to get a preview image URL
         /// </summary>
         /// <param name="link">Link object</param>
         /// <returns>preview URL</returns>
@@ -117,9 +117,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                     Data = link.Data.CrosspostParentList.First()
                 });
             }
-
-            // TODO replace this with locally hosted resource
-            return "https://via.placeholder.com/256";
+            return "icon-512.png";
         }
 
         /// <summary>
