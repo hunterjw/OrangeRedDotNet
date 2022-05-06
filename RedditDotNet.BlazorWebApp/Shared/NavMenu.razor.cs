@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared
@@ -13,6 +14,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
+        /// <summary>
+        /// Configuration
+        /// </summary>
+        [Inject]
+        public IConfiguration Configuration { get; set; }
 
         /// <summary>
         /// To have the nav menu collapsed or not
