@@ -36,6 +36,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>The newly created MultiReddit</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiReddit> CopyMulti(string from, string to, string displayName = "", string descriptionMd = "", bool? expandSubreddits = null)
         {
             var parameters = new Dictionary<string, string>
@@ -64,6 +65,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>List of my MultiReddits</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<List<MultiReddit>> GetMine(bool? expandSubreddits = null)
         {
             Dictionary<string, string> parameters = new();
@@ -81,6 +83,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>List of MultiReddits</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<List<MultiReddit>> GetByUsername(string username, bool? expandSubreddits = null)
         {
             Dictionary<string, string> parameters = new();
@@ -99,6 +102,7 @@ namespace RedditDotNet.Controllers
         /// <param name="multiPath">MultiReddit path</param>
         /// <returns>Awaitable task</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task DeleteMulti(string multiPath)
         {
             await Delete($"/api/multi/{multiPath.Trim('/', '\\')}");
@@ -111,6 +115,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiReddit> GetMulti(string multiPath, bool? expandSubreddits = null)
         {
             Dictionary<string, string> parameters = new();
@@ -129,6 +134,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>Newly create MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiReddit> CreateMulti(string multiPath, MultiRedditUpdate model, bool? expandSubreddits = null)
         {
             var parameters = new Dictionary<string, string>
@@ -150,6 +156,7 @@ namespace RedditDotNet.Controllers
         /// <param name="expandSubreddits">True to expand subreddits</param>
         /// <returns>Updated MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiReddit> UpdateMulti(string multiPath, MultiRedditUpdate model, bool? expandSubreddits = null)
         {
             var parameters = new Dictionary<string, string>
@@ -171,6 +178,7 @@ namespace RedditDotNet.Controllers
         /// <param name="multiPath">MultiReddit path</param>
         /// <returns>Description object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiDescription> GetDescription(string multiPath)
         {
             return await Get<MultiDescription>($"/api/multi/{multiPath.Trim('/', '\\')}/description");
@@ -183,6 +191,7 @@ namespace RedditDotNet.Controllers
         /// <param name="descriptionMd">Description (markdown)</param>
         /// <returns>Updated description object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiDescription> UpdateDescription(string multiPath, string descriptionMd)
         {
             var content = new Dictionary<string, string>
@@ -201,6 +210,7 @@ namespace RedditDotNet.Controllers
         /// <param name="subredditName">Subreddit name</param>
         /// <returns>Awaitable task</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task DeleteSubreddit(string multiPath, string subredditName)
         {
             await Delete($"/api/multi/{multiPath.Trim('/', '\\')}/r/{subredditName}");
@@ -213,6 +223,7 @@ namespace RedditDotNet.Controllers
         /// <param name="subredditName">Subreddit name</param>
         /// <returns>MultiSubreddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiSubreddit> GetSubreddit(string multiPath, string subredditName)
         {
             return await Get<MultiSubreddit>($"/api/multi/{multiPath.Trim('/', '\\')}/r/{subredditName}");
@@ -225,6 +236,7 @@ namespace RedditDotNet.Controllers
         /// <param name="subredditName">Subreddit name</param>
         /// <returns>MultiSubreddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<MultiSubreddit> AddSubreddit(string multiPath, string subredditName)
         {
             var content = new Dictionary<string, string>

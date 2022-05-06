@@ -36,6 +36,7 @@ namespace RedditDotNet.Controllers
         /// <param name="parameters">Listing parameters</param>
         /// <returns>Link listing</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Link>> GetLinks(FrontPageListingType listingType, ListingParameters parameters = null)
         {
             return await Get<Listing<Link>>($"/{listingType.ToDescriptionString()}", parameters);
@@ -49,6 +50,7 @@ namespace RedditDotNet.Controllers
         /// <param name="parameters">Listing parameters</param>
         /// <returns>Link listing</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Link>> GetLinksForSubreddit(LinkListingType listingType, string subreddit, ListingParameters parameters = null)
         {
             return await Get<Listing<Link>>($"/r/{subreddit}/{listingType.ToDescriptionString()}", parameters);
@@ -62,6 +64,7 @@ namespace RedditDotNet.Controllers
         /// <param name="parameters">Listing parameters</param>
         /// <returns>Link listing</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Link>> GetLinksForMultireddit(LinkListingType listingType, string multiRedditPath, ListingParameters parameters = null)
         {
             string url = multiRedditPath;
@@ -78,6 +81,7 @@ namespace RedditDotNet.Controllers
         /// <param name="fullNames">Full names of links to get</param>
         /// <returns>Listing of links</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Link>> GetByIds(IEnumerable<string> fullNames)
         {
             return await Get<Listing<Link>>($"/by_id/{string.Join(',', fullNames)}");
@@ -92,6 +96,7 @@ namespace RedditDotNet.Controllers
         /// <returns>Link with assosiated comments</returns>
         /// <exception cref="RedditApiException"></exception>
         /// <exception cref="ArgumentException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<LinkWithComments> GetComments(string articleId, CommentListingParameters parameters = null, string subreddit = null)
         {
             return await GetListingBySubreddit<LinkWithComments>($"/comments/{articleId}", parameters, subreddit);
@@ -105,6 +110,7 @@ namespace RedditDotNet.Controllers
         /// <returns>Original link with the duplicate links</returns>
         /// <exception cref="RedditApiException"></exception>
         /// <exception cref="ArgumentException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<DuplicateLinks> GetDuplicates(string articleId, DuplicateListingParameters parameters = null)
         {
             return await GetListingBySubreddit<DuplicateLinks>($"/duplicates/{articleId}", parameters);
@@ -120,6 +126,7 @@ namespace RedditDotNet.Controllers
         /// <returns>Deserialized json object</returns>
         /// <exception cref="RedditApiException"></exception>
         /// <exception cref="ArgumentException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         private async Task<T> GetListingBySubreddit<T>(string relativeUrl, IQueryParameters parameters = null, string subreddit = null)
         {
             string url = string.Empty;

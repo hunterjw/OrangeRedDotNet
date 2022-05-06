@@ -30,6 +30,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>User Identity</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<AccountData> GetIdentity()
 		{
 			return await Get<AccountData>("/api/v1/me");
@@ -40,6 +41,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>Karma breakdown</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<KarmaBreakdown> GetKarmaBreakdown()
 		{
 			return await Get<KarmaBreakdown>("/api/v1/me/karma");
@@ -50,6 +52,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>User preferences</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<Preferences> GetPreferences()
 		{
 			return await Get<Preferences>("/api/v1/me/prefs");
@@ -61,6 +64,7 @@ namespace RedditDotNet.Controllers
 		/// <param name="preferences">User preferences</param>
 		/// <returns>Updated user preferences</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<Preferences> SetPreferences(Preferences preferences)
         {
 			return await Patch<Preferences>("/api/v1/me/prefs", 
@@ -72,6 +76,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>List of awards</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<TrophyList> GetTrophies()
 		{
 			return await Get<TrophyList>("/api/v1/me/trophies");
@@ -82,6 +87,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>List of friends</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<UserList> GetFriends()
 		{
 			return await Get<UserList>("/api/v1/me/friends");
@@ -92,6 +98,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>List of blocked users</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<UserList> GetBlocked()
 		{
 			return await Get<UserList>("/prefs/blocked");
@@ -102,6 +109,7 @@ namespace RedditDotNet.Controllers
 		/// </summary>
 		/// <returns>List of trusted users</returns>
 		/// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		public async Task<UserList> GetTrusted()
 		{
 			return await Get<UserList>("/prefs/trusted");

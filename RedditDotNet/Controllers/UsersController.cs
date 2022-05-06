@@ -38,6 +38,7 @@ namespace RedditDotNet.Controllers
         /// <param name="ids">Account fullnames</param>
         /// <returns>Dictionary of account fullnames to user data</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Dictionary<string, UserData>> GetUsersByIds(IEnumerable<string> ids)
         {
             Dictionary<string, string> parameters = new()
@@ -53,6 +54,7 @@ namespace RedditDotNet.Controllers
         /// <param name="username">A valid, unused, username</param>
         /// <returns>Boolean value</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<bool> IsUsernameAvailable(string username)
         {
             Dictionary<string, string> parameters = new()
@@ -68,6 +70,7 @@ namespace RedditDotNet.Controllers
         /// </summary>
         /// <param name="username">A valid, existing reddit username</param>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task RemoveFriend(string username)
         {
             await Delete($"/api/v1/me/friends/{username}");
@@ -79,6 +82,7 @@ namespace RedditDotNet.Controllers
         /// <param name="username">A valid, existing reddit username</param>
         /// <returns>User object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<User> GetFriendDetails(string username)
         {
             return await Get<User>($"/api/v1/me/friends/{username}");
@@ -91,6 +95,7 @@ namespace RedditDotNet.Controllers
         /// <param name="note">A string no longer than 300 characters</param>
         /// <returns>User object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<User> UpdateFriend(string username, string note = "")
         {
             Dictionary<string, string> content = new()
@@ -112,6 +117,7 @@ namespace RedditDotNet.Controllers
         /// <param name="username">A valid, existing reddit username</param>
         /// <returns>TrophyList object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<TrophyList> GetTrophies(string username)
         {
             return await Get<TrophyList>($"/api/v1/user/{username}/trophies");
@@ -123,6 +129,7 @@ namespace RedditDotNet.Controllers
         /// <param name="username">The name of an existing user</param>
         /// <returns>Account object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Account> GetAbout(string username)
         {
             return await Get<Account>($"/user/{username}/about");
@@ -137,6 +144,8 @@ namespace RedditDotNet.Controllers
         /// comments, upvoted, downvoted, hidden, saved, gilded)</param>
         /// <param name="parameters">Listing parameters</param>
         /// <returns>Listing of Links and/or Comments</returns>
+        /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<ILinkOrComment>> GetListing(string username, 
             UserProfileListingType listingType, UsersListingParameters parameters = null)
         {

@@ -37,6 +37,7 @@ namespace RedditDotNet.Controllers
         /// <param name="rank">an integer greater than 1</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Vote(string id, int dir, int rank)
         {
             Dictionary<string, string> parameters = new()
@@ -58,6 +59,7 @@ namespace RedditDotNet.Controllers
         /// <param name="limitChildren">Only return the children requested</param>
         /// <returns>List of comment/more objects</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<List<CommentBase>> GetMoreChildren(string linkFullName, IEnumerable<string> children,
             CommentSort? sort = null, int? depth = null, bool? limitChildren = false)
         {
@@ -91,6 +93,7 @@ namespace RedditDotNet.Controllers
         /// <param name="id">Fullname of a thing</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Save(string id)
         {
             Dictionary<string, string> parameters = new()
@@ -106,6 +109,7 @@ namespace RedditDotNet.Controllers
         /// <param name="id">Fullname of a thing</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Unsave(string id)
         {
             Dictionary<string, string> parameters = new()
@@ -121,6 +125,7 @@ namespace RedditDotNet.Controllers
         /// <param name="id">Fullname of a link</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Hide(string id)
         {
             Dictionary<string, string> parameters = new()
@@ -136,6 +141,7 @@ namespace RedditDotNet.Controllers
         /// <param name="id">Fullname of a link</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Unhide(string id)
         {
             Dictionary<string, string> parameters = new()

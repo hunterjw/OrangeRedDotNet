@@ -72,6 +72,7 @@ namespace RedditDotNet.Controllers
         /// <param name="relativeUrl">URL to make the request to</param>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<HttpResponseMessage> Get(string relativeUrl)
         {
             return await Get(relativeUrl, null);
@@ -84,6 +85,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameters for the request</param>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<HttpResponseMessage> Get(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -117,6 +119,7 @@ namespace RedditDotNet.Controllers
         /// <param name="relativeUrl">URL to make the request to</param>
         /// <returns><typeparamref name="T"/> instance</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Get<T>(string relativeUrl)
         {
             return await DeserializeToObject<T>(await Get(relativeUrl));
@@ -130,6 +133,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameters for the request</param>
         /// <returns><typeparamref name="T"/> instance</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Get<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             return await DeserializeToObject<T>(await Get(relativeUrl, queryParameters));
@@ -144,6 +148,7 @@ namespace RedditDotNet.Controllers
         /// <returns><typeparamref name="T"/> instance</returns>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Get<T>(string relativeUrl, IQueryParameters parameters)
         {
             IDictionary<string, string> dict = null;
@@ -168,6 +173,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
         /// <returns>HttpResonseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<HttpResponseMessage> Put(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -199,6 +205,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Put<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             return await DeserializeToObject<T>(await Put(relativeUrl, queryParameters));
@@ -212,6 +219,7 @@ namespace RedditDotNet.Controllers
         /// <param name="relativeUrl">Relative URL</param>
         /// <returns>Awaitable Task</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task Delete(string relativeUrl)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -239,6 +247,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -270,6 +279,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Post<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             return await DeserializeToObject<T>(await Post(relativeUrl, queryParameters));
@@ -284,6 +294,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameters (sent as request content, form URL encoded)</param>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<HttpResponseMessage> Patch(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
@@ -315,6 +326,7 @@ namespace RedditDotNet.Controllers
         /// <param name="queryParameters">Query parameters (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         internal async Task<T> Patch<T>(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             return await DeserializeToObject<T>(await Patch(relativeUrl, queryParameters));

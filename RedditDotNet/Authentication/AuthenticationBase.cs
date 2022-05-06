@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedditDotNet.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -137,43 +138,49 @@ namespace RedditDotNet.Authentication
         /// <inheritdoc/>
         public async Task<string> GetBearerToken()
         {
-            // TODO Need to add proper error handling if token retrieval fails
-            if (DateTime.Now >= _latestTokenExpires)
+            try
             {
-                // Prevent more than one thread from refeshing a token
-                await _refreshTokenLock.WaitAsync();
-                try
+                if (DateTime.Now >= _latestTokenExpires)
                 {
-                    // Recheck once we have the lock, in case it was refreshed while we didn't have the lock
-                    if (DateTime.Now >= _latestTokenExpires)
+                    // Prevent more than one thread from refeshing a token
+                    await _refreshTokenLock.WaitAsync();
+                    try
                     {
-                        if (_load != null)
+                        // Recheck once we have the lock, in case it was refreshed while we didn't have the lock
+                        if (DateTime.Now >= _latestTokenExpires)
                         {
-                            TokenResponse loadedToken = _load();
-                            if (_latestTokenResponse == null ||
-                                _latestTokenResponse.Expires < loadedToken?.Expires)
+                            if (_load != null)
                             {
-                                _latestTokenResponse = loadedToken;
+                                TokenResponse loadedToken = _load();
+                                if (_latestTokenResponse == null ||
+                                    _latestTokenResponse.Expires < loadedToken?.Expires)
+                                {
+                                    _latestTokenResponse = loadedToken;
+                                }
                             }
+                            if (_latestTokenResponse == null ||
+                                DateTime.Now >= _latestTokenResponse?.Expires)
+                            {
+                                _latestTokenResponse = await GetFreshToken();
+                                _latestTokenResponse.Retrieved = DateTime.Now;
+                                _latestTokenResponse.Expires = _latestTokenResponse.Retrieved
+                                    .AddSeconds(_latestTokenResponse.ExpiresIn);
+                                _save?.Invoke(_latestTokenResponse);
+                            }
+                            _latestTokenExpires = _latestTokenResponse.Expires;
                         }
-                        if (_latestTokenResponse == null ||
-                            DateTime.Now >= _latestTokenResponse?.Expires)
-                        {
-                            _latestTokenResponse = await GetFreshToken();
-                            _latestTokenResponse.Retrieved = DateTime.Now;
-                            _latestTokenResponse.Expires = _latestTokenResponse.Retrieved
-                                .AddSeconds(_latestTokenResponse.ExpiresIn);
-                            _save?.Invoke(_latestTokenResponse);
-                        }
-                        _latestTokenExpires = _latestTokenResponse.Expires;
+                    }
+                    finally
+                    {
+                        _refreshTokenLock.Release();
                     }
                 }
-                finally
-                {
-                    _refreshTokenLock.Release();
-                }
+                return _latestTokenResponse.AccessToken;
             }
-            return _latestTokenResponse.AccessToken;
+            catch (Exception ex)
+            {
+                throw new RedditAuthenticationException("Error getting bearer token", ex);
+            }
         }
     }
 }

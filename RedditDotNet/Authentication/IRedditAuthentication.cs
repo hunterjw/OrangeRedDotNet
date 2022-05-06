@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using RedditDotNet.Exceptions;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.Authentication
 {
@@ -11,6 +12,7 @@ namespace RedditDotNet.Authentication
 		/// Get a bearer token
 		/// </summary>
 		/// <returns>Bearer token</returns>
+		/// <exception cref="RedditAuthenticationException"></exception>
 		Task<string> GetBearerToken();
 
 		/// <summary>

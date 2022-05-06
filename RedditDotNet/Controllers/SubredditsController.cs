@@ -37,6 +37,7 @@ namespace RedditDotNet.Controllers
         /// <param name="subredditName">Name of the subreddit</param>
         /// <returns>Subreddit information</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Subreddit> GetAbout(string subredditName)
         {
             return await Get<Subreddit>($"/r/{subredditName}/about");
@@ -48,6 +49,7 @@ namespace RedditDotNet.Controllers
         /// <param name="subredditName">Name of the subreddit</param>
         /// <returns>Subreddit rules</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<RulesResponse> GetRules(string subredditName)
         {
             return await Get<RulesResponse>($"/r/{subredditName}/about/rules");
@@ -60,6 +62,7 @@ namespace RedditDotNet.Controllers
         /// <param name="listingParameters">Listing parameters</param>
         /// <returns>Listing of subreddits</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Subreddit>> GetMine(MySubredditsType type, ListingParameters listingParameters = null)
         {
             return await Get<Listing<Subreddit>>($"/subreddits/mine/{type.ToDescriptionString()}", listingParameters);
@@ -72,6 +75,7 @@ namespace RedditDotNet.Controllers
         /// <param name="listingParameters">Listing parameters</param>
         /// <returns>Listing of subreddits</returns>
         /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task<Listing<Subreddit>> Get(SubredditsType type, ListingParameters listingParameters = null)
         {
             return await Get<Listing<Subreddit>>($"/subreddits/{type.ToDescriptionString()}", listingParameters);
@@ -88,6 +92,8 @@ namespace RedditDotNet.Controllers
         ///     for an unsubscribe action will result in an error.
         /// </param>
         /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+		/// <exception cref="RedditAuthenticationException"></exception>
         public async Task Subscribe(string subredditName, SubscribeAction action, bool skipInitialDefaults = false)
         {
             Dictionary<string, string> parameters = new()
