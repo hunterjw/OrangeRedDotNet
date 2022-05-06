@@ -260,5 +260,30 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
                 ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));   
             }
         }
+
+        /// <summary>
+        /// OnClick handler for the HideToggleButton
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task HideToggleButton_OnClick()
+        {
+            try
+            {
+                Reddit client = RedditService.GetClient();
+                if (Link.Data.Hidden)
+                {
+                    await client.LinksAndComments.Unhide(Link.Data.Name);
+                }
+                else
+                {
+                    await client.LinksAndComments.Hide(Link.Data.Name);
+                }
+                Link.Data.Hidden = !Link.Data.Hidden;
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Failed to update link hidden state"));
+            }
+        }
     }
 }

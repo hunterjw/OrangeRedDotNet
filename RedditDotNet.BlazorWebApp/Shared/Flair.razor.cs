@@ -106,6 +106,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Parameter]
         public bool Saved { get; set; } = false;
+        /// <summary>
+        /// If the thing is hidden or not
+        /// </summary>
+        [Parameter]
+        public bool Hidden { get; set; } = false;
 
         /// <summary>
         /// Get the css class(es) for the flair badge

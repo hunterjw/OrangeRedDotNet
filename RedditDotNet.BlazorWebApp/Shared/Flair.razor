@@ -58,6 +58,10 @@
 {
     <span class="badge bg-primary me-1">Saved</span>
 }
+@if (Hidden)
+{
+    <span class="badge bg-warning text-dark me-1">Hidden</span>
+}
 
 @switch (FlairType?.ToLower())
 {

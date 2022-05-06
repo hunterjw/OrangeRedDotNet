@@ -109,5 +109,35 @@ namespace RedditDotNet.Controllers
             };
             await Post("/api/unsave", parameters);
         }
+
+        /// <summary>
+        /// Hide a link.
+        /// </summary>
+        /// <param name="id">Fullname of a link</param>
+        /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task Hide(string id)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                { "id", id }
+            };
+            await Post("/api/hide", parameters);
+        }
+
+        /// <summary>
+        /// Unhide a link.
+        /// </summary>
+        /// <param name="id">Fullname of a link</param>
+        /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+        public async Task Unhide(string id)
+        {
+            Dictionary<string, string> parameters = new()
+            {
+                { "id", id }
+            };
+            await Post("/api/unhide", parameters);
+        }
     }
 }

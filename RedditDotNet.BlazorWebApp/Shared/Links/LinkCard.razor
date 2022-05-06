@@ -43,7 +43,8 @@
                        Locked="@Link.Data.Locked"
                        Archived="Link.Data.Archived"
                        LinkType="@Link.GetLinkType()"
-                       Saved="@Link.Data.Saved" />
+                       Saved="@Link.Data.Saved" 
+                       Hidden="@Link.Data.Hidden" />
             </div>
         </div>
         <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
@@ -167,6 +168,11 @@
                 <div class="col-auto">
                     <button class="btn btn-light" @onclick="SaveToggleButton_OnClick">
                         <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-light" @onclick="HideToggleButton_OnClick">
+                        <span class="oi oi-ban @(Link.Data.Hidden ? "text-warning" : "")"></span>
                     </button>
                 </div>
             }
