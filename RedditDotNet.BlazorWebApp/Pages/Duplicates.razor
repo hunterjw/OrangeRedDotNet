@@ -1,9 +1,8 @@
 ﻿@page "/r/{subreddit}/duplicates/{articleId}"
 
-<h2>@Subreddit</h2>
-
 @if (DuplicateLinks == null)
 {
+    <h2>@Subreddit</h2>
     <p>Whoa, déjà vu...</p>
 }
 else
