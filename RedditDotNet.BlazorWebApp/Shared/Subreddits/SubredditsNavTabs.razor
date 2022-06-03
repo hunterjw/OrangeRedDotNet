@@ -1,25 +1,33 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<ul class="nav nav-pills mb-2">
-    <li class="nav-item">
-        <a class="@(ActiveSubredditsTab == SubredditsType.Popular || (ActiveSubredditsTab == null && ActiveMySubredditsTab == null) ? "nav-link active" : "nav-link")" href="/subreddits/popular">Popular</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveSubredditsTab == SubredditsType.New ? "nav-link active" : "nav-link")" href="/subreddits/new">New</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveSubredditsTab == SubredditsType.Default ? "nav-link active" : "nav-link")" href="/subreddits/default">Default</a>
-    </li>
-    @if (RedditService.LoggedIn)
-    {
-        <li class="nav-item">
-            <a class="@(ActiveMySubredditsTab == MySubredditsType.Subscriber ? "nav-link active" : "nav-link")" href="/subreddits/mine/subscriber">Subscriber</a>
-        </li>
-        <li class="nav-item">
-            <a class="@(ActiveMySubredditsTab == MySubredditsType.Contributor ? "nav-link active" : "nav-link")" href="/subreddits/mine/contributor">Contributor</a>
-        </li>
-        <li class="nav-item">
-            <a class="@(ActiveMySubredditsTab == MySubredditsType.Moderator ? "nav-link active" : "nav-link")" href="/subreddits/mine/moderator">Moderator</a>
-        </li>
-    }
-</ul>
+<Tabs SelectedTab="@GetActiveTabName()" Pills Margin="Margin.Is2.FromBottom">
+    <Items>
+        <Tab Name="@SubredditsType.Popular.ToString()"
+             @onclick="() => NavigateTo(SubredditsType.Popular)">
+            Popular
+        </Tab>
+        <Tab Name="@SubredditsType.New.ToString()"
+             @onclick="() => NavigateTo(SubredditsType.New)">
+            New
+        </Tab>
+        <Tab Name="@SubredditsType.Default.ToString()"
+             @onclick="() => NavigateTo(SubredditsType.Default)">
+            Default
+        </Tab>
+        @if (RedditService.LoggedIn)
+        {
+            <Tab Name="@MySubredditsType.Subscriber.ToString()" 
+                @onclick="() => NavigateTo(MySubredditsType.Subscriber)">
+                Subscriber
+            </Tab>
+            <Tab Name="@MySubredditsType.Contributor.ToString()" 
+                @onclick="() => NavigateTo(MySubredditsType.Contributor)">
+                Contributor
+            </Tab>
+            <Tab Name="@MySubredditsType.Moderator.ToString()" 
+                @onclick="() => NavigateTo(MySubredditsType.Moderator)">
+                Moderator
+            </Tab>
+        }
+    </Items>
+</Tabs>

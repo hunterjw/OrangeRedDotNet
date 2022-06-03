@@ -8,13 +8,15 @@ using RedditDotNet.Authentication;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
 
 namespace RedditDotNet.BlazorWebApp
 {
     public class Program
     {
         public static ApplicationOnlyAuthenticationOptions ApplicationOnlyAuthenticationOptions { get; } = new();
-
         public static OAuthAuthenticationOptions OAuthAuthenticationOptions { get; } = new();
 
         public static async Task Main(string[] args)
@@ -40,6 +42,14 @@ namespace RedditDotNet.BlazorWebApp
             });
             builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredToast();
+
+            builder.Services
+                .AddBlazorise(options =>
+                {
+                    options.Immediate = true;
+                })
+                .AddBootstrap5Providers()
+                .AddFontAwesomeIcons();
 
             await builder.Build().RunAsync();
         }

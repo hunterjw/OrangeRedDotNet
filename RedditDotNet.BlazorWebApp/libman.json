@@ -8,11 +8,10 @@
       "files": [
         "css/bootstrap.min.css",
         "css/bootstrap.min.css.map",
-        "js/bootstrap.min.js"
+        "js/bootstrap.bundle.min.js"
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "hls.js@1.1.5",
       "destination": "wwwroot/lib/hls.js/",
       "files": [
@@ -21,7 +20,6 @@
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "plyr@3.6.12",
       "destination": "wwwroot/lib/plyr/",
       "files": [
@@ -30,6 +28,20 @@
         "plyr.min.js.map",
         "plyr.css",
         "plyr.min.css"
+      ]
+    },
+    {
+      "library": "font-awesome@6.1.1",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css"
+      ]
+    },
+    {
+      "library": "Chart.js@3.7.1",
+      "destination": "wwwroot/lib/Chart.js/",
+      "files": [
+        "chart.min.js"
       ]
     }
   ]

@@ -4,63 +4,63 @@
 
 @if(IsOriginalPoster)
 {
-    <span class="badge bg-primary me-1">OP</span>
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">OP</Badge>
 }
 @if (LinkType != null)
 {
-    <span class="badge bg-primary me-1">@LinkType.ToString()</span>
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">@LinkType.ToString()</Badge>
 }
 @if (Over18)
 {
-    <span class="badge bg-danger me-1">NSFW</span>
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">NSFW</Badge>
 }
 @if (Spoiler)
 {
-    <span class="badge bg-warning text-dark me-1">Spoiler</span>
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">Spoiler</Badge>
 }
 @if (Locked)
 {
-    <span class="badge bg-warning text-dark me-1">Locked</span>
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">Locked</Badge>
 }
 @if (Stickied)
 {
-    <span class="badge bg-success me-1">Stickied</span>
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">Stickied</Badge>
 }
 @if (Archived)
 {
-    <span class="badge bg-secondary me-1">Archived</span>
+    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">Archived</Badge>
 }
 @if (IsOriginalContent)
 {
-    <span class="badge bg-primary me-1">OC</span>
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">OC</Badge>
 }
 @if (Banned)
 {
-    <span class="badge bg-danger me-1">You are banned</span>
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">You are banned</Badge>
 }
 @if (Contributor)
 {
-    <span class="badge bg-success me-1">You are a contributor</span>
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">You are a contributor</Badge>
 }
 @if (Moderator)
 {
-    <span class="badge bg-success me-1">You are a moderator</span>
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">You are a moderator</Badge>
 }
 @if (Muted)
 {
-    <span class="badge bg-warning text-dark me-1">You are muted</span>
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">You are muted</Badge>
 }
 @if (Subscribed)
 {
-    <span class="badge bg-primary me-1">Subscribed</span>
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">Subscribed</Badge>
 }
 @if (Saved)
 {
-    <span class="badge bg-primary me-1">Saved</span>
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">Saved</Badge>
 }
 @if (Hidden)
 {
-    <span class="badge bg-warning text-dark me-1">Hidden</span>
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">Hidden</Badge>
 }
 
 @switch (FlairType?.ToLower())
@@ -68,11 +68,11 @@
     case "text":
         if (!string.IsNullOrWhiteSpace(FlairText))
         {
-            <span class="@FlairClass()" style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</span>
+            <Span Class="@FlairClass()" Style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</Span>
         }
         break;
     case "richtext":
-        <span class="@FlairClass()" style="@FlairStyle()">
+        <Span Class="@FlairClass()" Style="@FlairStyle()">
             @if (FlairRichtext?.Count > 0)
             {
                 @foreach (FlairRichtext flair in FlairRichtext)
@@ -86,7 +86,7 @@
                             }
                             break;
                         case "emoji":
-                            <img src="@flair?.Url" alt="@flair?.Tag" class="flair-emoji" />
+                            <Image Source="@flair?.Url" Text="@flair?.Tag" Class="flair-emoji" />
                             break;
                         default:
                             break;
@@ -97,7 +97,7 @@
             {
                 @((MarkupString)HttpUtility.HtmlDecode(FlairText))
             }
-        </span>
+        </Span>
         break;
     default:
         break;

@@ -1,14 +1,14 @@
-﻿<ul class="pagination mt-2">
+﻿<Pagination Margin="Margin.Is2.FromTop">
     @if (!string.IsNullOrWhiteSpace(Before))
     {
-        <li class="page-item">
-            <a class="page-link" href="@BuildPreviousPageUrl().Result">Previous</a>
-        </li>
+        <PaginationItem>
+            <PaginationLink href="@BuildPreviousPageUrl().Result">Previous</PaginationLink>
+        </PaginationItem>
     }
     @if (!string.IsNullOrWhiteSpace(After))
     {
-        <li class="page-item">
-            <a class="page-link" href="@BuildNextPageUrl().Result">Next</a>
-        </li>
+        <PaginationItem>
+            <PaginationLink href="@BuildNextPageUrl().Result">Next</PaginationLink>
+        </PaginationItem>
     }
-</ul>
+</Pagination>

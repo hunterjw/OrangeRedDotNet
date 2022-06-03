@@ -1,19 +1,25 @@
 ﻿@page "/multis"
 
-<h2>MultiReddits</h2>
+<Row>
+    <Column>
+        <Heading Size="HeadingSize.Is2">MultiReddits</Heading>
+    </Column>
+    @if (RedditService.LoggedIn)
+    {
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Button Color="Color.Primary" Margin="Margin.Is1.FromBottom" @onclick="NewMultiRedditButton_OnClick">
+                New MultiReddit
+            </Button>
+        </Column>
+    }
+</Row>
 
 @if (MultiReddits == null)
 {
-    <p>Loading...</p>
+    <Paragraph>Loading...</Paragraph>
 }
 else
 {
-    @if (RedditService.LoggedIn)
-    {
-        <button class="btn btn-primary mb-1" @onclick="NewMultiRedditButton_OnClick">
-            New MultiReddit
-        </button>
-    }
     <MultiRedditList MultiReddits="@MultiReddits"
                  OnMultiRedditDelete="OnMultiRedditDelete"
                  OnMultiRedditCopy="OnMultiRedditCopy" />

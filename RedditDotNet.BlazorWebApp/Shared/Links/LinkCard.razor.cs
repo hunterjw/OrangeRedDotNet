@@ -1,6 +1,5 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Links;
 using System.Linq;
@@ -55,15 +54,17 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         {
             LinkType linkType = Link.GetLinkType();
             if (!ContentCollapsed &&
-                !(linkType == LinkType.Image ||
+                (!(linkType == LinkType.Image ||
                 linkType == LinkType.Gallery ||
                 linkType == LinkType.Video ||
                 linkType == LinkType.Text ||
                 linkType == LinkType.Crosspost ||
-                linkType == LinkType.EmbeddedMedia))
+                linkType == LinkType.EmbeddedMedia) || 
+                (linkType == LinkType.Text && string.IsNullOrWhiteSpace(Link.Data.Selftext))))
             {
                 ContentCollapsed = true;
             }
+            
         }
 
         /// <summary>
@@ -174,24 +175,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         }
 
         /// <summary>
-        /// OnClick handler for buttons that toggle the collapsable region
-        /// </summary>
-        /// <param name="e">Event arguments</param>
-        protected void ContentCollapsedButton_OnClick(MouseEventArgs e)
-        {
-            ContentCollapsed = !ContentCollapsed;
-        }
-
-        /// <summary>
-        /// On click event handler for the comments button
-        /// </summary>
-        /// <param name="e"></param>
-        protected void CommentsButton_OnClick()
-        {
-            NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}");
-        }
-
-        /// <summary>
         /// Double click event handler for the card
         /// </summary>
         /// <param name="e">Mouse event args</param>
@@ -205,33 +188,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
             {
                 ContentCollapsed = !ContentCollapsed;
             }
-        }
-
-        /// <summary>
-        /// Button clicked event handler for the spoiler button
-        /// </summary>
-        /// <param name="e">Mouse event args</param>
-        protected void SpoilerButton_OnClick()
-        {
-            SpoilerAcknowledged = !SpoilerAcknowledged;
-        }
-
-        /// <summary>
-        /// Button clicked event handler for the NSFW button
-        /// </summary>
-        /// <param name="e">Mouse event args</param>
-        protected void NsfwButton_OnClick()
-        {
-            NsfwAcknowledged = !NsfwAcknowledged;
-        }
-
-        /// <summary>
-        /// Button clicked event handler for the duplicates btton
-        /// </summary>
-        /// <param name="e">Mouse event args</param>
-        protected void DuplicatesButton_OnClick()
-        {
-            NavigationManager.NavigateTo($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}");
         }
 
         /// <summary>

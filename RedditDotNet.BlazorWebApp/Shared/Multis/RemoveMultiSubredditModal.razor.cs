@@ -20,7 +20,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Parameter]
         public string MultiRedditName { get; set; }
-
         /// <summary>
         /// Subreddit Name
         /// </summary>

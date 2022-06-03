@@ -1,86 +1,65 @@
-﻿<div class="card text-dark bg-light">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-auto d-flex justify-content-center flex-column">
+﻿<Card Background="App.CardBackground" TextColor="App.CardTextColor">
+    <CardHeader>
+        <Row>
+            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
                 Karma Breakdown
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-light" @onclick="CollapseButton_OnClick">
-                    @if (CardCollapsed)
-                    {
-                        <span class="oi oi-chevron-bottom"></span>
-                    }
-                    else
-                    {
-                        <span class="oi oi-chevron-top"></span>
-                    }
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="card-body @(CardCollapsed ? "collapse" : "")">
-        <div class="card text-dark bg-light mb-1">
-            <div class="card-body">
-                <h4 class="card-title">Link Karma</h4>
-                <RadzenChart>
-                    <RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Link Karma" CategoryProperty="Subreddit" ValueProperty="LinkKarma" Fills="@SubredditNameHashColors" />
-                </RadzenChart>
-            </div>
-        </div>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="App.DefaultButtonColor" @onclick="() => CardCollapsed = !CardCollapsed">
+                    <span class="oi @(CardCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody Class="@(CardCollapsed ? "collapse" : "")">
+        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
+            <CardBody>
+                <CardTitle Size="4">Link Karma</CardTitle>
+                <PieChart @ref="LinkKarmaPieChart" TItem="int" Options="@ChartOptions" />
+            </CardBody>
+        </Card>
 
-        <div class="card text-dark bg-light mb-1">
-            <div class="card-body">
-                <h4 class="card-title">Comment Karma</h4>
-                <RadzenChart>
-                    <RadzenPieSeries Data="@AccountKarmaBreakdown.Data" Title="Comment Karma" CategoryProperty="Subreddit" ValueProperty="CommentKarma" Fills="@SubredditNameHashColors" />
-                </RadzenChart>
-            </div>
-        </div>
+        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
+            <CardBody>
+                <CardTitle Size="4">Comment Karma</CardTitle>
+                <PieChart @ref="CommentKarmaPieChart" TItem="int" Options="@ChartOptions" />
+            </CardBody>
+        </Card>
 
-        <div class="card text-dark bg-light mb-1">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-auto d-flex justify-content-center flex-column">
+        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
+            <CardHeader>
+                <Row>
+                    <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
                         Raw Data
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="RawDataButton_OnClick">
-                            @if (RawDataCollapsed)
-                            {
-                                <span class="oi oi-chevron-bottom"></span>
-                            }
-                            else
-                            {
-                                <span class="oi oi-chevron-top"></span>
-                            }
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="@(RawDataCollapsed ? "collapse" : "")">
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Subreddit</th>
-                                <th>Comment Karma</th>
-                                <th>Link Karma</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var breakdown in AccountKarmaBreakdown.Data)
-                            {
-                                <tr>
-                                    <td>@breakdown.Subreddit</td>
-                                    <td>@breakdown.CommentKarma</td>
-                                    <td>@breakdown.LinkKarma</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <Button Color="App.DefaultButtonColor" @onclick="() => RawDataCollapsed = !RawDataCollapsed">
+                            <span class="oi @(RawDataCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
+                        </Button>
+                    </Column>
+                </Row>
+            </CardHeader>
+            <CardBody Class="@(RawDataCollapsed ? "collapse" : "")">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell>Subreddit</TableHeaderCell>
+                            <TableHeaderCell>Comment Karma</TableHeaderCell>
+                            <TableHeaderCell>Link Karma</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var breakdown in AccountKarmaBreakdown.Data)
+                        {
+                            <TableRow>
+                                <TableRowCell>@breakdown.Subreddit</TableRowCell>
+                                <TableRowCell>@breakdown.CommentKarma</TableRowCell>
+                                <TableRowCell>@breakdown.LinkKarma</TableRowCell>
+                            </TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </CardBody>
+        </Card>
+    </CardBody>
+</Card>

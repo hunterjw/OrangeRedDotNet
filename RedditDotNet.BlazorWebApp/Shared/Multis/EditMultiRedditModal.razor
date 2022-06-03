@@ -1,31 +1,35 @@
-﻿<EditForm Model="UpdateModel" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-
-    <div class="mb-3">
-        <label for="nameInput" class="form-label">Name</label>
-        <InputText class="form-control" id="nameInput" @bind-Value="UpdateModel.DisplayName"></InputText>
-    </div>
-    <div class="mb-3">
-        <label for="descriptionInput" class="form-label">Description</label>
-        <InputTextArea class="form-control" id="descriptionInput" rows="3" @bind-Value="UpdateModel.DescriptionMd"></InputTextArea>
-    </div>
+﻿<Validations Mode="ValidationMode.Auto" Model="UpdateModel" ValidateOnLoad="false" StatusChanged="OnValidationsStatusChange" @ref="Validations">
+    <Blazorise.ValidationSummary />
+    <Validation>
+        <Field Margin="Margin.Is3.FromBottom">
+            <FieldLabel>Name</FieldLabel>
+            <TextEdit @bind-Text="UpdateModel.DisplayName" />
+        </Field>
+    </Validation>
+    <Validation>
+        <Field Margin="Margin.Is3.FromBottom">
+            <FieldLabel>Description</FieldLabel>
+            <MemoEdit Rows="3" @bind-Text="UpdateModel.DescriptionMd" />
+        </Field>
+    </Validation>
     @if (!HideVisibility)
     {
-        <div class="mb-3">
-            <label for="visibilitySelect" class="form-label">Privacy</label>
-            <InputSelect class="form-select" id="visibilitySelect" @bind-Value="UpdateModel.Visibility">
-                <option value="private">Private</option>
-                <option value="public">Public</option>
-            </InputSelect>
-        </div>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Privacy</FieldLabel>
+                <Select @bind-SelectedValue="UpdateModel.Visibility">
+                    <SelectItem Value="@("private")">Private</SelectItem>
+                    <SelectItem Value="@("public")">Public</SelectItem>
+                </Select>
+            </Field>
+        </Validation>
     }
-    <div class="btn-group" role="group" style="width: 100%;">
-        <button type="button" class="btn btn-secondary" @onclick="CancelButton_OnClick">
+    <Buttons Width="Width.Is100">
+        <Button Type="ButtonType.Button" Color="App.DefaultButtonColor" @onclick="CancelButton_OnClick">
             Cancel
-        </button>
-        <button type="submit" class="btn btn-success">
+        </Button>
+        <Button Type="ButtonType.Submit" Color="Color.Success" Disabled="SaveButtonDisabled" @onclick="HandleValidSubmit">
             Save
-        </button>
-    </div>
-</EditForm>
-
+        </Button>
+    </Buttons>
+</Validations>

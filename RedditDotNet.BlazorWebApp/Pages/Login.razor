@@ -1,9 +1,9 @@
 ﻿@page "/login"
 
-<h2>Loginng in...</h2>
+<Heading Size="HeadingSize.Is2">Loginng in...</Heading>
 
 @if (!string.IsNullOrWhiteSpace(Error))
 {
-    <h3>Error</h3>
-    <p>@Error</p>
+    <Heading Size="HeadingSize.Is2">Error</Heading>
+    <Paragraph>@Error</Paragraph>
 }

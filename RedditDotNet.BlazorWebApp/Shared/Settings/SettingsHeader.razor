@@ -1,22 +1,18 @@
-﻿<h2>Settings</h2>
+﻿<Heading Size="HeadingSize.Is2">Settings</Heading>
 
-<ul class="nav nav-pills mb-2">
-    <li class="nav-item">
-        <a class="@(ActiveTab == SettingsNavTab.RedditSettings ? "nav-link active" : "nav-link")"
-           href="/settings/reddit">
-            Reddit Settings
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab == SettingsNavTab.Friends ? "nav-link active" : "nav-link")"
-           href="/settings/friends">
-            Friends
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab == SettingsNavTab.Blocked ? "nav-link active" : "nav-link")"
-           href="/settings/blocked">
-            Blocked
-        </a>
-    </li>
-</ul>
+<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="Margin.Is2.FromBottom">
+    <Items>
+        <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
+             @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)">
+             Reddit Settings
+         </Tab>
+        <Tab Name="@SettingsNavTab.Friends.ToString()"
+             @onclick="() => NavigateTo(SettingsNavTab.Friends)">
+             Friends
+         </Tab>
+        <Tab Name="@SettingsNavTab.Blocked.ToString()"
+             @onclick="() => NavigateTo(SettingsNavTab.Blocked)">
+             Blocked
+         </Tab>
+    </Items>
+</Tabs>

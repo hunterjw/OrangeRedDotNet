@@ -1,15 +1,15 @@
 ﻿@using RedditDotNet.Models
 
-<h6 class="card-subtitle text-muted mb-1">
+<CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
     @foreach (Awarding award in Data)
     {
-        <span class="me-1">
-            <img src="@award.IconUrl"
-             alt="@award.Description"
-             class="award-img" />
-            <span>
+        <Span Margin="Margin.Is1.FromEnd">
+            <Image Source="@award.IconUrl"
+               Text="@award.Description"
+               Class="award-img" />
+            <Span>
                 @award.Count
-            </span>
-        </span>
+            </Span>
+        </Span>
     }
-</h6>
+</CardSubtitle>

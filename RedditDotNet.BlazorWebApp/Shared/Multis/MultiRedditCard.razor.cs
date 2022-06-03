@@ -57,15 +57,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         protected string AddSubredditName { get; set; }
 
         /// <summary>
-        /// OnClick handler for buttons that toggle the collapsable region
-        /// </summary>
-        /// <param name="e">Event arguments</param>
-        protected void ContentCollapsedButton_OnClick()
-        {
-            ContentCollapsed = !ContentCollapsed;
-        }
-
-        /// <summary>
         /// OnClick event handler for the Remove Subreddit button
         /// </summary>
         /// <param name="subreddit">Name of the Subreddit to remove</param>

@@ -2,18 +2,18 @@
 
 @if (Rule != null)
 {
-    <div class="card text-dark bg-light mb-1">
-        <div class="card-body">
-            <h4 class="card-title">
+    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+        <CardBody>
+            <CardTitle Size="4">
                 @Rule.ShortName
-                <span class="badge bg-primary me-1">
+                <Badge Background="Background.Primary" Margin="Margin.Is1.FromEnd">
                     @Rule.Kind
-                </span>
-            </h4>
-            <h6 class="card-subtitle text-muted mb-1">
+                </Badge>
+            </CardTitle>
+            <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                 Created @Rule.CreatedUtc.ToLocalDateTime()
-            </h6>
+            </CardSubtitle>
             @((MarkupString)HttpUtility.HtmlDecode(Rule.DescriptionHtml))
-        </div>
-    </div>
+        </CardBody>
+    </Card>
 }

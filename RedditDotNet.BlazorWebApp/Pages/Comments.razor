@@ -5,22 +5,22 @@
 
 @if (LinkWithComments == null)
 {
-    <h2>@Subreddit</h2>
-    <p>Loading...</p>
+    <Heading Size="HeadingSize.Is2">@Subreddit</Heading>
+    <Paragraph>Loading...</Paragraph>
 }
 else
 {
     <LinkList ContentCollapsed="false" Links="@LinkWithComments.Links" />
     <hr />
-    <select value="@Sort" class="form-select mb-2" style="width: auto;" @onchange="SortSelect_OnChange">
-        <option value="confidence">Best</option>
-        <option value="top">Top</option>
-        <option value="new">New</option>
-        <option value="controversial">Controversial</option>
-        <option value="old">Old</option>
-        <option value="random">Random</option>
-        <option value="qa">Q&A</option>
-    </select>
+    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto" @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
+        <SelectItem Value="@("confidence")">Best</SelectItem>
+        <SelectItem Value="@("top")">Top</SelectItem>
+        <SelectItem Value="@("new")">New</SelectItem>
+        <SelectItem Value="@("controversial")">Controversial</SelectItem>
+        <SelectItem Value="@("old")">Old</SelectItem>
+        <SelectItem Value="@("random")">Random</SelectItem>
+        <SelectItem Value="@("qa")">Q&A</SelectItem>
+    </Select>
     <CommentsList Comments="@LinkWithComments.Comments"
               OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author"
               LinkFullName="@LinkWithComments.Links.Data.Children.First().Data.Name"

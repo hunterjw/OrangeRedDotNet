@@ -3,7 +3,7 @@
 
 @foreach (var item in Listing.Data.Children)
 {
-    @if (item is Link link)
+    @if (item is RedditDotNet.Models.Links.Link link)
     {
         <LinkCard ContentCollapsed="true" Link="@link" />
     }

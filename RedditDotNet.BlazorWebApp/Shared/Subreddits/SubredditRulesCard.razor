@@ -1,30 +1,26 @@
 ﻿@if (Rules?.Rules?.Count > 0)
 {
-    <div class="card text-dark bg-light mb-1">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-auto d-flex justify-content-center flex-column">
+    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+        <CardHeader>
+            <Row>
+                <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
                     @Rules.Rules.Count Rules
-                </div>
-                <div class="col-auto">
-                    <button class="btn btn-light" @onclick="() => ContentCollapsed = !ContentCollapsed">
-                        @if (ContentCollapsed)
-                        {
-                            <span class="oi oi-chevron-bottom"></span>
-                        }
-                        else
-                        {
-                            <span class="oi oi-chevron-top"></span>
-                        }
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body @(ContentCollapsed ? "collapse" : "")">
-            @foreach (var rule in Rules.Rules.OrderBy(_ => _.Priority))
-            {
-                <RuleCard Rule="@rule" />
-            }
-        </div>
-    </div>
+                </Column>
+                <Column ColumnSize="ColumnSize.IsAuto">
+                    <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                        <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
+                    </Button>
+                </Column>
+            </Row>
+        </CardHeader>
+        @if (!ContentCollapsed)
+        {
+            <CardBody>
+                @foreach (var rule in Rules.Rules.OrderBy(_ => _.Priority))
+                {
+                    <RuleCard Rule="@rule" />
+                }
+            </CardBody>
+        }
+    </Card>
 }

@@ -11,7 +11,7 @@
 {
     @if (!SubredditDetailsLoaded)
     {
-        <h2>@Subreddit</h2>
+        <Heading Size="HeadingSize.Is2">@Subreddit</Heading>
     }
     else
     {
@@ -24,7 +24,7 @@ else if (IsMultiReddit)
 {
     @if (!MultiRedditLoaded)
     {
-        <h2>@GetMultiRedditUrl()</h2>
+        <Heading Size="HeadingSize.Is2">@GetMultiRedditUrl()</Heading>
     }
     else
     {
@@ -35,28 +35,28 @@ else if (IsMultiReddit)
     }
 }
 
-<div class="row">
-    <div class="col-auto">
+<Row>
+    <Column ColumnSize="ColumnSize.IsAuto">
         <LinkListingNavTabs ActiveTab="@GetListingType()" Subreddit="@Subreddit" MultiRedditPath="@GetMultiRedditUrl()" />
-    </div>
+    </Column>
     @if (GetListingType().Equals("controversial") || GetListingType().Equals("top"))
     {
-        <div class="col-auto">
-            <select value="@Timescale" class="form-select mb-2" style="width: auto;" @onchange="TimescaleSelect_OnChange">
-                <option value="hour">Hour</option>
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
-                <option value="all">All</option>
-            </select>
-        </div>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto" @bind-SelectedValue="Timescale" @onchange="TimescaleSelect_OnChange">
+                <SelectItem Value="@("hour")">Hour</SelectItem>
+                <SelectItem Value="@("day")">Day</SelectItem>
+                <SelectItem Value="@("week")">Week</SelectItem>
+                <SelectItem Value="@("month")">Month</SelectItem>
+                <SelectItem Value="@("year")">Year</SelectItem>
+                <SelectItem Value="@("all")">All</SelectItem>
+            </Select>
+        </Column>
     }
-</div>
+</Row>
 
 @if (LinkListing == null)
 {
-    <p>@GetLoadingQuip()</p>
+    <Paragraph>@GetLoadingQuip()</Paragraph>
 }
 else
 {

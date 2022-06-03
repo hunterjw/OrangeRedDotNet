@@ -1,63 +1,62 @@
 ﻿@using System.Web
 
-<div class="card text-dark bg-light mb-1">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-auto d-flex justify-content-center flex-column">
-                <img class="rounded user-profile-img"
-                     src="@HttpUtility.HtmlDecode(AccountData.IconImg)" />
-            </div>
-            <div class="col">
-                <h4 class="card-title">
+<Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+    <CardBody>
+        <Row>
+            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
+                <Image Border="Border.Rounded" Class="user-profile-img"
+                     Source="@HttpUtility.HtmlDecode(AccountData.IconImg)" />
+            </Column>
+            <Column>
+                <CardTitle Size="4">
                     @Title
-                </h4>
-                <h6 class="card-subtitle text-muted mb-1">
-                    <a class="text-decoration-none"
-                       href="/user/@AccountData.Name">
+                </CardTitle>
+                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                    <Anchor Class="text-decoration-none" To="@($"/user/{AccountData.Name}")">
                         /u/@AccountData.Name
-                    </a>
-                </h6>
-                <h6 class="card-subtitle text-muted mb-1">
+                    </Anchor>
+                </CardSubtitle>
+                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                     Joined @AccountData.CreatedUTC.ToLocalDateTime()
-                </h6>
-                <h6 class="card-subtitle text-muted mb-1">
+                </CardSubtitle>
+                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                     @AccountData.TotalKarma.ToDisplayString() Karma
                     (@AccountData.LinkKarma.ToDisplayString() Link,
                     @AccountData.CommentKarma.ToDisplayString() Comment)
-                </h6>
-                <div>
+                </CardSubtitle>
+                <Div>
                     <Flair Over18="@(AccountData.Subreddit?.Over18 ?? false)"
                            Banned="@(AccountData.Subreddit?.UserIsBanned ?? false)"
                            Contributor="@(AccountData.Subreddit?.UserIsContributor ?? false)"
                            Moderator="@(AccountData.Subreddit?.UserIsModerator ?? false)"
                            Muted="@(AccountData.Subreddit?.UserIsMuted ?? false)"
                            Subscribed="@(AccountData.Subreddit?.UserIsSubscriber ?? false)" />
-                </div>
+                </Div>
                 @if (!string.IsNullOrWhiteSpace(Description))
                 {
                     @((MarkupString)HttpUtility.HtmlDecode(Description))
                 }
-            </div>
-        </div>
-    </div>
-    <div class="card-footer">
-        <div class="row">
+            </Column>
+        </Row>
+    </CardBody>
+    <CardFooter>
+        <Row>
             @if (RedditService.LoggedIn)
             {
                 @if (AccountData.Subreddit != null)
                 {
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="FollowButton_OnClick">
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <Button Color="App.DefaultButtonColor" @onclick="FollowButton_OnClick">
                             @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
-                        </button>
-                    </div>
+                        </Button>
+                    </Column>
                 }
-                <div class="col-auto">
-                    <button class="btn btn-light" @onclick="AddToMultiRedditButton_OnClick">
+                <Column ColumnSize="ColumnSize.IsAuto">
+                    <Button Color="App.DefaultButtonColor" @onclick="AddToMultiRedditButton_OnClick">
                         Add to MultiReddit
-                    </button>
-                </div>
+                    </Button>
+                </Column>
             }
-        </div>
-    </div>
-</div>
+        </Row>
+    </CardFooter>
+</Card>

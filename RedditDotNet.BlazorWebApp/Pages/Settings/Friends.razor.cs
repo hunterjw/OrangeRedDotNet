@@ -46,10 +46,10 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         }
 
         /// <summary>
-        /// Handle the submission of a new friend
+        /// On click handler for the new friend button
         /// </summary>
         /// <returns>Awaitable task</returns>
-        protected async Task HandleValidNewFriendSubmit()
+        protected async Task NewFriendButtonOnClick()
         {
             if (!string.IsNullOrWhiteSpace(NewFriend))
             {

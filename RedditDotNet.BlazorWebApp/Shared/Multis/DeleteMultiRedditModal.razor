@@ -1,11 +1,11 @@
-﻿<p>
+﻿<Paragraph>
     Delete @MultiRedditName?
-</p>
-<div class="btn-group" role="group" style="width: 100%;">
-    <button type="button" class="btn btn-secondary" @onclick="CancelButton_OnClick">
+</Paragraph>
+<Buttons Width="Width.Is100">
+    <Button Color="App.DefaultButtonColor" @onclick="CancelButton_OnClick">
         Cancel
-    </button>
-    <button type="button" class="btn btn-danger" @onclick="DeleteButton_OnClick">
+    </Button>
+    <Button Color="Color.Danger" @onclick="DeleteButton_OnClick">
         Delete
-    </button>
-</div>
+    </Button>
+</Buttons>

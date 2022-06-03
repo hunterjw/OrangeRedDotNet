@@ -1,36 +1,37 @@
 ﻿@using System.Web
+
 @if (SubredditDetails != null)
 {
-    <div class="card text-dark bg-light mb-1">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-auto d-flex justify-content-center flex-column w-25 subreddit-icon-col">
-                    <img class="rounded" src="@GetIconUrl()" />
-                </div>
-                <div class="col">
-                    <h6 class="card-subtitle text-muted mb-1">
-                        <a class="text-dcoration-none" href="@SubredditDetails.Data.Url">
+    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+        <CardBody>
+            <Row>
+                <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column" Width="Width.Is100" Class="subreddit-icon-col">
+                    <Image Border="Border.Rounded" Source="@GetIconUrl()" />
+                </Column>
+                <Column>
+                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                        <Anchor Class="text-decoration-none" To="@SubredditDetails.Data.Url">
                             @SubredditDetails.Data.Url
-                        </a>
-                    </h6>
-                    <h4 class="card-title">
+                        </Anchor>
+                    </CardSubtitle>
+                    <CardTitle Size="4">
                         @GetTitle()
-                    </h4>
+                    </CardTitle>
                     @if (!IsUser)
                     {
-                        <h6 class="card-subtitle text-muted mb-1">
+                        <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                             @SubredditDetails.Data.Subscribers.ToDisplayString() subscribers
-                        </h6>
+                        </CardSubtitle>
                     }
                     @if (SubredditDetails.Data.AccountsActive.HasValue)
                     {
-                        <h6 class="card-subtitle text-muted mb-1">
+                        <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                             @SubredditDetails.Data.AccountsActive.Value.ToDisplayString() online
-                        </h6>
+                        </CardSubtitle>
                     }
-                    <h6 class="card-subtitle text-muted mb-1">
+                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                         Created @SubredditDetails.Data.CreatedUtc.ToLocalDateTime()
-                    </h6>
+                    </CardSubtitle>
                     <Flair Over18="@SubredditDetails.Data.Over18"
                        Banned="@(SubredditDetails.Data.UserIsBanned ?? false)"
                        Contributor="@(SubredditDetails.Data.UserIsContributor ?? false)"
@@ -38,46 +39,39 @@
                        Muted="@(SubredditDetails.Data.UserIsMuted ?? false)"
                        Subscribed="@(SubredditDetails.Data.UserIsSubscriber ?? false)" />
                     @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.PublicDescriptionHtml))
-                </div>
-            </div>
-            @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
+                </Column>
+            </Row>
+            @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml) && !ContentCollapsed)
             {
-                <div class="@(ContentCollapsed ? "collapse" : "mt-3 row g-0 d-flex justify-content-center flex-row")">
+                <Row Margin="Margin.Is3.FromTop" NoGutters Flex="Flex.JustifyContent.Center.Row">
                     @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.DescriptionHtml))
-                </div>
+                </Row>
             }
-        </div>
-        <div class="card-footer">
-            <div class="row">
+        </CardBody>
+        <CardFooter>
+            <Row>
                 @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
                 {
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="() => ContentCollapsed = !ContentCollapsed">
-                            @if (ContentCollapsed)
-                            {
-                                <span class="oi oi-chevron-bottom"></span>
-                            }
-                            else
-                            {
-                                <span class="oi oi-chevron-top"></span>
-                            }
-                        </button>
-                    </div>
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                            <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
+                        </Button>
+                    </Column>
                 }
                 @if (RedditService.LoggedIn)
                 {
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="SubscribeButton_OnClick">
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <Button Color="App.DefaultButtonColor" @onclick="SubscribeButton_OnClick">
                             @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
-                        </button>
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" @onclick="AddToMultiRedditButton_OnClick">
+                        </Button>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <Button Color="App.DefaultButtonColor" @onclick="AddToMultiRedditButton_OnClick">
                             Add to MultiReddit
-                        </button>
-                    </div>
+                        </Button>
+                    </Column>
                 }
-            </div>
-        </div>
-    </div>
+            </Row>
+        </CardFooter>
+    </Card>
 }

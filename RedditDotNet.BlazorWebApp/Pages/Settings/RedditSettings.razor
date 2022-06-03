@@ -8,366 +8,350 @@
 
 <SettingsHeader ActiveTab="SettingsNavTab.RedditSettings" />
 
-<div class="alert alert-warning" role="alert">
-  Not all Reddit settings may be supported by this client
-</div>
+<Alert Color="Color.Warning" Visible>
+    <AlertDescription>
+        Not all Reddit settings may be supported by this client
+    </AlertDescription>
+</Alert>
 
 @if (Preferences == null)
 {
-    <p>Loading preferences</p>
+    <Paragraph>Loading preferences</Paragraph>
 }
 else
 {
-    <EditForm Model="Preferences" OnValidSubmit="HandleValidSubmit" class="mb-1">
-        <DataAnnotationsValidator />
-
-        <h3>Globalization</h3>
-        <div class="mb-3">
-            <label class="form-label" for="langSelect">Language</label>
-            <InputSelect class="form-select" id="langSelect" @bind-Value="Preferences.Language">
-                @foreach (var value in Enum.GetValues<LanguageCode>())
-                {
-                    <option value="@value">@value.ToDescriptionString()</option>
-                }
-            </InputSelect>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="countrySelect">Country</label>
-            <InputSelect class="form-select" id="countrySelect" @bind-Value="Preferences.CountryCode">
-                @foreach (var value in Enum.GetValues<CountryCode>().OrderBy(_ => _.ToDescriptionString()))
+    <Validations Model="Preferences" Mode="ValidationMode.Auto" ValidateOnLoad="false" StatusChanged="OnValidationsStatusChange" @ref="Validations">
+        <Heading Size="HeadingSize.Is3">Globalization</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Language</FieldLabel>
+                <Select @bind-SelectedValue="Preferences.Language">
+                    @foreach (var value in Enum.GetValues<LanguageCode>())
                     {
-                    <option value="@value">@value.ToDescriptionString()</option>
+                        <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
                     }
-            </InputSelect>
-        </div>
+                </Select>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Country</FieldLabel>
+                <Select @bind-SelectedValue="Preferences.CountryCode">
+                    @foreach (var value in Enum.GetValues<CountryCode>().OrderBy(_ => _.ToDescriptionString()))
+                    {
+                        <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
+                    }
+                </Select>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Clicking options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="openLinksNewWindow" class="form-check-input" role="switch" @bind-Value="Preferences.NewWindow" />
-                <label class="form-check-label" for="openLinksNewWindow">Open links in new window</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Clicking options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.NewWindow">Open links in new window</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Media</h3>
-        <div class="mb-3">
-            <label class="form-label" for="tumbnailRadioGroup">Show thumbnails next to links</label>
-            <InputRadioGroup id="tumbnailRadioGroup" @bind-Value="Preferences.Thumbnails">
-                @foreach (var value in Enum.GetValues<MediaPreference>())
-                {
-                    <div class="form-check">
-                        <InputRadio class="form-check-input" id="@($"tumbnail{value}")" Value="@value" />
-                        <label class="form-check-label" for="@($"tumbnail{value}")">
-                            @value.ToDescriptionString()
-                        </label>
-                    </div>
-                }
-            </InputRadioGroup>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="tumbnailRadioGroup">Auto-expand media previews</label>
-            <InputRadioGroup id="tumbnailRadioGroup" @bind-Value="Preferences.MediaPreview">
-                @foreach (var value in Enum.GetValues<MediaPreference>())
-                {
-                    <div class="form-check">
-                        <InputRadio class="form-check-input" id="@($"tumbnail{value}")" Value="@value" />
-                        <label class="form-check-label" for="@($"tumbnail{value}")">
-                            @value.ToDescriptionString()
-                        </label>
-                    </div>
-                }
-            </InputRadioGroup>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="autoplayRedditVideo" class="form-check-input" role="switch" @bind-Value="Preferences.VideoAutoplay" />
-                <label class="form-check-label" for="autoplayRedditVideo">Autoplay Reddit videos on the desktop comments page</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="noProfanity" class="form-check-input" role="switch" @bind-Value="Preferences.NoProfanity" />
-                <label class="form-check-label" for="noProfanity">Hide images for NSFW/18+ content</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Media</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Show thumbnails next to links</FieldLabel>
+                <RadioGroup TValue="MediaPreference" @bind-CheckedValue="Preferences.Thumbnails">
+                    @foreach (var value in Enum.GetValues<MediaPreference>())
+                    {
+                        <Radio Value="@value">@value.ToDescriptionString()</Radio>
+                    }
+                </RadioGroup>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Auto-expand media previews</FieldLabel>
+                <RadioGroup TValue="MediaPreference" @bind-CheckedValue="Preferences.MediaPreview">
+                    @foreach (var value in Enum.GetValues<MediaPreference>())
+                    {
+                        <Radio Value="@value">@value.ToDescriptionString()</Radio>
+                    }
+                </RadioGroup>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.VideoAutoplay">Autoplay Reddit videos on the desktop comments page</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.NoProfanity">Hide images for NSFW/18+ content</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Link Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="showTrending" class="form-check-input" role="switch" @bind-Value="Preferences.ShowTrending" />
-                <label class="form-check-label" for="showTrending">Show trending subreddits on the home feed </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="showRecentViewed" class="form-check-input" role="switch" @bind-Value="Preferences.ShowRecentlyViewed" />
-                <label class="form-check-label" for="showRecentViewed">Show me links I've recently viewed</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="compressLinkDisplay" class="form-check-input" role="switch" @bind-Value="Preferences.Compress" />
-                <label class="form-check-label" for="compressLinkDisplay">Compress the link display</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="showAdditionalDetails" class="form-check-input" role="switch" @bind-Value="Preferences.DomainDetails" />
-                <label class="form-check-label" for="showAdditionalDetails">Show additional details in the domain text when available </label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="hideUps" class="form-check-input" role="switch" @bind-Value="Preferences.HideUps" />
-                <label class="form-check-label" for="dontShowAfterUpvote">Don't show me submissions after I've upvoted them</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="hideDowns" class="form-check-input" role="switch" @bind-Value="Preferences.HideDowns" />
-                <label class="form-check-label" for="hideDowns">Don't show me submissions after I've downvoted them</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="numLinks">Number of links to display at once</label>
-            <InputNumber class="form-control" id="numLinks" @bind-Value="Preferences.NumLinks" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="minLinkScore">Minimum score for links to display</label>
-            <InputNumber class="form-control" id="minLinkScore" @bind-Value="Preferences.MinLinkScore" />
-        </div>
+        <Heading Size="HeadingSize.Is3">Link Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowTrending">Show trending subreddits on the home feed</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowRecentlyViewed">Show me links I've recently viewed</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.Compress">Compress the link display</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.DomainDetails">Show additional details in the domain text when available</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.HideUps">Don't show me submissions after I've upvoted them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.HideDowns">Don't show me submissions after I've downvoted them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Number of links to display at once</FieldLabel>
+                <NumericEdit @bind-Value="Preferences.NumLinks">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Minimum score for links to display</FieldLabel>
+                <NumericEdit @bind-Value="Preferences.MinLinkScore">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Comment Options</h3>
-        <div class="mb-3">
-            <label class="form-label" for="defaultCommentSort">Default comment sort</label>
-            <InputSelect class="form-select" id="defaultCommentSort" @bind-Value="Preferences.DefaultCommentSort">
-                @foreach (var value in Enum.GetValues<CommentSort>())
-                {
-                    <option value="@value">@value</option>
-                }
-            </InputSelect>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ignoreSuggestedSort" class="form-check-input" role="switch" @bind-Value="Preferences.IgnoreSuggestedSort" />
-                <label class="form-check-label" for="ignoreSuggestedSort">Ignore suggested sorts</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="highlightControversial" class="form-check-input" role="switch" @bind-Value="Preferences.HighlightControversial" />
-                <label class="form-check-label" for="highlightControversial">Highlight controversial comments</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="minCommentScore">Don't show me comments with a score less than</label>
-            <InputNumber class="form-control" id="minCommentScore" @bind-Value="Preferences.MinCommentScore" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="numComments">Number of comments to display at once</label>
-            <InputNumber class="form-control" id="numComments" @bind-Value="Preferences.NumComments" />
-        </div>
+        <Heading Size="HeadingSize.Is3">Comment Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Default comment sort</FieldLabel>
+                <Select @bind-SelectedValue="Preferences.DefaultCommentSort">
+                    @foreach (var value in Enum.GetValues<CommentSort>())
+                    {
+                        <SelectItem Value="@value">@value</SelectItem>
+                    }
+                </Select>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.IgnoreSuggestedSort">Ignore suggested sorts</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.HighlightControversial">Highlight controversial comments</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Don't show me comments with a score less than</FieldLabel>
+                <NumericEdit @bind-Value="Preferences.MinCommentScore">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <FieldLabel>Number of comments to display at once</FieldLabel>
+                <NumericEdit @bind-Value="Preferences.NumComments">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Messaging Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThreadedMessages" class="form-check-input" role="switch" @bind-Value="Preferences.ThreadedMessages" />
-                <label class="form-check-label" for="ThreadedMessages">Show message conversations in the inbox</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="CollapseReadMessages" class="form-check-input" role="switch" @bind-Value="Preferences.CollapseReadMessages" />
-                <label class="form-check-label" for="CollapseReadMessages">Collapse messages after I've read them</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="MarkMessagesRead" class="form-check-input" role="switch" @bind-Value="Preferences.MarkMessagesRead" />
-                <label class="form-check-label" for="MarkMessagesRead">Mark messages as read when I open my inbox</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="MonitorMentions" class="form-check-input" role="switch" @bind-Value="Preferences.MonitorMentions" />
-                <label class="form-check-label" for="MonitorMentions">Notify me when people say my username</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="SendWelcomeMessages" class="form-check-input" role="switch" @bind-Value="Preferences.SendWelcomeMessages" />
-                <label class="form-check-label" for="SendWelcomeMessages">Receive welcome messages from moderators when I join a community</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThreadedModmail" class="form-check-input" role="switch" @bind-Value="Preferences.ThreadedModmail" />
-                <label class="form-check-label" for="ThreadedModmail">Enable threaded modmail display</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="LiveOrangereds" class="form-check-input" role="switch" @bind-Value="Preferences.LiveOrangereds" />
-                <label class="form-check-label" for="LiveOrangereds">Send message notifications in my browser</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Messaging Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThreadedMessages">Show message conversations in the inbox</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.CollapseReadMessages">Collapse messages after I've read them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.MarkMessagesRead">Mark messages as read when I open my inbox</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.MonitorMentions">Notify me when people say my username</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.SendWelcomeMessages">Receive welcome messages from moderators when I join a community</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThreadedModmail">Enable threaded modmail display</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.LiveOrangereds">Send message notifications in my browser</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Email Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="EmailMessages" class="form-check-input" role="switch" @bind-Value="Preferences.EmailMessages" />
-                <label class="form-check-label" for="EmailMessages">Send messages as emails</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="EmailDigests" class="form-check-input" role="switch" @bind-Value="Preferences.EmailDigests" />
-                <label class="form-check-label" for="EmailDigests">Send email digests</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="EmailUnsubscribeAll" class="form-check-input" role="switch" @bind-Value="Preferences.EmailUnsubscribeAll" />
-                <label class="form-check-label" for="EmailUnsubscribeAll">Unsubscribe from all emails</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Email Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailMessages">Send messages as emails</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailDigests">Send email digests</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailUnsubscribeAll">Unsubscribe from all emails</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Display Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ShowStylesheets" class="form-check-input" role="switch" @bind-Value="Preferences.ShowStylesheets" />
-                <label class="form-check-label" for="ShowStylesheets">Allow subreddits to show me custom themes</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ShowFlair" class="form-check-input" role="switch" @bind-Value="Preferences.ShowFlair" />
-                <label class="form-check-label" for="ShowFlair">Show user flair</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ShowLinkFlair" class="form-check-input" role="switch" @bind-Value="Preferences.ShowLinkFlair" />
-                <label class="form-check-label" for="ShowLinkFlair">Show link flair</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="LegacySearch" class="form-check-input" role="switch" @bind-Value="Preferences.LegacySearch" />
-                <label class="form-check-label" for="LegacySearch">Show legacy search page</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Display Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowStylesheets">Allow subreddits to show me custom themes</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowFlair">Show user flair</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowLinkFlair">Show link flair</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.LegacySearch">Show legacy search page</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Content Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="Over18" class="form-check-input" role="switch" @bind-Value="Preferences.Over18" />
-                <label class="form-check-label" for="Over18">I am over eighteen years old and willing to view adult content</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="LabelNsfw" class="form-check-input" role="switch" @bind-Value="Preferences.LabelNsfw" />
-                <label class="form-check-label" for="LabelNsfw">Label posts that are not safe for work (NSFW)</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="SearchIncludeOver18" class="form-check-input" role="switch" @bind-Value="Preferences.SearchIncludeOver18" />
-                <label class="form-check-label" for="SearchIncludeOver18">Include not safe for work (NSFW) search results in searches</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="PrivateFeeds" class="form-check-input" role="switch" @bind-Value="Preferences.PrivateFeeds" />
-                <label class="form-check-label" for="PrivateFeeds">Enable private RSS feeds</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Content Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.Over18">I am over eighteen years old and willing to view adult content</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.LabelNsfw">Label posts that are not safe for work (NSFW)</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.SearchIncludeOver18">Include not safe for work (NSFW) search results in searches</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.PrivateFeeds">Enable private RSS feeds</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Privacy Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="PublicVotes" class="form-check-input" role="switch" @bind-Value="Preferences.PublicVotes" />
-                <label class="form-check-label" for="PublicVotes">Make my votes public</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="Research" class="form-check-input" role="switch" @bind-Value="Preferences.Research" />
-                <label class="form-check-label" for="Research">Allow my data to be used for research purposes</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="HideFromRobots" class="form-check-input" role="switch" @bind-Value="Preferences.HideFromRobots" />
-                <label class="form-check-label" for="HideFromRobots">Don't allow search engines to index my user profile</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="AllowClicktracking" class="form-check-input" role="switch" @bind-Value="Preferences.AllowClicktracking" />
-                <label class="form-check-label" for="AllowClicktracking">Allow reddit to log my outbound clicks for personalization</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Privacy Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.PublicVotes">Make my votes public</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.Research">Allow my data to be used for research purposes</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.HideFromRobots">Don't allow search engines to index my user profile</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.AllowClicktracking">Allow reddit to log my outbound clicks for personalization</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Personalization Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ActivityRelevantAds" class="form-check-input" role="switch" @bind-Value="Preferences.ActivityRelevantAds" />
-                <label class="form-check-label" for="ActivityRelevantAds">Allow Reddit to use your activity on Reddit to show you more relevant advertisements.</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThirdPartyPersonalizedAds" class="form-check-input" role="switch" @bind-Value="Preferences.ThirdPartyPersonalizedAds" />
-                <label class="form-check-label" for="ThirdPartyPersonalizedAds">Allow Reddit to use information from third-party websites that integrate with our services to personalize your experience on Reddit.</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThirdPartySiteDataPersonalizedAds" class="form-check-input" role="switch" @bind-Value="Preferences.ThirdPartySiteDataPersonalizedAds" />
-                <label class="form-check-label" for="ThirdPartySiteDataPersonalizedAds">Allow personalization of advertisements using this data</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThirdPartySiteDataPersonalizedContent" class="form-check-input" role="switch" @bind-Value="Preferences.ThirdPartySiteDataPersonalizedContent" />
-                <label class="form-check-label" for="ThirdPartySiteDataPersonalizedContent">Allow personalization of content using this data</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="ThirdPartyDataPersonalizedAds" class="form-check-input" role="switch" @bind-Value="Preferences.ThirdPartyDataPersonalizedAds" />
-                <label class="form-check-label" for="ThirdPartyDataPersonalizedAds">Allow Reddit to use data provided by third-parties to show you more relevant advertisements on Reddit.</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Personalization Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ActivityRelevantAds">Allow Reddit to use your activity on Reddit to show you more relevant advertisements.</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartyPersonalizedAds">Allow Reddit to use information from third-party websites that integrate with our services to personalize your experience on Reddit.</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartySiteDataPersonalizedAds">Allow personalization of advertisements using this data</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartySiteDataPersonalizedContent">Allow personalization of content using this data</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartyDataPersonalizedAds">Allow Reddit to use data provided by third-parties to show you more relevant advertisements on Reddit.</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <h3>Beta Options</h3>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="Beta" class="form-check-input" role="switch" @bind-Value="Preferences.Beta" />
-                <label class="form-check-label" for="Beta">I would like to beta test features for reddit</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="form-check">
-                <InputCheckbox id="DesignBeta" class="form-check-input" role="switch" @bind-Value="Preferences.DesignBeta" />
-                <label class="form-check-label" for="DesignBeta">Use new Reddit as my default experience</label>
-            </div>
-        </div>
+        <Heading Size="HeadingSize.Is3">Beta Options</Heading>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.Beta">I would like to beta test features for reddit</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="Margin.Is3.FromBottom">
+                <Check TValue="bool" @bind-Checked="Preferences.DesignBeta">Use new Reddit as my default experience</Check>
+            </Field>
+        </Validation>
         <hr />
 
-        <button type="submit" class="btn btn-primary">Save</button>
-    </EditForm>
+        <Button Color="Color.Primary" Margin="Margin.Is1.FromBottom" Disabled="SaveButtonDisabled" @onclick="HandleValidSubmit">Save</Button>
+    </Validations>
 }

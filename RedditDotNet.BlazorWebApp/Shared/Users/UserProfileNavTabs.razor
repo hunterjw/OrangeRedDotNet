@@ -1,55 +1,41 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<ul class="nav nav-pills mb-2">
-    <li class="nav-item">
-        <a class="@(ActiveTab == UserProfileListingType.Overview ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/overview">
+<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="Margin.Is2.FromBottom">
+    <Items>
+        <Tab Name="@UserProfileListingType.Overview.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Overview)">
             Overview
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab == UserProfileListingType.Comments ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/comments">
+        </Tab>
+        <Tab Name="@UserProfileListingType.Comments.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Comments)">
             Comments
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab == UserProfileListingType.Submitted ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/submitted">
+        </Tab>
+        <Tab Name="@UserProfileListingType.Submitted.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Submitted)">
             Submitted
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab == UserProfileListingType.Gilded ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/gilded">
+        </Tab>
+        <Tab Name="@UserProfileListingType.Gilded.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Gilded)">
             Gilded
-        </a>
-    </li>
-    @if (IsSelf)
-    {
-        <li class="nav-item">
-            <a class="@(ActiveTab == UserProfileListingType.Upvoted ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/upvoted">
+        </Tab>
+        @if (IsSelf)
+        {
+            <Tab Name="@UserProfileListingType.Upvoted.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Upvoted)">
                 Upvoted
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="@(ActiveTab == UserProfileListingType.Downvoted ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/downvoted">
+            </Tab>
+            <Tab Name="@UserProfileListingType.Downvoted.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Downvoted)">
                 Downvoted
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="@(ActiveTab == UserProfileListingType.Hidden ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/hidden">
+            </Tab>
+            <Tab Name="@UserProfileListingType.Hidden.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Hidden)">
                 Hidden
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="@(ActiveTab == UserProfileListingType.Saved ? "nav-link active" : "nav-link")"
-           href="/user/@UserName/saved">
+            </Tab>
+            <Tab Name="@UserProfileListingType.Saved.ToString()"
+             @onclick="() => NavigateTo(UserProfileListingType.Saved)">
                 Saved
-            </a>
-        </li>
-    }
-</ul>
+            </Tab>
+        }
+    </Items>
+</Tabs>

@@ -1,4 +1,5 @@
 ﻿using Blazored.Toast.Services;
+using Blazorise;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Account;
@@ -26,6 +27,14 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// Current user preferences
         /// </summary>
         protected Preferences Preferences { get; set; }
+        /// <summary>
+        /// Validations object
+        /// </summary>
+        protected Validations Validations { get; set; }
+        /// <summary>
+        /// If the save button is disabled or not
+        /// </summary>
+        protected bool SaveButtonDisabled { get; set; } = false;
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -50,11 +59,21 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
             {
                 Preferences = await RedditService.GetClient().Account.SetPreferences(Preferences);
                 ToastService.ShowSuccess("Preferences saved");
+                await Validations.ClearAll();
             }
             catch (RedditApiException rex)
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Error saving preferences"));
             }
+        }
+
+        /// <summary>
+        /// OnValidationsStatusChange event handler
+        /// </summary>
+        /// <param name="args">Event args</param>
+        protected void OnValidationsStatusChange(ValidationsStatusChangedEventArgs args)
+        {
+            SaveButtonDisabled = args.Status == ValidationStatus.Error;
         }
     }
 }

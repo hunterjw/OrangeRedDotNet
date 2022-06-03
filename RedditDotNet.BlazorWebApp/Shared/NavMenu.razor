@@ -1,57 +1,54 @@
-﻿<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">@Configuration["BrandName"]</a>
-        <button class="navbar-toggler @NavButtonCssClass" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse @NavBarCssClass" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item" @onclick="CloseNavMenu">
-                    <NavLink class="nav-link" href="subreddits">
+﻿<Bar @bind-Visible="@NavMenuCollapsed" Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Desktop"
+     Background="Background.Dark" ThemeContrast="ThemeContrast.Dark" Margin="Margin.Is4.FromBottom">
+    <Container Fluid>
+        <BarBrand>
+            <Anchor To="" TextColor="TextColor.Light" Class="text-decoration-none">
+                @Configuration["BrandName"]
+            </Anchor>
+        </BarBrand>
+        <BarToggler />
+        <BarMenu>
+            <BarStart>
+                <BarItem>
+                    <BarLink To="subreddits" Match="Match.Prefix">
                         Subreddits
-                    </NavLink>
-                </li>
+                    </BarLink>
+                </BarItem>
+            </BarStart>
+            <BarEnd>
                 @if (RedditService.LoggedIn)
                 {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            @RedditService.Identity?.Name
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
-                            <li @onclick="CloseNavMenu">
-                                <NavLink class="dropdown-item" href="@($"user/{RedditService.Identity?.Name}")">
+                    <BarItem>
+                        <BarDropdown>
+                            <BarDropdownToggle>
+                                @RedditService.Identity?.Name
+                            </BarDropdownToggle>
+                            <BarDropdownMenu Class="dropdown-menu-dark">
+                                <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")" Match="Match.Prefix">
                                     Profile
-                                </NavLink>
-                            </li>
-                            <li @onclick="CloseNavMenu">
-                                <NavLink class="dropdown-item" href="multis">
+                                </BarDropdownItem>
+                                <BarDropdownItem To="multis">
                                     MultiReddits
-                                </NavLink>
-                            </li>
-                            <li @onclick="CloseNavMenu">
-                                <NavLink class="dropdown-item" href="settings">
+                                </BarDropdownItem>
+                                <BarDropdownItem To="settings" Match="Match.Prefix">
                                     Settings
-                                </NavLink>
-                            </li>
-                            <li @onclick="CloseNavMenu">
-                                <NavLink class="dropdown-item" href="logout">
+                                </BarDropdownItem>
+                                <BarDropdownItem To="logout">
                                     Log Out
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </li>
-
+                                </BarDropdownItem>
+                            </BarDropdownMenu>
+                        </BarDropdown>
+                    </BarItem>
                 }
                 else
                 {
-                    <li class="nav-item" @onclick="CloseNavMenu">
-                        <NavLink class="btn btn-primary" role="button" href="login">
+                    <BarItem>
+                        <Button Color="Color.Primary" @onclick="LoginButtonOnClick">
                             Log In
-                        </NavLink>
-                    </li>
+                        </Button>
+                    </BarItem>
                 }
-            </ul>
-        </div>
-    </div>
-</nav>
+            </BarEnd>
+        </BarMenu>
+    </Container>
+</Bar>

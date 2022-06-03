@@ -15,13 +15,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Parameter]
         public List<MultiReddit> MultiReddits { get; set; }
-
         /// <summary>
         /// Delete handler
         /// </summary>
         [Parameter]
         public Action<string> OnMultiRedditDelete { get; set; }
-
         /// <summary>
         /// Copy handler
         /// </summary>

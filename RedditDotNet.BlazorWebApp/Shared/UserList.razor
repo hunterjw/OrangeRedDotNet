@@ -2,15 +2,15 @@
 {
     @foreach (var user in Users.Data.Children)
     {
-        <div class="card text-dark bg-light mb-1">
-            <div class="card-body">
-                <h5 class="card-title">@user.Name</h5>
-                <p class="card-text">@DateLabel @user.DateDateTime.ToString()</p>
-            </div>
-        </div>
+        <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+            <CardBody>
+                <CardTitle Size="5">@user.Name</CardTitle>
+                <CardText>@DateLabel @user.DateDateTime.ToString()</CardText>
+            </CardBody>
+        </Card>
     }
 }
 else
 {
-    <p>No users to display</p>
+    <Paragraph>No users to display</Paragraph>
 }

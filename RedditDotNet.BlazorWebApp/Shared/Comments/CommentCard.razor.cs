@@ -1,6 +1,5 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Extensions;
 using RedditDotNet.Models.Comments;
@@ -63,24 +62,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
         /// Additional comments loaded
         /// </summary>
         protected List<CommentBase> MoreComments { get; set; } = new List<CommentBase>();
-
-        /// <summary>
-        /// On click event handler for the collapse button
-        /// </summary>
-        /// <param name="e"></param>
-        protected void RepliesCollapsedButton_OnClick(MouseEventArgs e)
-        {
-            RepliesCollapsed = !RepliesCollapsed;
-        }
-
-        /// <summary>
-        /// Double click event handler for the card
-        /// </summary>
-        /// <param name="e"></param>
-        protected void Card_OnDblClick(MouseEventArgs e)
-        {
-            RepliesCollapsed = !RepliesCollapsed;
-        }
 
         /// <summary>
         /// OnClick event handler for the MoreCommentsButton

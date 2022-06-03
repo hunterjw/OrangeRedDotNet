@@ -1,7 +1,9 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazorise;
 using Microsoft.AspNetCore.Components;
 using RedditDotNet.Models.Multis;
+using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Multis
 {
@@ -18,12 +20,20 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Parameter]
         public MultiRedditUpdate UpdateModel { get; set; }
-
         /// <summary>
         /// To hide the Visibility dropdown or not
         /// </summary>
         [Parameter]
         public bool HideVisibility { get; set; } = false;
+
+        /// <summary>
+        /// Validations reference
+        /// </summary>
+        protected Validations Validations { get; set; }
+        /// <summary>
+        /// If the save button is disabled or not
+        /// </summary>
+        protected bool SaveButtonDisabled { get; set; } = false;
 
         /// <summary>
         /// OnClick event handler for the Cancel button
@@ -36,9 +46,18 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// <summary>
         /// Handler for the Save button
         /// </summary>
-        protected void HandleValidSubmit()
+        protected async Task HandleValidSubmit()
         {
-            ModalInstance.CloseAsync(ModalResult.Ok(UpdateModel));
+            await ModalInstance.CloseAsync(ModalResult.Ok(UpdateModel));
+        }
+
+        /// <summary>
+        /// OnValidationsStatusChange event handler
+        /// </summary>
+        /// <param name="args">Event args</param>
+        protected void OnValidationsStatusChange(ValidationsStatusChangedEventArgs args)
+        {
+            SaveButtonDisabled = args.Status == ValidationStatus.Error;
         }
     }
 }

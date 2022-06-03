@@ -19,21 +19,16 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Inject]
         public IConfiguration Configuration { get; set; }
+        /// <summary>
+        /// Navigation manager
+        /// </summary>
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         /// <summary>
-        /// To have the nav menu collapsed or not
+        /// If the nav menu is collapsed or not
         /// </summary>
-        protected bool CollapseNavMenu = true;
-
-        /// <summary>
-        /// Nav bar CSS class
-        /// </summary>
-        protected string NavBarCssClass => CollapseNavMenu ? null : "show";
-
-        /// <summary>
-        /// Nav button css class
-        /// </summary>
-        protected string NavButtonCssClass => CollapseNavMenu ? "collapsed" : null;
+        protected bool NavMenuCollapsed { get; set; } = false;
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
@@ -45,23 +40,6 @@ namespace RedditDotNet.BlazorWebApp.Shared
         }
 
         /// <summary>
-        /// Toggle the nav menu collapse state
-        /// </summary>
-        protected void ToggleNavMenu()
-        {
-            CollapseNavMenu = !CollapseNavMenu;
-        }
-
-
-        /// <summary>
-        /// Close the nav menu
-        /// </summary>
-        protected void CloseNavMenu()
-        {
-            CollapseNavMenu = true;
-        }
-
-        /// <summary>
         /// Handler for when to refresh this component
         /// </summary>
         /// <param name="sender">Sender object</param>
@@ -69,6 +47,14 @@ namespace RedditDotNet.BlazorWebApp.Shared
         void RefreshComponent(object sender, object args)
         {
             StateHasChanged();
+        }
+
+        /// <summary>
+        /// OnClick event handler for the login button
+        /// </summary>
+        void LoginButtonOnClick()
+        {
+            NavigationManager.NavigateTo("login");
         }
     }
 }

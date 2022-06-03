@@ -105,14 +105,6 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         }
 
         /// <summary>
-        /// OnClick event handler for Create New button 
-        /// </summary>
-        protected void CreateNewButton_OnClick()
-        {
-            CreateNewActive = !CreateNewActive;
-        }
-
-        /// <summary>
         /// OnClick event handler for Create New Submit button
         /// </summary>
         /// <returns>Awaitable task</returns>
@@ -139,7 +131,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 StateHasChanged();
 
                 NewMultiName = string.Empty;
-                CreateNewButton_OnClick();
+                CreateNewActive = !CreateNewActive;
                 ToastService.ShowSuccess("Multireddit created");
             }
             catch (RedditApiException rex)

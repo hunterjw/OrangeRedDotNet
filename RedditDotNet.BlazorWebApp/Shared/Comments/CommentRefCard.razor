@@ -3,28 +3,31 @@
 
 @if (Comment.Data is CommentData commentData)
 {
-    <div class="card text-dark bg-light mb-1">
-        <div class="card-body">
-            <h6 class="card-subtitle text-muted mb-1">
-                <a class="text-decoration-none" href="/r/@commentData.Subreddit">
+    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+        <CardBody>
+            <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                <Anchor Class="text-decoration-none" To="@($"/r/{commentData.Subreddit}")">
                     /r/@commentData.Subreddit
-                </a>
-            </h6>
-            <h4 class="card-title">
-                <a class="text-decoration-none" href="/r/@commentData.Subreddit/comments/@commentData.LinkId[3..]">
+                </Anchor>
+            </CardSubtitle>
+            <CardSubtitle Size="4" Margin="Margin.Is1.FromBottom">
+                <Anchor Class="text-decoration-none" To="@($"/r/{commentData.Subreddit}/comments/{commentData.LinkId[3..]}")">
                     @((MarkupString)HttpUtility.HtmlDecode(commentData.LinkTitle))
-                </a>
-            </h4>
-            <h6 class="card-subtitle text-muted mb-1">
-                Posted by <a class="text-decoration-none" href="/user/@commentData.LinkAuthor">/u/@commentData.LinkAuthor</a>
-            </h6>
+                </Anchor>
+            </CardSubtitle>
+            <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                Posted by 
+                <Anchor Class="text-decoration-none" To="@($"/user/{commentData.LinkAuthor}")">
+                    /u/@commentData.LinkAuthor
+                </Anchor>
+            </CardSubtitle>
             <Flair Over18="@commentData.Over18" />
-            <div class="mt-1">
+            <Div Margin="Margin.Is1.FromTop">
                 <CommentCard Comment="@Comment"
                          OriginalPoster="@commentData.LinkAuthor" />
-            </div>
-        </div>
-    </div>
+            </Div>
+        </CardBody>
+    </Card>
 }
 else
 {

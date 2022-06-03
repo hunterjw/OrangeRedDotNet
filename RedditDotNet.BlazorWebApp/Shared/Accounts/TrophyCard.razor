@@ -1,24 +1,28 @@
-﻿<div class="card text-dark bg-light mb-1">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-auto d-flex justify-content-center flex-column">
-                <img src="@AwardData.Icon70" class="rounded trophy-icon-img" alt="@AwardData.Name" />
-            </div>
-            <div class="col">
-                <h5 class="card-title">@AwardData.Name</h5>
+﻿<Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is0.FromBottom">
+    <CardBody>
+        <Row>
+            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
+                <Image Source="@AwardData.Icon70" Class="trophy-icon-img" Text="@AwardData.Name" />
+            </Column>
+            <Column>
+                <CardTitle Size="5">@AwardData.Name</CardTitle>
                 @if (AwardData.GrantedAt != default)
                 {
-                    <h6 class="card-subtitle mb-2 text-muted">@AwardData.GrantedAtDateTime</h6>
+                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is2.FromBottom">
+                        @AwardData.GrantedAtDateTime
+                    </CardSubtitle>
                 }
                 @if (!string.IsNullOrWhiteSpace(AwardData.Description))
                 {
-                    <p class="card-text">@AwardData.Description</p>
+                    <CardText>@AwardData.Description</CardText>
                 }
                 @if (!string.IsNullOrWhiteSpace(AwardData.Url))
                 {
-                    <a href="@AwardData.Url" class="card-link">@AwardData.Url</a>
+                    <CardLink Source="@AwardData.Url">
+                        @AwardData.Url
+                    </CardLink>
                 }
-            </div>
-        </div>
-    </div>
-</div>
+            </Column>
+        </Row>
+    </CardBody>
+</Card>

@@ -2,24 +2,28 @@
 
 <SettingsHeader ActiveTab="SettingsNavTab.Friends" />
 
-<div class="alert alert-primary" role="alert">
-  See your friends all together over at <a href="r/friends" class="alert-link">/r/friends</a>
-</div>
+<Alert Color="Color.Primary" Visible>
+    <AlertDescription>
+        See your friends all together over at <AlertMessage><Anchor To="r/friends">/r/friends</Anchor></AlertMessage>
+    </AlertDescription>
+</Alert>
 
-<EditForm Model="NewFriend" OnValidSubmit="HandleValidNewFriendSubmit">
-	<h3>Add a friend</h3>
-	<div class="input-group mb-3">	
-		<InputText class="form-control" id="friendName" @bind-Value="NewFriend" />
-        <button type="submit" class="btn btn-primary">Add</button>
-	</div>
-</EditForm>
+<Heading Size="HeadingSize.Is3">Add a friend</Heading>
+<Addons Margin="Margin.Is3.FromBottom">
+    <Addon AddonType="AddonType.Body">
+        <TextEdit @bind-Text="NewFriend" />
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Color="Color.Primary" @onclick="NewFriendButtonOnClick">Add</Button>
+    </Addon>
+</Addons>
 
-<h3>My Friends</h3>
+<Heading Size="HeadingSize.Is3">My Friends</Heading>
 @if (MyFriends == null)
 {
-	<p>Loading friends list...</p>
+    <Paragraph>Loading friends list...</Paragraph>
 }
 else
 {
-	<UserList Users="@MyFriends" DateLabel="Friend added on" />
+    <UserList Users="@MyFriends" DateLabel="Friend added on" />
 }

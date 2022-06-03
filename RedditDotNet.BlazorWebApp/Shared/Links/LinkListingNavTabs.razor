@@ -1,23 +1,13 @@
-﻿<ul class="nav nav-pills mb-2">
-    @if (string.IsNullOrWhiteSpace(Subreddit) && string.IsNullOrWhiteSpace(MultiRedditPath))
-    {
-        <li class="nav-item">
-            <a class="@(ActiveTab.Equals("best") ? "nav-link active" : "nav-link")" href="/best">Best</a>
-        </li>
-    }
-    <li class="nav-item">
-        <a class="@(ActiveTab.Equals("hot") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/hot">Hot</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab.Equals("new") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/new">New</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab.Equals("rising") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/rising">Rising</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab.Equals("controversial") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/controversial">Controversial</a>
-    </li>
-    <li class="nav-item">
-        <a class="@(ActiveTab.Equals("top") ? "nav-link active" : "nav-link")" href="@(GetRelativeUrlPrefix())/top">Top</a>
-    </li>
-</ul>
+﻿<Tabs SelectedTab="@ActiveTab" Pills Margin="Margin.Is2.FromBottom">
+    <Items>
+        @if (string.IsNullOrWhiteSpace(Subreddit) && string.IsNullOrWhiteSpace(MultiRedditPath))
+        {
+            <Tab Name="best" @onclick="@(() => NavigateTo("best"))">Best</Tab>
+        }
+        <Tab Name="hot" @onclick="@(() => NavigateTo("hot"))">Hot</Tab>
+        <Tab Name="new" @onclick="@(() => NavigateTo("new"))">New</Tab>
+        <Tab Name="rising" @onclick="@(() => NavigateTo("rising"))">Rising</Tab>
+        <Tab Name="controversial" @onclick="@(() => NavigateTo("controversial"))">Controversial</Tab>
+        <Tab Name="top" @onclick="@(() => NavigateTo("top"))">Top</Tab>
+    </Items>
+</Tabs>

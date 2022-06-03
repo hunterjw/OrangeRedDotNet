@@ -2,20 +2,20 @@
 
 <SettingsHeader ActiveTab="SettingsNavTab.Blocked" />
 
-<h3>Blocked Users</h3>
+<Heading Size="HeadingSize.Is3">Blocked Users</Heading>
 @if (MyBlocked == null)
 {
-	<p>Loading blocked list...</p>
+	<Paragraph>Loading blocked list...</Paragraph>
 }
 else
 {
 	<UserList Users="@MyBlocked" DateLabel="User blocked on" />
 }
 
-<h3>Trusted Users</h3>
+<Heading Size="HeadingSize.Is3">Trusted Users</Heading>
 @if (MyBlocked == null)
 {
-	<p>Loading trusted list...</p>
+	<Paragraph>Loading trusted list...</Paragraph>
 }
 else
 {
