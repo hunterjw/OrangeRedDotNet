@@ -134,7 +134,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 // page isn't disposed)
                 LinkListing = null;
 
-                if (IsSubreddit && !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase))
+                if (IsSubreddit && !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase) &&
+                    !Subreddit.Equals("all", StringComparison.OrdinalIgnoreCase) &&
+                    !Subreddit.Equals("popular", StringComparison.OrdinalIgnoreCase))
                 {
                     if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
                     {
