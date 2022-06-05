@@ -1,46 +1,48 @@
-﻿<Card Background="App.CardBackground" TextColor="App.CardTextColor">
-    <CardHeader>
+﻿<Card Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+    <CardHeader Class="@(CardCollapsed ? "" : "border-secondary")">
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
                 Karma Breakdown
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="App.DefaultButtonColor" @onclick="() => CardCollapsed = !CardCollapsed">
+                <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => CardCollapsed = !CardCollapsed">
                     <span class="oi @(CardCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                 </Button>
             </Column>
         </Row>
     </CardHeader>
     <CardBody Class="@(CardCollapsed ? "collapse" : "")">
-        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
+        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
             <CardBody>
                 <CardTitle Size="4">Link Karma</CardTitle>
                 <PieChart @ref="LinkKarmaPieChart" TItem="int" Options="@ChartOptions" />
             </CardBody>
         </Card>
 
-        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
+        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
             <CardBody>
                 <CardTitle Size="4">Comment Karma</CardTitle>
                 <PieChart @ref="CommentKarmaPieChart" TItem="int" Options="@ChartOptions" />
             </CardBody>
         </Card>
 
-        <Card Margin="Margin.Is1.FromBottom" Background="App.CardBackground" TextColor="App.CardTextColor">
-            <CardHeader>
+        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+            <CardHeader Class="@(RawDataCollapsed ? "" : "border-secondary")">
                 <Row>
                     <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
                         Raw Data
                     </Column>
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="() => RawDataCollapsed = !RawDataCollapsed">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                                @onclick="() => RawDataCollapsed = !RawDataCollapsed">
                             <span class="oi @(RawDataCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                         </Button>
                     </Column>
                 </Row>
             </CardHeader>
             <CardBody Class="@(RawDataCollapsed ? "collapse" : "")">
-                <Table>
+                <Table TextColor="App.TextColor">
                     <TableHeader>
                         <TableRow>
                             <TableHeaderCell>Subreddit</TableHeaderCell>

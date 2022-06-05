@@ -40,6 +40,11 @@ namespace RedditDotNet.BlazorWebApp
                     OAuthAuthenticationOptions,
                     localStorage);
             });
+            builder.Services.AddScoped(sp =>
+            {
+                var localStorage = sp.GetService<ISyncLocalStorageService>();
+                return new SettingsService(localStorage);
+            });
             builder.Services.AddBlazoredModal();
             builder.Services.AddBlazoredToast();
 

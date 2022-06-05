@@ -2,7 +2,7 @@
 
 @if (MultiReddit != null)
 {
-    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
         <CardBody>
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column" Width="Width.Is25" class="multireddit-icon-col">
@@ -30,10 +30,12 @@
                     <ListGroup>
                         @if (MultiReddit.Data.CanEdit)
                         {
-                            <ListGroupItem Background="App.CardBackground">
+                            <ListGroupItem Background="App.Background" Class="border-secondary">
                                 <Addons>
                                     <Addon AddonType="AddonType.Body">
-                                        <TextEdit Placeholder="Subreddit name" @bind-Text="AddSubredditName" />
+                                        <TextEdit Background="App.Background" TextColor="App.TextColor"
+                                      Placeholder="Subreddit name" Border="Border.Secondary"
+                                      @bind-Text="AddSubredditName" />
                                     </Addon>
                                     <Addon AddonType="AddonType.End">
                                         <Button Color="Color.Success" @onclick="AddSubredditButton_OnClick">
@@ -45,7 +47,7 @@
                         }
                         @foreach (var subreddit in MultiReddit.Data.Subreddits.OrderBy(_ => _.Name))
                         {
-                            <ListGroupItem Background="Background.Light">
+                            <ListGroupItem Background="App.Background" TextColor="App.TextColor" Class="border-secondary">
                                 <Row>
                                     <Column>
                                         <Row>
@@ -82,17 +84,19 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter>
+        <CardFooter Class="border-secondary">
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => ContentCollapsed = !ContentCollapsed">
                         <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>
                 @if (MultiReddit.Data.CanEdit)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="EditMultiRedditButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="EditMultiRedditButton_OnClick">
                             Edit
                         </Button>
                     </Column>
@@ -100,7 +104,8 @@
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="CopyMultiRedditButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="CopyMultiRedditButton_OnClick">
                             Copy
                         </Button>
                     </Column>

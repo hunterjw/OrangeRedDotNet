@@ -3,7 +3,6 @@
 @using RedditDotNet.Extensions
 @using RedditDotNet.Models.Parameters
 
-@page "/settings"
 @page "/settings/reddit"
 
 <SettingsHeader ActiveTab="SettingsNavTab.RedditSettings" />
@@ -25,7 +24,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Language</FieldLabel>
-                <Select @bind-SelectedValue="Preferences.Language">
+                <Select Background="App.Background" TextColor="App.TextColor"
+                    Border="Border.Secondary" @bind-SelectedValue="Preferences.Language">
                     @foreach (var value in Enum.GetValues<LanguageCode>())
                     {
                         <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
@@ -36,7 +36,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Country</FieldLabel>
-                <Select @bind-SelectedValue="Preferences.CountryCode">
+                <Select Background="App.Background" TextColor="App.TextColor"
+                    Border="Border.Secondary" @bind-SelectedValue="Preferences.CountryCode">
                     @foreach (var value in Enum.GetValues<CountryCode>().OrderBy(_ => _.ToDescriptionString()))
                     {
                         <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
@@ -123,7 +124,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Number of links to display at once</FieldLabel>
-                <NumericEdit @bind-Value="Preferences.NumLinks">
+                <NumericEdit Background="App.Background" TextColor="App.TextColor"
+                         Border="Border.Secondary" @bind-Value="Preferences.NumLinks">
                     <Feedback>
                         <ValidationError />
                     </Feedback>
@@ -133,7 +135,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Minimum score for links to display</FieldLabel>
-                <NumericEdit @bind-Value="Preferences.MinLinkScore">
+                <NumericEdit Background="App.Background" TextColor="App.TextColor"
+                         Border="Border.Secondary" @bind-Value="Preferences.MinLinkScore">
                     <Feedback>
                         <ValidationError />
                     </Feedback>
@@ -146,7 +149,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Default comment sort</FieldLabel>
-                <Select @bind-SelectedValue="Preferences.DefaultCommentSort">
+                <Select Background="App.Background" TextColor="App.TextColor"
+                    Border="Border.Secondary" @bind-SelectedValue="Preferences.DefaultCommentSort">
                     @foreach (var value in Enum.GetValues<CommentSort>())
                     {
                         <SelectItem Value="@value">@value</SelectItem>
@@ -167,7 +171,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Don't show me comments with a score less than</FieldLabel>
-                <NumericEdit @bind-Value="Preferences.MinCommentScore">
+                <NumericEdit Background="App.Background" TextColor="App.TextColor"
+                         Border="Border.Secondary" @bind-Value="Preferences.MinCommentScore">
                     <Feedback>
                         <ValidationError />
                     </Feedback>
@@ -177,7 +182,8 @@ else
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Number of comments to display at once</FieldLabel>
-                <NumericEdit @bind-Value="Preferences.NumComments">
+                <NumericEdit Background="App.Background" TextColor="App.TextColor"
+                         Border="Border.Secondary" @bind-Value="Preferences.NumComments">
                     <Feedback>
                         <ValidationError />
                     </Feedback>

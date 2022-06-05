@@ -1,6 +1,6 @@
 ﻿@using System.Web
 
-<Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
     <CardBody>
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
@@ -39,20 +39,20 @@
             </Column>
         </Row>
     </CardBody>
-    <CardFooter>
+    <CardFooter Class="border-secondary">
         <Row>
             @if (RedditService.LoggedIn)
             {
                 @if (AccountData.Subreddit != null)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="FollowButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="FollowButton_OnClick">
                             @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
                         </Button>
                     </Column>
                 }
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="AddToMultiRedditButton_OnClick">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="AddToMultiRedditButton_OnClick">
                         Add to MultiReddit
                     </Button>
                 </Column>

@@ -79,7 +79,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             parameters.Add("UpdateModel", updateModel);
             var options = new ModalOptions
             {
-                Class = "blazored-modal wideModal"
+                Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
             };
             IModalReference modal = ModalService.Show<EditMultiRedditModal>("New MultiReddit", parameters, options);
             ModalResult result = await modal.Result;

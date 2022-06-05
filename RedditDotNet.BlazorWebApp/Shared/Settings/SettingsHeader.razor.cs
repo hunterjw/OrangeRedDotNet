@@ -7,6 +7,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Settings
     /// </summary>
     public enum SettingsNavTab
     {
+        AppSettings,
         RedditSettings,
         Friends,
         Blocked
@@ -37,6 +38,9 @@ namespace RedditDotNet.BlazorWebApp.Shared.Settings
         {
             switch (settingsTab)
             {
+                case SettingsNavTab.AppSettings:
+                    NavigationManager.NavigateTo("/settings/app");
+                    break;
                 case SettingsNavTab.RedditSettings:
                     NavigationManager.NavigateTo("/settings/reddit");
                     break;

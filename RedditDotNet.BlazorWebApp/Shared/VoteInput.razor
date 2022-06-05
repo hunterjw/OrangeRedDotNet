@@ -1,11 +1,13 @@
 ﻿<Addons>
     <Addon AddonType="AddonType.Start">
-        <Button Color="App.DefaultButtonColor" @onclick="UpButton_OnClick" Disabled="@(Archived || !RedditService.LoggedIn)">
+        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                @onclick="UpButton_OnClick" Disabled="@(Archived || !RedditService.LoggedIn)">
             <Span Class="@("oi oi-arrow-thick-top " +(Likes.HasValue ? (Likes.Value ? "upvoted" : "") : ""))"></Span>
         </Button>
     </Addon>
     <Addon AddonType="AddonType.Body">
-        <AddonLabel Background="Background.Light" Border="Border.Light" Class="@(Likes.HasValue ? (Likes.Value ? "upvoted" : "downvoted") : "")">
+        <AddonLabel Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary"
+                    Class="@(Likes.HasValue ? (Likes.Value ? "upvoted" : "downvoted") : "")">
             @if (ScoreHidden)
             {
                 <Span>Score Hidden</Span>
@@ -17,7 +19,8 @@
         </AddonLabel>
     </Addon>
     <Addon AddonType="AddonType.End">
-        <Button Color="App.DefaultButtonColor" @onclick="DownButton_OnClick" Disabled="@(Archived || !RedditService.LoggedIn)">
+        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                @onclick="DownButton_OnClick" Disabled="@(Archived || !RedditService.LoggedIn)">
             <Span Class="@("oi oi-arrow-thick-bottom " +(Likes.HasValue ? (Likes.Value ? "" : "downvoted") : ""))"></Span>
         </Button>
     </Addon>

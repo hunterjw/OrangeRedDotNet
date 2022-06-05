@@ -3,13 +3,16 @@
     <Validation>
         <Field Margin="Margin.Is3.FromBottom">
             <FieldLabel>Name</FieldLabel>
-            <TextEdit @bind-Text="UpdateModel.DisplayName" />
+            <TextEdit Background="App.Background" TextColor="App.TextColor"
+                      Border="Border.Secondary" @bind-Text="UpdateModel.DisplayName" />
         </Field>
     </Validation>
     <Validation>
         <Field Margin="Margin.Is3.FromBottom">
             <FieldLabel>Description</FieldLabel>
-            <MemoEdit Rows="3" @bind-Text="UpdateModel.DescriptionMd" />
+            <MemoEdit Rows="3"
+                      Background="App.Background" TextColor="App.TextColor"
+                      Border="Border.Secondary" @bind-Text="UpdateModel.DescriptionMd" />
         </Field>
     </Validation>
     @if (!HideVisibility)
@@ -17,7 +20,8 @@
         <Validation>
             <Field Margin="Margin.Is3.FromBottom">
                 <FieldLabel>Privacy</FieldLabel>
-                <Select @bind-SelectedValue="UpdateModel.Visibility">
+                <Select Background="App.Background" TextColor="App.TextColor"
+                    Border="Border.Secondary" @bind-SelectedValue="UpdateModel.Visibility">
                     <SelectItem Value="@("private")">Private</SelectItem>
                     <SelectItem Value="@("public")">Public</SelectItem>
                 </Select>
@@ -25,7 +29,7 @@
         </Validation>
     }
     <Buttons Width="Width.Is100">
-        <Button Type="ButtonType.Button" Color="App.DefaultButtonColor" @onclick="CancelButton_OnClick">
+        <Button Type="ButtonType.Button" Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="CancelButton_OnClick">
             Cancel
         </Button>
         <Button Type="ButtonType.Submit" Color="Color.Success" Disabled="SaveButtonDisabled" @onclick="HandleValidSubmit">

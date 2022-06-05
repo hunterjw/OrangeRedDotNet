@@ -12,7 +12,10 @@ else
 {
     <LinkList ContentCollapsed="false" Links="@LinkWithComments.Links" />
     <hr />
-    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto" @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
+    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto"
+        Background="App.Background" TextColor="App.TextColor"
+        Border="Border.Secondary"
+        @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
         <SelectItem Value="@("confidence")">Best</SelectItem>
         <SelectItem Value="@("top")">Top</SelectItem>
         <SelectItem Value="@("new")">New</SelectItem>

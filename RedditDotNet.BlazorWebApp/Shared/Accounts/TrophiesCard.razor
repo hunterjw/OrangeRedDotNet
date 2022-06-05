@@ -1,5 +1,5 @@
-﻿<Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
-    <CardHeader>
+﻿<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+    <CardHeader Class="@(CardCollapsed ? "" : "border-secondary")">
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
                 @Trophies.Data.Trophies.Count() Trophies
@@ -7,17 +7,20 @@
             @if (Trophies.Data.Trophies.Count() > 0)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="() => CardCollapsed = !CardCollapsed">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="() => CardCollapsed = !CardCollapsed">
                         <span class="oi @(CardCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>
             }
         </Row>
     </CardHeader>
-    <CardBody Class="@(CardCollapsed ? "collapse" : "")">
-        @foreach (var award in Trophies.Data.Trophies.Select(_ => _.Data))
-        {
-            <TrophyCard AwardData="@award" />
-        }
-    </CardBody>
+    @if (!CardCollapsed)
+    {
+        <CardBody>
+            @foreach (var award in Trophies.Data.Trophies.Select(_ => _.Data))
+            {
+                <TrophyCard AwardData="@award" />
+            }
+        </CardBody>
+    }
 </Card>

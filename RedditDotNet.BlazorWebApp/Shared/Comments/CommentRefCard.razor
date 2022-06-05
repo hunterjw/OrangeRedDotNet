@@ -3,7 +3,7 @@
 
 @if (Comment.Data is CommentData commentData)
 {
-    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
         <CardBody>
             <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
                 <Anchor Class="text-decoration-none" To="@($"/r/{commentData.Subreddit}")">

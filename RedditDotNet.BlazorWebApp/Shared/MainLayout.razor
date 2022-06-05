@@ -2,7 +2,7 @@
 
 <NavMenu />
 
-<Container>
+<Container TextColor="App.TextColor">
 	<Div Class="main">
 		@Body
 	</Div>
@@ -10,3 +10,20 @@
 
 <BlazoredToasts 
 	Position="Blazored.Toast.Configuration.ToastPosition.BottomCenter" />
+
+@if (App.DarkMode)
+{
+	<style>
+		body {
+			background-color: black;
+		}
+	</style>
+}
+else
+{
+	<style>
+		body {
+			background-color: white;
+		}
+	</style>
+}

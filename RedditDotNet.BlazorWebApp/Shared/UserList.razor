@@ -2,7 +2,8 @@
 {
     @foreach (var user in Users.Data.Children)
     {
-        <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+        <Card TextColor="App.TextColor" Background="App.Background"
+      Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
             <CardBody>
                 <CardTitle Size="5">@user.Name</CardTitle>
                 <CardText>@DateLabel @user.DateDateTime.ToString()</CardText>

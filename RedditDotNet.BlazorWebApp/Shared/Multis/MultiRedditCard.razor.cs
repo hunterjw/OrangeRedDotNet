@@ -73,7 +73,8 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("SubredditName", subreddit);
                 var options = new ModalOptions
                 {
-                    HideHeader = true
+                    HideHeader = true,
+                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<RemoveMultiSubredditModal>("", parameters, options);
                 ModalResult result = await modal.Result;
@@ -138,7 +139,8 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("MultiRedditName", MultiReddit.Data.DisplayName);
                 var options = new ModalOptions
                 {
-                    HideHeader = true
+                    HideHeader = true,
+                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<DeleteMultiRedditModal>("", parameters, options);
                 ModalResult result = await modal.Result;
@@ -182,7 +184,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("UpdateModel", updateModel);
                 var options = new ModalOptions
                 {
-                    Class = "blazored-modal wideModal"
+                    Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<EditMultiRedditModal>("Edit MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;
@@ -224,7 +226,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("HideVisibility", true);
                 var options = new ModalOptions
                 {
-                    Class = "blazored-modal wideModal"
+                    Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<EditMultiRedditModal>("Copy MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;

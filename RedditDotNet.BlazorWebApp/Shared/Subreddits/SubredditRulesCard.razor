@@ -1,13 +1,14 @@
 ﻿@if (Rules?.Rules?.Count > 0)
 {
-    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
-        <CardHeader>
+    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+        <CardHeader Class="@(ContentCollapsed ? "" : "border-secondary")">
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
                     @Rules.Rules.Count Rules
                 </Column>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => ContentCollapsed = !ContentCollapsed">
                         <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>

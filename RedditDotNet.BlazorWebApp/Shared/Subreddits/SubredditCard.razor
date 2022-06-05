@@ -2,7 +2,7 @@
 
 @if (SubredditDetails != null)
 {
-    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom">
+    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
         <CardBody>
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column" Width="Width.Is100" Class="subreddit-icon-col">
@@ -48,12 +48,13 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter>
+        <CardFooter Class="border-secondary">
             <Row>
                 @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => ContentCollapsed = !ContentCollapsed">
                             <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                         </Button>
                     </Column>
@@ -61,12 +62,14 @@
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="SubscribeButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="SubscribeButton_OnClick">
                             @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
                         </Button>
                     </Column>
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="AddToMultiRedditButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="AddToMultiRedditButton_OnClick">
                             Add to MultiReddit
                         </Button>
                     </Column>

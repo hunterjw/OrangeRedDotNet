@@ -1,8 +1,8 @@
 ﻿@using System.Web
 @using RedditDotNet.Models.Links
 
-<Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom"
-      @ondblclick="Card_OnDblClick" Border="@(Link.Data.Stickied ? Border.Success : null)">
+<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom"
+      @ondblclick="Card_OnDblClick" Border="@(Link.Data.Stickied ? Border.Success : Border.Secondary)">
     <CardBody>
         <Row>
             <Column Flex="Flex.JustifyContent.Center.Column" Class="link-preview-col">
@@ -15,7 +15,7 @@
                         /r/@Link.Data.Subreddit
                     </Anchor>
                 </CardSubtitle>
-                <CardTitle Size="4" TextColor="@(Link.Data.Stickied ? TextColor.Success : App.CardTextColor)">
+                <CardTitle Size="4" TextColor="@(Link.Data.Stickied ? TextColor.Success : App.TextColor)">
                     @((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))
                 </CardTitle>
                 <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
@@ -91,7 +91,7 @@
             </Row>
         }
     </CardBody>
-    <CardFooter>
+    <CardFooter Class="border-secondary">
         <Row>
             <Column ColumnSize="ColumnSize.IsAuto">
                 <VoteInput Likes="@Link.Data.Likes"
@@ -104,7 +104,8 @@
                 @switch (Link.GetLinkType())
                 {
                     case LinkType.Link:
-                        <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" To="@Link.Data.Url" Target="Target.Blank">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        Type="ButtonType.Link" To="@Link.Data.Url" Target="Target.Blank">
                             <span class="oi oi-share-boxed"></span>
                         </Button>
                         break;
@@ -113,7 +114,8 @@
                     case LinkType.Gallery:
                     case LinkType.Crosspost:
                     case LinkType.EmbeddedMedia:
-                        <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => ContentCollapsed = !ContentCollapsed">
                             <span class="oi @(ContentCollapsed ? "oi-fullscreen-enter" : "oi-fullscreen-exit")"></span>
                         </Button>
                         break;
@@ -123,13 +125,15 @@
                     case LinkType.Text:
                         if (!string.IsNullOrWhiteSpace(Link.Data.Selftext))
                         {
-                            <Button Color="App.DefaultButtonColor" @onclick="() => ContentCollapsed = !ContentCollapsed">
+                            <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => ContentCollapsed = !ContentCollapsed">
                                 <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                             </Button>
                         }
                         else
                         {
-                            <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
+                            <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                        To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
                                 <span class="oi oi-share-boxed"></span>
                             </Button>
                         }
@@ -137,7 +141,8 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
+                <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                        To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
                     <span class="oi oi-comment-square"></span>
                     <span>@Link.Data.NumComments.ToDisplayString()</span>
                 </Button>
@@ -145,7 +150,8 @@
             @if (Link.Data.NumDuplicates != null && Link.Data.NumDuplicates > 0)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" To="@($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}")">
+                    <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                        To="@($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}")">
                         <span class="oi oi-chat"></span>
                         <span>Other discussions (@Link.Data.NumDuplicates)</span>
                     </Button>
@@ -154,12 +160,12 @@
             @if (RedditService.LoggedIn)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="SaveToggleButton_OnClick">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="SaveToggleButton_OnClick">
                         <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
                     </Button>
                 </Column>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="HideToggleButton_OnClick">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="HideToggleButton_OnClick">
                         <span class="oi oi-ban @(Link.Data.Hidden ? "text-danger" : "")"></span>
                     </Button>
                 </Column>

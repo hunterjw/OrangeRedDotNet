@@ -79,7 +79,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
                 Reddit reddit = RedditService.GetClient();
                 var parameters = new ModalParameters();
                 parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
-                IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters);
+                ModalOptions options = new()
+                {
+                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
+                };
+                IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;
                 if (!result.Cancelled)
                 {

@@ -34,7 +34,10 @@ else
         case UserProfileListingType.Submitted:
         case UserProfileListingType.Gilded:
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto" @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
+                <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto"
+                Background="App.Background" TextColor="App.TextColor"
+                Border="Border.Secondary"
+                @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
                     <SelectItem Value="@("hot")">Hot</SelectItem>
                     <SelectItem Value="@("new")">New</SelectItem>
                     <SelectItem Value="@("top")">Top</SelectItem>
@@ -44,7 +47,10 @@ else
             @if ((Sort?.Equals("top") ?? false) || (Sort?.Equals("controversial") ?? false))
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto" @bind-SelectedValue="Timescale" @onchange="TimescaleSelect_OnChange">
+                    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto"
+                Background="App.Background" TextColor="App.TextColor"
+                Border="Border.Secondary"
+                @bind-SelectedValue="Timescale" @onchange="TimescaleSelect_OnChange">
                         <SelectItem Value="@("hour")">Hour</SelectItem>
                         <SelectItem Value="@("day")">Day</SelectItem>
                         <SelectItem Value="@("week")">Week</SelectItem>

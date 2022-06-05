@@ -4,8 +4,9 @@
 
 @if (Comment.Data is CommentData commentData)
 {
-    <Card TextColor="App.CardTextColor" Background="App.CardBackground" Margin="Margin.Is1.FromBottom"
-      Border="@(commentData.Stickied ? Border.Success : null)" @ondblclick="() => RepliesCollapsed = !RepliesCollapsed">
+    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom"
+      Border="@(commentData.Stickied ? Border.Success : Border.Secondary)"
+      @ondblclick="() => RepliesCollapsed = !RepliesCollapsed">
         <CardBody>
             <Row>
                 <Column>
@@ -36,7 +37,7 @@
                 </Column>
             </Row>
         </CardBody>
-        <CardFooter>
+        <CardFooter Class="border-secondary">
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto">
                     <VoteInput Likes="@commentData.Likes"
@@ -46,14 +47,16 @@
                            Archived="@commentData.Archived" />
                 </Column>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" @onclick="() => RepliesCollapsed = !RepliesCollapsed">
+                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="() => RepliesCollapsed = !RepliesCollapsed">
                         <span class="oi @(RepliesCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" @onclick="SaveToggleButton_OnClick">
+                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        @onclick="SaveToggleButton_OnClick">
                             <span class="oi oi-bookmark @(commentData.Saved ? "text-primary" : "")"></span>
                         </Button>
                     </Column>
@@ -69,7 +72,7 @@
     </Card>
     @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
     {
-        <Div Border="Border.OnStart.Is3.OnStart.Secondary" Margin="Margin.Is1.FromBottom">
+        <Div Margin="Margin.Is1.FromBottom" Class="comment-border">
             <Div Margin="Margin.Is2.FromStart">
                 <CommentsList Comments="@commentData.Replies"
                       OriginalPoster="@OriginalPoster"

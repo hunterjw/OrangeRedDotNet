@@ -11,7 +11,8 @@
 <Heading Size="HeadingSize.Is3">Add a friend</Heading>
 <Addons Margin="Margin.Is3.FromBottom">
     <Addon AddonType="AddonType.Body">
-        <TextEdit @bind-Text="NewFriend" />
+        <TextEdit Background="App.Background" TextColor="App.TextColor"
+                  Border="Border.Secondary" @bind-Text="NewFriend" />
     </Addon>
     <Addon AddonType="AddonType.End">
         <Button Color="Color.Primary" @onclick="NewFriendButtonOnClick">Add</Button>

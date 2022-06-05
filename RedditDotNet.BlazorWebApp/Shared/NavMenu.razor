@@ -1,8 +1,11 @@
 ﻿<Bar @bind-Visible="@NavMenuCollapsed" Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Desktop"
-     Background="Background.Dark" ThemeContrast="ThemeContrast.Dark" Margin="Margin.Is4.FromBottom">
+     Background="App.Background"
+     ThemeContrast="App.ThemeContrast"
+     Margin="Margin.Is4.FromBottom"
+     Class="border-bottom border-secondary">
     <Container Fluid>
         <BarBrand>
-            <Anchor To="" TextColor="TextColor.Light" Class="text-decoration-none">
+            <Anchor To="" TextColor="App.TextColor" Class="text-decoration-none">
                 @Configuration["BrandName"]
             </Anchor>
         </BarBrand>
@@ -19,11 +22,11 @@
                 @if (RedditService.LoggedIn)
                 {
                     <BarItem>
-                        <BarDropdown>
+                        <BarDropdown RightAligned>
                             <BarDropdownToggle>
-                                @RedditService.Identity?.Name
+                                @(RedditService.Identity?.Name ?? "Loading...")
                             </BarDropdownToggle>
-                            <BarDropdownMenu Class="dropdown-menu-dark">
+                            <BarDropdownMenu Class="@(App.DarkMode ? "dropdown-menu-dark" : "")">
                                 <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")" Match="Match.Prefix">
                                     Profile
                                 </BarDropdownItem>

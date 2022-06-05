@@ -6,7 +6,7 @@ else
 {
     @foreach (var multiRedditState in MultiRedditStates.OrderBy(_ => _.MultiReddit.Data.DisplayName))
     {
-        <Card Background="App.CardBackground" TextColor="App.CardTextColor" Margin="Margin.Is1.FromBottom">
+        <Card Background="App.Background" TextColor="App.TextColor" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
             <CardBody>
                 <Row>
                     <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
@@ -32,7 +32,7 @@ else
     {
         <Addons Margin="Margin.Is1.FromBottom">
             <Addon AddonType="AddonType.Body">
-                <TextEdit Placeholder="New Multi Name" @bind-Text="NewMultiName" />
+                <TextEdit Placeholder="New Multi Name" Border="Border.Secondary" @bind-Text="NewMultiName" />
             </Addon>
             <Addon AddonType="AddonType.End">
                 <Button Color="Color.Success" @onclick="CreateNewSubmittButton_OnClick">
@@ -43,13 +43,13 @@ else
     }
     else
     {
-        <Button Color="App.DefaultButtonColor" Width="Width.Is100" Margin="Margin.Is1.FromBottom"
+        <Button Color="App.DefaultButtonColor" Width="Width.Is100" Margin="Margin.Is1.FromBottom" Border="Border.Secondary"
         @onclick="() => CreateNewActive = !CreateNewActive">
             Create a new Multi
         </Button>
     }
     <Buttons Width="Width.Is100">
-        <Button Color="App.DefaultButtonColor" @onclick="CancelButton_OnClick">
+        <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="CancelButton_OnClick">
             Cancel
         </Button>
         <Button Color="Color.Success" @onclick="SaveButton_OnClick">

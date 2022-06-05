@@ -2,6 +2,10 @@
 
 <Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="Margin.Is2.FromBottom">
     <Items>
+        <Tab Name="@SettingsNavTab.AppSettings.ToString()"
+             @onclick="() => NavigateTo(SettingsNavTab.AppSettings)">
+             App Settings
+         </Tab>
         <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)">
              Reddit Settings

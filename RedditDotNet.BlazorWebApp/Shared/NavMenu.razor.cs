@@ -33,6 +33,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
+            App.ThemeChanged += RefreshComponent;
             RedditService.LoginFinished += RefreshComponent;
             RedditService.LogoutFinished += RefreshComponent;
             // ensure identity is loaded on initial load

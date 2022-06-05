@@ -2,13 +2,19 @@
     @if (!string.IsNullOrWhiteSpace(Before))
     {
         <PaginationItem>
-            <PaginationLink href="@BuildPreviousPageUrl().Result">Previous</PaginationLink>
+            <PaginationLink Background="App.Background" Border="Border.Secondary"
+                        href="@BuildPreviousPageUrl().Result">
+                Previous
+            </PaginationLink>
         </PaginationItem>
     }
     @if (!string.IsNullOrWhiteSpace(After))
     {
         <PaginationItem>
-            <PaginationLink href="@BuildNextPageUrl().Result">Next</PaginationLink>
+            <PaginationLink Background="App.Background" Border="Border.Secondary"
+                        href="@BuildNextPageUrl().Result">
+                Next
+            </PaginationLink>
         </PaginationItem>
     }
 </Pagination>
