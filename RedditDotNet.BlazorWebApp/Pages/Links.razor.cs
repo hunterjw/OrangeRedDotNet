@@ -134,15 +134,16 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 // page isn't disposed)
                 LinkListing = null;
 
-                if (IsSubreddit && !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase) &&
-                    !Subreddit.Equals("all", StringComparison.OrdinalIgnoreCase) &&
-                    !Subreddit.Equals("popular", StringComparison.OrdinalIgnoreCase))
+                if (IsSubreddit)
                 {
                     if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
                     {
                         SubredditDetailsLoaded = false;
                     }
-                    if (!SubredditDetailsLoaded)
+                    if (!SubredditDetailsLoaded && 
+                        !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase) &&
+                        !Subreddit.Equals("all", StringComparison.OrdinalIgnoreCase) &&
+                        !Subreddit.Equals("popular", StringComparison.OrdinalIgnoreCase))
                     {
                         SubredditDetails = await redditClient.Subreddits.GetAbout(Subreddit);
                         Rules = await redditClient.Subreddits.GetRules(Subreddit);
@@ -334,7 +335,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 Before = Before,
                 Count = Count ?? 0,
                 Limit = Limit ?? 25,
-                Timescale = string.IsNullOrWhiteSpace(Timescale) ? Models.Parameters.Timescale.Hour 
+                Timescale = string.IsNullOrWhiteSpace(Timescale) ? Models.Parameters.Timescale.Hour
                     : Timescale.ToEnumFromDescriptionString<Timescale>()
             };
         }
