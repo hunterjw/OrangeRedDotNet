@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Comments;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Comments
@@ -9,12 +10,16 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
     /// </summary>
     public partial class CommentRefCard
     {
-        #region Parameters
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Comment to display
         /// </summary>
         [Parameter]
         public CommentBase Comment { get; set; }
-        #endregion
     }
 }

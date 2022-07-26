@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models;
 using System.Collections.Generic;
 
@@ -9,6 +10,12 @@ namespace RedditDotNet.BlazorWebApp.Shared
     /// </summary>
     public partial class Awardings
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// List of awards
         /// </summary>

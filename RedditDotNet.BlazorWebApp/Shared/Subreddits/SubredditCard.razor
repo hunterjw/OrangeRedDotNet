@@ -2,15 +2,25 @@
 
 @if (SubredditDetails != null)
 {
-    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
         <CardBody>
             <Row>
-                <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column" Width="Width.Is100" Class="subreddit-icon-col">
-                    <Image Border="Border.Rounded" Source="@GetIconUrl()" />
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column"
+                    Width="Width.Is100"
+                    Class="subreddit-icon-col">
+                    <Image Border="Border.Rounded"
+                       Source="@GetIconUrl()" />
                 </Column>
                 <Column>
-                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
-                        <Anchor Class="text-decoration-none" To="@SubredditDetails.Data.Url">
+                    <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                        <Anchor Class="text-decoration-none"
+                            To="@SubredditDetails.Data.Url">
                             @SubredditDetails.Data.Url
                         </Anchor>
                     </CardSubtitle>
@@ -19,17 +29,23 @@
                     </CardTitle>
                     @if (!IsUser)
                     {
-                        <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                        <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                             @SubredditDetails.Data.Subscribers.ToDisplayString() subscribers
                         </CardSubtitle>
                     }
                     @if (SubredditDetails.Data.AccountsActive.HasValue)
                     {
-                        <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                        <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                             @SubredditDetails.Data.AccountsActive.Value.ToDisplayString() online
                         </CardSubtitle>
                     }
-                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                    <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                         Created @SubredditDetails.Data.CreatedUtc.ToLocalDateTime()
                     </CardSubtitle>
                     <Flair Over18="@SubredditDetails.Data.Over18"
@@ -43,7 +59,9 @@
             </Row>
             @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml) && !ContentCollapsed)
             {
-                <Row Margin="Margin.Is3.FromTop" NoGutters Flex="Flex.JustifyContent.Center.Row">
+                <Row Margin="Margin.Is3.FromTop"
+             NoGutters
+             Flex="Flex.JustifyContent.Center.Row">
                     @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.DescriptionHtml))
                 </Row>
             }
@@ -53,7 +71,8 @@
                 @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
                             <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                         </Button>
@@ -62,13 +81,15 @@
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="SubscribeButton_OnClick">
                             @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
                         </Button>
                     </Column>
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="AddToMultiRedditButton_OnClick">
                             Add to MultiReddit
                         </Button>

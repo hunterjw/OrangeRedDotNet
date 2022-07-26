@@ -26,6 +26,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Modal instance

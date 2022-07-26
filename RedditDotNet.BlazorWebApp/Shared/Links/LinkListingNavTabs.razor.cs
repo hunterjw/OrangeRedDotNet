@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Links
 {
@@ -12,6 +13,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// The type of the active tab

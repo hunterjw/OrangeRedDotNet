@@ -33,6 +33,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Subreddit details
@@ -101,7 +106,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
                 parameters.Add("SubredditName", SubredditDetails.Data.DisplayName);
                 ModalOptions options = new()
                 {
-                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;

@@ -2,6 +2,7 @@
 using Blazored.Modal.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Multis;
 using System.Threading.Tasks;
 
@@ -9,6 +10,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
 {
     public partial class EditMultiRedditModal
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Modal instance
         /// </summary>

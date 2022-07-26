@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Subreddits;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
@@ -8,6 +9,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
     /// </summary>
     public partial class SubredditRulesCard
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Subreddit rules
         /// </summary>

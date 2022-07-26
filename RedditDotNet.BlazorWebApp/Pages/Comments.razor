@@ -10,11 +10,14 @@
 }
 else
 {
-    <LinkList ContentCollapsed="false" Links="@LinkWithComments.Links" />
+    <LinkList ContentCollapsed="false"
+          Links="@LinkWithComments.Links" />
     <hr />
-    <Select Margin="Margin.Is2.FromBottom" Width="Width.Auto"
-        Background="App.Background" TextColor="App.TextColor"
-        Border="Border.Secondary"
+    <Select Margin="ThemeService.AppTheme.SpacingRelated"
+        Width="Width.Auto"
+        Background="ThemeService.AppTheme.Background"
+        TextColor="ThemeService.AppTheme.TextColor"
+        Border="ThemeService.AppTheme.Border"
         @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
         <SelectItem Value="@("confidence")">Best</SelectItem>
         <SelectItem Value="@("top")">Top</SelectItem>

@@ -2,22 +2,34 @@
 
 @if (MultiReddit != null)
 {
-    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
         <CardBody>
             <Row>
-                <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column" Width="Width.Is25" class="multireddit-icon-col">
-                    <Image Border="Border.Rounded" Source="@MultiReddit.Data.IconUrl" />
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column"
+                    Width="Width.Is25"
+                    class="multireddit-icon-col">
+                    <Image Border="Border.Rounded"
+                       Source="@MultiReddit.Data.IconUrl" />
                 </Column>
                 <Column>
-                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
-                        <Anchor To="@MultiReddit.Data.Path" Class="text-decoration-none">
+                    <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                        <Anchor To="@MultiReddit.Data.Path"
+                            Class="text-decoration-none">
                             @MultiReddit.Data.Path
                         </Anchor>
                     </CardSubtitle>
                     <CardTitle Size="4">
                         @MultiReddit.Data.DisplayName
                     </CardTitle>
-                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                    <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                         @(MultiReddit.Data.Subreddits?.Count ?? 0) communities in this custom feed, @MultiReddit.Data.Visibility
                     </CardSubtitle>
                     <Flair Over18="@MultiReddit.Data.Over18" />
@@ -26,19 +38,25 @@
             </Row>
             @if (!ContentCollapsed)
             {
-                <Row Margin="Margin.Is3.FromTop" NoGutters Flex="Flex.JustifyContent.Center.Row">
+                <Row Margin="Margin.Is3.FromTop"
+             NoGutters
+             Flex="Flex.JustifyContent.Center.Row">
                     <ListGroup>
                         @if (MultiReddit.Data.CanEdit)
                         {
-                            <ListGroupItem Background="App.Background" Class="border-secondary">
+                            <ListGroupItem Background="ThemeService.AppTheme.Background"
+                               Class="border-secondary">
                                 <Addons>
                                     <Addon AddonType="AddonType.Body">
-                                        <TextEdit Background="App.Background" TextColor="App.TextColor"
-                                      Placeholder="Subreddit name" Border="Border.Secondary"
+                                        <TextEdit Background="ThemeService.AppTheme.Background"
+                                      TextColor="ThemeService.AppTheme.TextColor"
+                                      Placeholder="Subreddit name"
+                                      Border="ThemeService.AppTheme.Border"
                                       @bind-Text="AddSubredditName" />
                                     </Addon>
                                     <Addon AddonType="AddonType.End">
-                                        <Button Color="Color.Success" @onclick="AddSubredditButton_OnClick">
+                                        <Button Color="Color.Success"
+                                    @onclick="AddSubredditButton_OnClick">
                                             Add
                                         </Button>
                                     </Addon>
@@ -47,11 +65,15 @@
                         }
                         @foreach (var subreddit in MultiReddit.Data.Subreddits.OrderBy(_ => _.Name))
                         {
-                            <ListGroupItem Background="App.Background" TextColor="App.TextColor" Class="border-secondary">
+                            <ListGroupItem Background="ThemeService.AppTheme.Background"
+                               TextColor="ThemeService.AppTheme.TextColor"
+                               Class="border-secondary">
                                 <Row>
                                     <Column>
                                         <Row>
-                                            <Anchor Width="Width.Auto" Class="text-decoration-none" To="@($"/r/{subreddit.Name}")">
+                                            <Anchor Width="Width.Auto"
+                                        Class="text-decoration-none"
+                                        To="@($"/r/{subreddit.Name}")">
                                                 /r/@subreddit.Name
                                             </Anchor>
                                         </Row>
@@ -71,8 +93,11 @@
                                     </Column>
                                     @if (MultiReddit.Data.CanEdit)
                                     {
-                                        <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
-                                            <Button Color="Color.Danger" Outline @onclick="@(() => RemoveSubredditButton_OnClick(subreddit.Name))">
+                                        <Column ColumnSize="ColumnSize.IsAuto"
+                                Flex="Flex.Column.JustifyContent.Center">
+                                            <Button Color="Color.Danger"
+                                    Outline
+                                    @onclick="@(() => RemoveSubredditButton_OnClick(subreddit.Name))">
                                                 Remove
                                             </Button>
                                         </Column>
@@ -87,7 +112,8 @@
         <CardFooter Class="border-secondary">
             <Row>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
                         <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
@@ -95,7 +121,8 @@
                 @if (MultiReddit.Data.CanEdit)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="EditMultiRedditButton_OnClick">
                             Edit
                         </Button>
@@ -104,7 +131,8 @@
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="CopyMultiRedditButton_OnClick">
                             Copy
                         </Button>
@@ -113,7 +141,9 @@
                 @if (MultiReddit.Data.CanEdit)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="Color.Danger" Outline @onclick="@DeleteMultiRedditButton_OnClick">
+                        <Button Color="Color.Danger"
+                        Outline
+                        @onclick="@DeleteMultiRedditButton_OnClick">
                             Delete
                         </Button>
                     </Column>

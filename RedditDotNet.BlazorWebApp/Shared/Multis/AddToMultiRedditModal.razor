@@ -6,21 +6,29 @@ else
 {
     @foreach (var multiRedditState in MultiRedditStates.OrderBy(_ => _.MultiReddit.Data.DisplayName))
     {
-        <Card Background="App.Background" TextColor="App.TextColor" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+        <Card Background="ThemeService.AppTheme.Background"
+      TextColor="ThemeService.AppTheme.TextColor"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
             <CardBody>
                 <Row>
-                    <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
                         <Check Checked="@multiRedditState.CurrentState"
                        @onchange="() => { MultiRedditSelectInput_OnChange(multiRedditState.MultiReddit.Data.Name); }" />
                     </Column>
-                    <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
-                        <Image Border="Border.Rounded" Class="multireddit-icon-img" Source="@multiRedditState.MultiReddit.Data.IconUrl" />
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
+                        <Image Border="Border.Rounded"
+                       Class="multireddit-icon-img"
+                       Source="@multiRedditState.MultiReddit.Data.IconUrl" />
                     </Column>
                     <Column>
                         <CardTitle Size="4">
                             @multiRedditState.MultiReddit.Data.DisplayName
                         </CardTitle>
-                        <CardSubtitle Size="6" TextColor="TextColor.Muted">
+                        <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted">
                             <span>@multiRedditState.MultiReddit.Data.Subreddits.Count communities</span>
                         </CardSubtitle>
                     </Column>
@@ -30,12 +38,15 @@ else
     }
     @if (CreateNewActive)
     {
-        <Addons Margin="Margin.Is1.FromBottom">
+        <Addons Margin="ThemeService.AppTheme.SpacingSame">
             <Addon AddonType="AddonType.Body">
-                <TextEdit Placeholder="New Multi Name" Border="Border.Secondary" @bind-Text="NewMultiName" />
+                <TextEdit Placeholder="New Multi Name"
+                  Border="ThemeService.AppTheme.Border"
+                  @bind-Text="NewMultiName" />
             </Addon>
             <Addon AddonType="AddonType.End">
-                <Button Color="Color.Success" @onclick="CreateNewSubmittButton_OnClick">
+                <Button Color="Color.Success"
+                @onclick="CreateNewSubmittButton_OnClick">
                     Create
                 </Button>
             </Addon>
@@ -43,16 +54,22 @@ else
     }
     else
     {
-        <Button Color="App.DefaultButtonColor" Width="Width.Is100" Margin="Margin.Is1.FromBottom" Border="Border.Secondary"
+        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+        Width="Width.Is100"
+        Margin="ThemeService.AppTheme.SpacingSame"
+        Border="ThemeService.AppTheme.Border"
         @onclick="() => CreateNewActive = !CreateNewActive">
             Create a new Multi
         </Button>
     }
     <Buttons Width="Width.Is100">
-        <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="CancelButton_OnClick">
+        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+            Border="ThemeService.AppTheme.Border"
+            @onclick="CancelButton_OnClick">
             Cancel
         </Button>
-        <Button Color="Color.Success" @onclick="SaveButton_OnClick">
+        <Button Color="Color.Success"
+            @onclick="SaveButton_OnClick">
             Save
         </Button>
     </Buttons>

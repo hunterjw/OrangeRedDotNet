@@ -1,17 +1,17 @@
 ﻿@inherits LayoutComponentBase
+@inject AppThemeService ThemeService
 
 <NavMenu />
 
-<Container TextColor="App.TextColor">
+<Container TextColor="ThemeService.AppTheme.TextColor">
 	<Div Class="main">
 		@Body
 	</Div>
 </Container>
 
-<BlazoredToasts 
-	Position="Blazored.Toast.Configuration.ToastPosition.BottomCenter" />
+<BlazoredToasts Position="Blazored.Toast.Configuration.ToastPosition.BottomCenter" />
 
-@if (App.DarkMode)
+@if (ThemeService.AppTheme.DarkMode)
 {
 	<style>
 		body {

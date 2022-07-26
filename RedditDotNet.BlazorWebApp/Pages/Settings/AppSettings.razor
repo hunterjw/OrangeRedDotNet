@@ -9,15 +9,27 @@
 }
 else
 {
-    <Validations Model="Settings" Mode="ValidationMode.Auto" ValidateOnLoad="false" StatusChanged="OnValidationsStatusChange" @ref="Validations">
+    <Validations Model="Settings"
+             Mode="ValidationMode.Auto"
+             ValidateOnLoad="false"
+             StatusChanged="OnValidationsStatusChange"
+             @ref="Validations">
         <Heading Size="HeadingSize.Is3">Interface</Heading>
         <Validation>
-            <Field Margin="Margin.Is3.FromBottom">
-                <Switch TValue="bool" @bind-Checked="Settings.DarkMode">Use dark mode</Switch>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Switch TValue="bool"
+                    @bind-Checked="Settings.DarkMode">
+                    Use dark mode
+                </Switch>
             </Field>
         </Validation>
         <hr />
-        
-        <Button Color="Color.Primary" Margin="Margin.Is1.FromBottom" Disabled="SaveButtonDisabled" @onclick="HandleValidSubmit">Save</Button>
+
+        <Button Color="Color.Primary"
+            Margin="ThemeService.AppTheme.SpacingSame"
+            Disabled="SaveButtonDisabled"
+            @onclick="HandleValidSubmit">
+            Save
+        </Button>
     </Validations>
 }

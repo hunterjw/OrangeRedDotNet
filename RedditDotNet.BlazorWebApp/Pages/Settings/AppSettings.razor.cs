@@ -22,6 +22,11 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// </summary>
         [Inject]
         public SettingsService SettingsService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// App settings

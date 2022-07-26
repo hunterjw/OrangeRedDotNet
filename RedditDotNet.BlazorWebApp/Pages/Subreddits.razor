@@ -2,7 +2,8 @@
 @page "/subreddits/mine/{mySubredditsType}"
 @page "/subreddits/{subredditsType}"
 
-<SubredditsNavTabs ActiveMySubredditsTab="@GetMySubredditsType()" ActiveSubredditsTab="@GetSubredditsType()" />
+<SubredditsNavTabs ActiveMySubredditsTab="@GetMySubredditsType()"
+                   ActiveSubredditsTab="@GetSubredditsType()" />
 
 @if (SubredditsListing == null)
 {

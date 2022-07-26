@@ -12,7 +12,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// Listing of Links to display
         /// </summary>
         [Parameter]
-        public Listing<Models.Links.Link> Links { get; set; }
+        public Listing<RedditDotNet.Models.Links.Link> Links { get; set; }
 
         /// <summary>
         /// If to have the link contents collapsed or not by default

@@ -80,7 +80,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 if (!string.IsNullOrWhiteSpace(SubredditsType))
                 {
                     SubredditsType subredditsType = GetSubredditsType() ??
-                        Models.Parameters.SubredditsType.Popular;
+                        RedditDotNet.Models.Parameters.SubredditsType.Popular;
 
                     var redditClient = RedditService.GetClient();
                     SubredditsListing = await redditClient.Subreddits.Get(
@@ -90,7 +90,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 else
                 {
                     MySubredditsType mySubredditsType = GetMySubredditsType() ?? 
-                        Models.Parameters.MySubredditsType.Subscriber;
+                        RedditDotNet.Models.Parameters.MySubredditsType.Subscriber;
 
                     var redditClient = RedditService.GetClient();
                     SubredditsListing = await redditClient.Subreddits.GetMine(

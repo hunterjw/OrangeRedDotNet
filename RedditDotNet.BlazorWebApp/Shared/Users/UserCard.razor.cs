@@ -31,12 +31,17 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Account data
         /// </summary>
         [Parameter]
-        public Models.Account.AccountData AccountData { get; set; }
+        public RedditDotNet.Models.Account.AccountData AccountData { get; set; }
 
         /// <summary>
         /// User title
@@ -82,7 +87,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
                 parameters.Add("SubredditName", AccountData.Subreddit.DisplayName);
                 ModalOptions options = new()
                 {
-                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<AddToMultiRedditModal>("Add to MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;

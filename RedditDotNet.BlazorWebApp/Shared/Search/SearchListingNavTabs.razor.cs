@@ -3,6 +3,7 @@ using RedditDotNet.Extensions;
 using System.Threading.Tasks;
 using System.Net.Http;
 using RedditDotNet.Models.Parameters;
+using RedditDotNet.BlazorWebApp.Services;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Search
 {
@@ -16,6 +17,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Search
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// The type of the active tab

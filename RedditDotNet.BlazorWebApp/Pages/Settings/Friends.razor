@@ -2,20 +2,26 @@
 
 <SettingsHeader ActiveTab="SettingsNavTab.Friends" />
 
-<Alert Color="Color.Primary" Visible>
+<Alert Color="Color.Primary"
+       Visible>
     <AlertDescription>
         See your friends all together over at <AlertMessage><Anchor To="r/friends">/r/friends</Anchor></AlertMessage>
     </AlertDescription>
 </Alert>
 
 <Heading Size="HeadingSize.Is3">Add a friend</Heading>
-<Addons Margin="Margin.Is3.FromBottom">
+<Addons Margin="ThemeService.AppTheme.SpacingSeparate">
     <Addon AddonType="AddonType.Body">
-        <TextEdit Background="App.Background" TextColor="App.TextColor"
-                  Border="Border.Secondary" @bind-Text="NewFriend" />
+        <TextEdit Background="ThemeService.AppTheme.Background"
+                  TextColor="ThemeService.AppTheme.TextColor"
+                  Border="ThemeService.AppTheme.Border"
+                  @bind-Text="NewFriend" />
     </Addon>
     <Addon AddonType="AddonType.End">
-        <Button Color="Color.Primary" @onclick="NewFriendButtonOnClick">Add</Button>
+        <Button Color="Color.Primary"
+                @onclick="NewFriendButtonOnClick">
+            Add
+        </Button>
     </Addon>
 </Addons>
 
@@ -26,5 +32,6 @@
 }
 else
 {
-    <UserList Users="@MyFriends" DateLabel="Friend added on" />
+    <UserList Users="@MyFriends"
+          DateLabel="Friend added on" />
 }

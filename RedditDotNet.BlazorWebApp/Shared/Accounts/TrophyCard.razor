@@ -1,14 +1,22 @@
-﻿<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+﻿<Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
     <CardBody>
         <Row>
-            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
-                <Image Source="@AwardData.Icon70" Class="trophy-icon-img" Text="@AwardData.Name" />
+            <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
+                <Image Source="@AwardData.Icon70"
+                       Class="trophy-icon-img"
+                       Text="@AwardData.Name" />
             </Column>
             <Column>
                 <CardTitle Size="5">@AwardData.Name</CardTitle>
                 @if (AwardData.GrantedAt != default)
                 {
-                    <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is2.FromBottom">
+                    <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingRelated">
                         @AwardData.GrantedAtDateTime
                     </CardSubtitle>
                 }

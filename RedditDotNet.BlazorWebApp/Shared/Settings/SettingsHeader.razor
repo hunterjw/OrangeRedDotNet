@@ -1,22 +1,24 @@
 ﻿<Heading Size="HeadingSize.Is2">Settings</Heading>
 
-<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="Margin.Is2.FromBottom">
+<Tabs SelectedTab="@ActiveTab.ToString()"
+      Pills
+      Margin="ThemeService.AppTheme.SpacingRelated">
     <Items>
         <Tab Name="@SettingsNavTab.AppSettings.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.AppSettings)">
-             App Settings
-         </Tab>
+            App Settings
+        </Tab>
         <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)">
-             Reddit Settings
-         </Tab>
+            Reddit Settings
+        </Tab>
         <Tab Name="@SettingsNavTab.Friends.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.Friends)">
-             Friends
-         </Tab>
+            Friends
+        </Tab>
         <Tab Name="@SettingsNavTab.Blocked.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.Blocked)">
-             Blocked
-         </Tab>
+            Blocked
+        </Tab>
     </Items>
 </Tabs>

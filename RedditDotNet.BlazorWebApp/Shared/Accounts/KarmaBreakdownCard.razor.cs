@@ -1,5 +1,6 @@
 ﻿using Blazorise.Charts;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Account;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Accounts
 {
-	/// <summary>
-	/// Karma breakdown card
-	/// </summary>
+    /// <summary>
+    /// Karma breakdown card
+    /// </summary>
     public partial class KarmaBreakdownCard
 	{
 		/// <summary>
@@ -36,6 +37,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Accounts
 			IEnumerable<byte[]> hashes = subredditNames.Select(_ => MySha1.ComputeHash(Encoding.UTF8.GetBytes(_)));
 			return hashes.Select(_ => ChartColor.FromRgba(_[0], _[1], _[2], 1).ToJsRgba()).ToList();
 		}
+
+		/// <summary>
+		/// Theme Service
+		/// </summary>
+		[Inject]
+		public AppThemeService ThemeService { get; set; }
 
 		/// <summary>
 		/// Account karma breakdown

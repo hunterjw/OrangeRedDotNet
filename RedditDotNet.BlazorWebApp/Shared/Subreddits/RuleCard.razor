@@ -2,15 +2,21 @@
 
 @if (Rule != null)
 {
-    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
         <CardBody>
             <CardTitle Size="4">
                 @Rule.ShortName
-                <Badge Background="Background.Primary" Margin="Margin.Is1.FromEnd">
+                <Badge Background="Background.Primary"
+                   Margin="Margin.Is1.FromEnd">
                     @Rule.Kind
                 </Badge>
             </CardTitle>
-            <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+            <CardSubtitle Size="6"
+                      TextColor="TextColor.Muted"
+                      Margin="ThemeService.AppTheme.SpacingSame">
                 Created @Rule.CreatedUtc.ToLocalDateTime()
             </CardSubtitle>
             @((MarkupString)HttpUtility.HtmlDecode(Rule.DescriptionHtml))

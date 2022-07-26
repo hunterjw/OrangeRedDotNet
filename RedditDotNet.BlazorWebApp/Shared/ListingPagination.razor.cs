@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Parameters;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,6 +11,12 @@ namespace RedditDotNet.BlazorWebApp.Shared
     /// </summary>
     public partial class ListingPagination
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Relative URL for the current listing (no query parameters
         /// </summary>

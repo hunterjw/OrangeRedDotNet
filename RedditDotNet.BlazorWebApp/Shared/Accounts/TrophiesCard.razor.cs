@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Account;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Accounts
@@ -8,6 +9,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Accounts
     /// </summary>
     public partial class TrophiesCard
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// List of trophies
         /// </summary>

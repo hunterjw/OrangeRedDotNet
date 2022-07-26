@@ -29,6 +29,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Link to display

@@ -1,6 +1,6 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="Margin.Is2.FromBottom">
+<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="ThemeService.AppTheme.SpacingRelated">
     <Items>
         <Tab Name="@UserProfileListingType.Overview.ToString()"
              @onclick="() => NavigateTo(UserProfileListingType.Overview)">

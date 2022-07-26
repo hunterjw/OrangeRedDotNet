@@ -6,7 +6,7 @@
 <SearchListingNavTabs ActiveTab="@GetSearchType().ToDescriptionString()"
                       CurrentPageParameters="@BuildSearchListingParameters()"
                       Subreddit="@Subreddit" />
-@if (GetSearchType() == Models.Parameters.SearchType.Link)
+@if (GetSearchType() == RedditDotNet.Models.Parameters.SearchType.Link)
 {
     <Row>
         <Column ColumnSize="ColumnSize.IsAuto">
@@ -40,16 +40,16 @@ else
 {
     @switch (GetSearchType())
     {
-        case Models.Parameters.SearchType.Link:
+        case RedditDotNet.Models.Parameters.SearchType.Link:
             <LinkList Links="SearchResults.Links" />
             break;
-        case Models.Parameters.SearchType.Subreddit:
+        case RedditDotNet.Models.Parameters.SearchType.Subreddit:
             @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
             {
                 <SubredditCard SubredditDetails="@subreddit" />
             }
             break;
-        case Models.Parameters.SearchType.User:
+        case RedditDotNet.Models.Parameters.SearchType.User:
             @foreach (var user in SearchResults.Users.Data.Children)
             {
                 <UserCard AccountData="user.Data" />

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Settings
 {
@@ -23,6 +24,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Settings
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Active settings tab

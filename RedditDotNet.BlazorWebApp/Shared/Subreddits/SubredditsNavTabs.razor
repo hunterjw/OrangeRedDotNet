@@ -1,6 +1,6 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<Tabs SelectedTab="@GetActiveTabName()" Pills Margin="Margin.Is2.FromBottom">
+<Tabs SelectedTab="@GetActiveTabName()" Pills Margin="ThemeService.AppTheme.SpacingRelated">
     <Items>
         <Tab Name="@SubredditsType.Popular.ToString()"
              @onclick="() => NavigateTo(SubredditsType.Popular)">

@@ -1,25 +1,37 @@
 ﻿@using System.Web
 
-<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+<Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
     <CardBody>
         <Row>
-            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
-                <Image Border="Border.Rounded" Class="user-profile-img"
-                     Source="@HttpUtility.HtmlDecode(AccountData.IconImg)" />
+            <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
+                <Image Border="Border.Rounded"
+                       Class="user-profile-img"
+                       Source="@HttpUtility.HtmlDecode(AccountData.IconImg)" />
             </Column>
             <Column>
                 <CardTitle Size="4">
                     @Title
                 </CardTitle>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
-                    <Anchor Class="text-decoration-none" To="@($"/user/{AccountData.Name}")">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                    <Anchor Class="text-decoration-none"
+                            To="@($"/user/{AccountData.Name}")">
                         /u/@AccountData.Name
                     </Anchor>
                 </CardSubtitle>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                     Joined @AccountData.CreatedUTC.ToLocalDateTime()
                 </CardSubtitle>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                     @AccountData.TotalKarma.ToDisplayString() Karma
                     (@AccountData.LinkKarma.ToDisplayString() Link,
                     @AccountData.CommentKarma.ToDisplayString() Comment)
@@ -46,13 +58,17 @@
                 @if (AccountData.Subreddit != null)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="FollowButton_OnClick">
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        @onclick="FollowButton_OnClick">
                             @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
                         </Button>
                     </Column>
                 }
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="AddToMultiRedditButton_OnClick">
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        @onclick="AddToMultiRedditButton_OnClick">
                         Add to MultiReddit
                     </Button>
                 </Column>

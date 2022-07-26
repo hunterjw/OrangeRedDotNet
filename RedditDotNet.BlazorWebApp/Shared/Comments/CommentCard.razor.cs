@@ -27,6 +27,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Comments
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         #region Parameters
         /// <summary>

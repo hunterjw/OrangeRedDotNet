@@ -2,10 +2,13 @@
     Remove /r/@SubredditName from @MultiRedditName?
 </Paragraph>
 <Buttons Width="Width.Is100">
-    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="CancelButton_OnClick">
+    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+            Border="ThemeService.AppTheme.Border"
+            @onclick="CancelButton_OnClick">
         Cancel
     </Button>
-    <Button Color="Color.Danger" @onclick="RemoveButton_OnClick">
+    <Button Color="Color.Danger"
+            @onclick="RemoveButton_OnClick">
         Remove
     </Button>
 </Buttons>

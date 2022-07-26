@@ -1,14 +1,14 @@
 ﻿<Bar @bind-Visible="@NavMenuCollapsed"
      Breakpoint="Breakpoint.Desktop"
      NavigationBreakpoint="Breakpoint.Desktop"
-     Background="App.Background"
-     ThemeContrast="App.ThemeContrast"
-     Margin="Margin.Is4.FromBottom"
+     Background="ThemeService.AppTheme.Background"
+     ThemeContrast="ThemeService.AppTheme.ThemeContrast"
+     Margin="ThemeService.AppTheme.SpacingSeparate"
      Class="border-bottom border-secondary">
     <Container Fluid>
         <BarBrand>
             <Anchor To=""
-                    TextColor="App.TextColor"
+                    TextColor="ThemeService.AppTheme.TextColor"
                     Class="text-decoration-none">
                 @Configuration["BrandName"]
             </Anchor>
@@ -41,17 +41,17 @@
                 {
                     <Addon AddonType="AddonType.Start">
                         <AddonLabel Border="Border.Secondary"
-                                Background="App.Background"
-                                TextColor="App.TextColor">
+                                Background="ThemeService.AppTheme.Background"
+                                TextColor="ThemeService.AppTheme.TextColor">
                             /r/@Subreddit
                         </AddonLabel>
                     </Addon>
                 }
                 <Addon AddonType="AddonType.Body">
                     <TextEdit Placeholder="@($"Search {(!string.IsNullOrWhiteSpace(Subreddit) && !Subreddit.IsSpecialSubreddit() ? $"/r/{Subreddit}" : "Reddit")}")"
-                              Style="@($"background-color: {(App.DarkMode ? "black" : "white")};")"
+                              Style="@($"background-color: {(ThemeService.AppTheme.DarkMode ? "black" : "white")};")"
                               Border="Border.Secondary"
-                              TextColor="App.TextColor"
+                              TextColor="ThemeService.AppTheme.TextColor"
                               @bind-Text="SearchQuery"
                               @onkeypress="OnSearchSubmit" />
                 </Addon>
@@ -70,7 +70,7 @@
                             <BarDropdownToggle>
                                 @(RedditService.Identity?.Name ?? "Loading...")
                             </BarDropdownToggle>
-                            <BarDropdownMenu Class="@(App.DarkMode ? "dropdown-menu-dark" : "")">
+                            <BarDropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")">
                                 <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")"
                                              Match="Match.Prefix">
                                     Profile

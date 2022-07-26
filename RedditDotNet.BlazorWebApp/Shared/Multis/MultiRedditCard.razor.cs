@@ -31,6 +31,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// MultiReddit to display
@@ -75,7 +80,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 var options = new ModalOptions
                 {
                     HideHeader = true,
-                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<RemoveMultiSubredditModal>("", parameters, options);
                 ModalResult result = await modal.Result;
@@ -141,7 +146,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 var options = new ModalOptions
                 {
                     HideHeader = true,
-                    Class = $"blazored-modal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<DeleteMultiRedditModal>("", parameters, options);
                 ModalResult result = await modal.Result;
@@ -185,7 +190,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("UpdateModel", updateModel);
                 var options = new ModalOptions
                 {
-                    Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal wideModal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<EditMultiRedditModal>("Edit MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;
@@ -227,7 +232,7 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
                 parameters.Add("HideVisibility", true);
                 var options = new ModalOptions
                 {
-                    Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
+                    Class = $"blazored-modal wideModal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
                 };
                 IModalReference modal = ModalService.Show<EditMultiRedditModal>("Copy MultiReddit", parameters, options);
                 ModalResult result = await modal.Result;

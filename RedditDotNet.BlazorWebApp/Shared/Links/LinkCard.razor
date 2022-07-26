@@ -1,26 +1,40 @@
 ﻿@using System.Web
 @using RedditDotNet.Models.Links
 
-<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom"
-      @ondblclick="Card_OnDblClick" Border="@(Link.Data.Stickied ? Border.Success : Border.Secondary)">
+<Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      @ondblclick="Card_OnDblClick"
+      Border="@(Link.Data.Stickied ? Border.Success : ThemeService.AppTheme.Border)">
     <CardBody>
         <Row>
-            <Column Flex="Flex.JustifyContent.Center.Column" Class="link-preview-col">
-                <Div Border="Border.Rounded" Width="Width.Is100" Height="Height.Is100"
-                     Class="link-preview-img" Style="@($"background-image: url({GetPreviewUrl(Link)});")" />
+            <Column Flex="Flex.JustifyContent.Center.Column"
+                    Class="link-preview-col">
+                <Div Border="Border.Rounded"
+                     Width="Width.Is100"
+                     Height="Height.Is100"
+                     Class="link-preview-img"
+                     Style="@($"background-image: url({GetPreviewUrl(Link)});")" />
             </Column>
             <Column>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
-                    <Anchor To="@($"/r/{Link.Data.Subreddit}")" Class="text-decoration-none">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                    <Anchor To="@($"/r/{Link.Data.Subreddit}")"
+                            Class="text-decoration-none">
                         /r/@Link.Data.Subreddit
                     </Anchor>
                 </CardSubtitle>
-                <CardTitle Size="4" TextColor="@(Link.Data.Stickied ? TextColor.Success : App.TextColor)">
+                <CardTitle Size="4"
+                           TextColor="@(Link.Data.Stickied ? TextColor.Success : ThemeService.AppTheme.TextColor)">
                     @((MarkupString)HttpUtility.HtmlDecode(Link.Data.Title))
                 </CardTitle>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                     Posted by
-                    <Anchor To="@($"/user/{Link.Data.Author}")" Class="text-decoration-none">
+                    <Anchor To="@($"/user/{Link.Data.Author}")"
+                            Class="text-decoration-none">
                         /u/@Link.Data.Author
                     </Anchor>
                     <Flair FlairBackgroundColor="@Link.Data.AuthorFlairBackgroundColor"
@@ -29,7 +43,9 @@
                            FlairTextColor="@Link.Data.AuthorFlairTextColor"
                            FlairType="@Link.Data.AuthorFlairType" />
                 </CardSubtitle>
-                <CardSubtitle Size="6" TextColor="TextColor.Muted" Margin="Margin.Is1.FromBottom">
+                <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
                     @Link.Data.CreatedUtc.ToLocalDateTime()
                 </CardSubtitle>
                 <Awardings Data="@Link.Data.AllAwardings" />
@@ -51,16 +67,22 @@
         </Row>
         @if (!ContentCollapsed)
         {
-            <Row Margin="Margin.Is3.FromTop" Flex="Flex.JustifyContent.Center.Row" NoGutters="true">
+            <Row Margin="Margin.Is3.FromTop"
+             Flex="Flex.JustifyContent.Center.Row"
+             NoGutters="true">
                 @if (Link.Data.Spoiler && !SpoilerAcknowledged && Link.GetLinkType() != LinkType.Crosspost)
                 {
-                    <Button Color="Color.Secondary" Width="Width.Is100" @onclick="() => SpoilerAcknowledged = !SpoilerAcknowledged">
+                    <Button Color="Color.Secondary"
+                    Width="Width.Is100"
+                    @onclick="() => SpoilerAcknowledged = !SpoilerAcknowledged">
                         Show Spoiler
                     </Button>
                 }
                 else if (Link.Data.Over18 && !NsfwAcknowledged && Link.GetLinkType() != LinkType.Crosspost)
                 {
-                    <Button Color="Color.Danger" Width="Width.Is100" @onclick="() => NsfwAcknowledged = !NsfwAcknowledged">
+                    <Button Color="Color.Danger"
+                    Width="Width.Is100"
+                    @onclick="() => NsfwAcknowledged = !NsfwAcknowledged">
                         Show NSFW
                     </Button>
                 }
@@ -69,19 +91,26 @@
                     @switch (Link.GetLinkType())
                     {
                         case LinkType.Image:
-                            <Image Width="Width.Auto" Border="Border.Rounded" Source="@Link.Data.Url" Text="@Link.Data.Title" />
+                            <Image Width="Width.Auto"
+                   Border="Border.Rounded"
+                   Source="@Link.Data.Url"
+                   Text="@Link.Data.Title" />
                             break;
                         case LinkType.Video:
-                            <Video LinkId="@Link.Data.Id" RedditVideo="@GetRedditVideoObject()" />
+                            <Video LinkId="@Link.Data.Id"
+                   RedditVideo="@GetRedditVideoObject()" />
                             break;
                         case LinkType.Gallery:
-                            <Gallery LinkId="@Link.Data.Id" GalleryData="@Link.Data.GalleryData" MediaMetadata="@Link.Data.MediaMetadata" />
+                            <Gallery LinkId="@Link.Data.Id"
+                     GalleryData="@Link.Data.GalleryData"
+                     MediaMetadata="@Link.Data.MediaMetadata" />
                             break;
                         case LinkType.Text:
                             @((MarkupString)HttpUtility.HtmlDecode(Link.Data.SelftextHtml))
                             break;
                         case LinkType.Crosspost:
-                            <LinkCard Link="@(new RedditDotNet.Models.Links.Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })" ContentCollapsed="@ContentCollapsed" />
+                            <LinkCard Link="@(new RedditDotNet.Models.Links.Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
+                      ContentCollapsed="@ContentCollapsed" />
                             break;
                         case LinkType.EmbeddedMedia:
                             @GetEmbeddedMediaContent()
@@ -104,8 +133,11 @@
                 @switch (Link.GetLinkType())
                 {
                     case LinkType.Link:
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
-                        Type="ButtonType.Link" To="@Link.Data.Url" Target="Target.Blank">
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        Type="ButtonType.Link"
+                        To="@Link.Data.Url"
+                        Target="Target.Blank">
                             <span class="oi oi-share-boxed"></span>
                         </Button>
                         break;
@@ -114,7 +146,8 @@
                     case LinkType.Gallery:
                     case LinkType.Crosspost:
                     case LinkType.EmbeddedMedia:
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
                             <span class="oi @(ContentCollapsed ? "oi-fullscreen-enter" : "oi-fullscreen-exit")"></span>
                         </Button>
@@ -125,14 +158,17 @@
                     case LinkType.Text:
                         if (!string.IsNullOrWhiteSpace(Link.Data.Selftext))
                         {
-                            <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
                                 <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                             </Button>
                         }
                         else
                         {
-                            <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Type="ButtonType.Link"
+                        Border="ThemeService.AppTheme.Border"
                         To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
                                 <span class="oi oi-share-boxed"></span>
                             </Button>
@@ -141,7 +177,9 @@
                 }
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Type="ButtonType.Link"
+                        Border="ThemeService.AppTheme.Border"
                         To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
                     <span class="oi oi-comment-square"></span>
                     <span>@Link.Data.NumComments.ToDisplayString()</span>
@@ -150,7 +188,9 @@
             @if (Link.Data.NumDuplicates != null && Link.Data.NumDuplicates > 0)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Type="ButtonType.Link" Border="Border.Secondary"
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Type="ButtonType.Link"
+                        Border="ThemeService.AppTheme.Border"
                         To="@($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}")">
                         <span class="oi oi-chat"></span>
                         <span>Other discussions (@Link.Data.NumDuplicates)</span>
@@ -160,12 +200,16 @@
             @if (RedditService.LoggedIn)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="SaveToggleButton_OnClick">
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        @onclick="SaveToggleButton_OnClick">
                         <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
                     </Button>
                 </Column>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="HideToggleButton_OnClick">
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        @onclick="HideToggleButton_OnClick">
                         <span class="oi oi-ban @(Link.Data.Hidden ? "text-danger" : "")"></span>
                     </Button>
                 </Column>

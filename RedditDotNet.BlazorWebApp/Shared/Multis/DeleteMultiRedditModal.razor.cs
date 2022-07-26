@@ -1,6 +1,7 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Multis
 {
@@ -9,6 +10,12 @@ namespace RedditDotNet.BlazorWebApp.Shared.Multis
     /// </summary>
     public partial class DeleteMultiRedditModal
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Modal instance
         /// </summary>

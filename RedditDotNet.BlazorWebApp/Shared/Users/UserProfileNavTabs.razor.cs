@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Models.Parameters;
 
 namespace RedditDotNet.BlazorWebApp.Shared.Users
@@ -13,6 +14,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Users
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Profile user name

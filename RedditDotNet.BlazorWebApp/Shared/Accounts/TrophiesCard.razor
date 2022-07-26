@@ -1,13 +1,19 @@
-﻿<Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom" Border="Border.Secondary">
+﻿<Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
     <CardHeader Class="@(CardCollapsed ? "" : "border-secondary")">
         <Row>
-            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
+            <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
                 @Trophies.Data.Trophies.Count() Trophies
             </Column>
             @if (Trophies.Data.Trophies.Count() > 0)
             {
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary" @onclick="() => CardCollapsed = !CardCollapsed">
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
+                        @onclick="() => CardCollapsed = !CardCollapsed">
                         <span class="oi @(CardCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>

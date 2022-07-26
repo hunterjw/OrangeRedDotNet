@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -9,6 +10,12 @@ namespace RedditDotNet.BlazorWebApp.Shared
     /// </summary>
     public partial class TimescaleSelect
     {
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
+
         /// <summary>
         /// Current value
         /// </summary>

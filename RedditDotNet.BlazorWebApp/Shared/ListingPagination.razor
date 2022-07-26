@@ -2,7 +2,8 @@
     @if (!string.IsNullOrWhiteSpace(Before))
     {
         <PaginationItem>
-            <PaginationLink Background="App.Background" Border="Border.Secondary"
+            <PaginationLink Background="ThemeService.AppTheme.Background"
+                        Border="ThemeService.AppTheme.Border"
                         href="@BuildPreviousPageUrl().Result">
                 Previous
             </PaginationLink>
@@ -11,7 +12,8 @@
     @if (!string.IsNullOrWhiteSpace(After))
     {
         <PaginationItem>
-            <PaginationLink Background="App.Background" Border="Border.Secondary"
+            <PaginationLink Background="ThemeService.AppTheme.Background"
+                        Border="ThemeService.AppTheme.Border"
                         href="@BuildNextPageUrl().Result">
                 Next
             </PaginationLink>

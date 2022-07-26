@@ -5,19 +5,21 @@
 <Heading Size="HeadingSize.Is3">Blocked Users</Heading>
 @if (MyBlocked == null)
 {
-	<Paragraph>Loading blocked list...</Paragraph>
+    <Paragraph>Loading blocked list...</Paragraph>
 }
 else
 {
-	<UserList Users="@MyBlocked" DateLabel="User blocked on" />
+    <UserList Users="@MyBlocked"
+          DateLabel="User blocked on" />
 }
 
 <Heading Size="HeadingSize.Is3">Trusted Users</Heading>
 @if (MyBlocked == null)
 {
-	<Paragraph>Loading trusted list...</Paragraph>
+    <Paragraph>Loading trusted list...</Paragraph>
 }
 else
 {
-	<UserList Users="@MyTrusted" DateLabel="User trusted on" />
+    <UserList Users="@MyTrusted"
+          DateLabel="User trusted on" />
 }

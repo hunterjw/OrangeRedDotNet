@@ -36,6 +36,11 @@ namespace RedditDotNet.BlazorWebApp.Pages
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// MultiReddit list
@@ -80,7 +85,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
             parameters.Add("UpdateModel", updateModel);
             var options = new ModalOptions
             {
-                Class = $"blazored-modal wideModal {(App.DarkMode ? "dark-modal" : "")}"
+                Class = $"blazored-modal wideModal {(ThemeService.AppTheme.DarkMode ? "dark-modal" : "")}"
             };
             IModalReference modal = ModalService.Show<EditMultiRedditModal>("New MultiReddit", parameters, options);
             ModalResult result = await modal.Result;

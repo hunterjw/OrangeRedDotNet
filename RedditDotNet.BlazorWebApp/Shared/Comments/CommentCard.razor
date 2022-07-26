@@ -4,14 +4,18 @@
 
 @if (Comment.Data is CommentData commentData)
 {
-    <Card TextColor="App.TextColor" Background="App.Background" Margin="Margin.Is1.FromBottom"
-      Border="@(commentData.Stickied ? Border.Success : Border.Secondary)"
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="@(commentData.Stickied ? Border.Success : ThemeService.AppTheme.Border)"
       @ondblclick="() => RepliesCollapsed = !RepliesCollapsed">
         <CardBody>
             <Row>
                 <Column>
-                    <CardSubtitle Size="6" Margin="Margin.Is1.FromBottom">
-                        <Anchor Class="text-decoration-none" To="@($"/user/{commentData.Author}")">
+                    <CardSubtitle Size="6"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                        <Anchor Class="text-decoration-none"
+                            To="@($"/user/{commentData.Author}")">
                             /u/@commentData.Author
                         </Anchor>
                         <Flair FlairBackgroundColor="@commentData.AuthorFlairBackgroundColor"
@@ -21,7 +25,9 @@
                            FlairType="@commentData.AuthorFlairType"
                            IsOriginalPoster="@(commentData.Author.Equals(OriginalPoster))" />
                     </CardSubtitle>
-                    <CardSubtitle Size="6" Margin="Margin.Is1.FromBottom" TextColor="TextColor.Muted">
+                    <CardSubtitle Size="6"
+                              Margin="ThemeService.AppTheme.SpacingSame"
+                              TextColor="TextColor.Muted">
                         @commentData.CreatedUtc.ToLocalDateTime()
                     </CardSubtitle>
                     <Awardings Data="@commentData.AllAwardings" />
@@ -47,7 +53,8 @@
                            Archived="@commentData.Archived" />
                 </Column>
                 <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => RepliesCollapsed = !RepliesCollapsed">
                         <span class="oi @(RepliesCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
@@ -55,7 +62,8 @@
                 @if (RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="SaveToggleButton_OnClick">
                             <span class="oi oi-bookmark @(commentData.Saved ? "text-primary" : "")"></span>
                         </Button>
@@ -63,7 +71,8 @@
                 }
                 @if (RepliesCollapsed)
                 {
-                    <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.JustifyContent.Center.Column">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
                         <span>@(commentData.Replies?.Data?.Children?.Count ?? 0) children comments</span>
                     </Column>
                 }
@@ -72,7 +81,8 @@
     </Card>
     @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
     {
-        <Div Margin="Margin.Is1.FromBottom" Class="comment-border">
+        <Div Margin="ThemeService.AppTheme.SpacingSame"
+     Class="comment-border">
             <Div Margin="Margin.Is2.FromStart">
                 <CommentsList Comments="@commentData.Replies"
                       OriginalPoster="@OriginalPoster"
@@ -95,7 +105,9 @@ else if (Comment.Data is MoreData moreData)
     {
         @if (moreData.Children.Count > 0)
         {
-            <Button Color="Color.Link" Class="text-decoration-none" @onclick="MoreCommentsButton_OnClick">
+            <Button Color="Color.Link"
+        Class="text-decoration-none"
+        @onclick="MoreCommentsButton_OnClick">
                 Load more comments (@moreData.Count replies)
             </Button>
             <br />

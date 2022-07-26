@@ -1,11 +1,15 @@
-﻿<Card Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+﻿<Card Background="ThemeService.AppTheme.Background"
+      TextColor="ThemeService.AppTheme.TextColor"
+      Border="ThemeService.AppTheme.Border">
     <CardHeader Class="@(CardCollapsed ? "" : "border-secondary")">
         <Row>
-            <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
+            <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.Column.JustifyContent.Center">
                 Karma Breakdown
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                        Border="ThemeService.AppTheme.Border"
                         @onclick="() => CardCollapsed = !CardCollapsed">
                     <span class="oi @(CardCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                 </Button>
@@ -13,28 +17,43 @@
         </Row>
     </CardHeader>
     <CardBody Class="@(CardCollapsed ? "collapse" : "")">
-        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+        <Card Margin="ThemeService.AppTheme.SpacingSame"
+              Background="ThemeService.AppTheme.Background"
+              TextColor="ThemeService.AppTheme.TextColor"
+              Border="ThemeService.AppTheme.Border">
             <CardBody>
                 <CardTitle Size="4">Link Karma</CardTitle>
-                <PieChart @ref="LinkKarmaPieChart" TItem="int" Options="@ChartOptions" />
+                <PieChart @ref="LinkKarmaPieChart"
+                          TItem="int"
+                          Options="@ChartOptions" />
             </CardBody>
         </Card>
 
-        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+        <Card Margin="ThemeService.AppTheme.SpacingSame"
+              Background="ThemeService.AppTheme.Background"
+              TextColor="ThemeService.AppTheme.TextColor"
+              Border="ThemeService.AppTheme.Border">
             <CardBody>
                 <CardTitle Size="4">Comment Karma</CardTitle>
-                <PieChart @ref="CommentKarmaPieChart" TItem="int" Options="@ChartOptions" />
+                <PieChart @ref="CommentKarmaPieChart"
+                          TItem="int"
+                          Options="@ChartOptions" />
             </CardBody>
         </Card>
 
-        <Card Margin="Margin.Is1.FromBottom" Background="App.Background" TextColor="App.TextColor" Border="Border.Secondary">
+        <Card Margin="ThemeService.AppTheme.SpacingSame"
+              Background="ThemeService.AppTheme.Background"
+              TextColor="ThemeService.AppTheme.TextColor"
+              Border="ThemeService.AppTheme.Border">
             <CardHeader Class="@(RawDataCollapsed ? "" : "border-secondary")">
                 <Row>
-                    <Column ColumnSize="ColumnSize.IsAuto" Flex="Flex.Column.JustifyContent.Center">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                            Flex="Flex.Column.JustifyContent.Center">
                         Raw Data
                     </Column>
                     <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="App.DefaultButtonColor" Border="Border.Secondary"
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                                Border="ThemeService.AppTheme.Border"
                                 @onclick="() => RawDataCollapsed = !RawDataCollapsed">
                             <span class="oi @(RawDataCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                         </Button>
@@ -42,7 +61,7 @@
                 </Row>
             </CardHeader>
             <CardBody Class="@(RawDataCollapsed ? "collapse" : "")">
-                <Table TextColor="App.TextColor">
+                <Table TextColor="ThemeService.AppTheme.TextColor">
                     <TableHeader>
                         <TableRow>
                             <TableHeaderCell>Subreddit</TableHeaderCell>

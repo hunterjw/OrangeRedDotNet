@@ -39,6 +39,11 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// If the nav menu is collapsed or not
@@ -57,7 +62,7 @@ namespace RedditDotNet.BlazorWebApp.Shared
         protected override async Task OnParametersSetAsync()
         {
             UpdateLocation(NavigationManager.Uri);
-            App.ThemeChanged += RefreshComponent;
+            ThemeService.ThemeChanged += RefreshComponent;
             RedditService.LoginFinished += RefreshComponent;
             RedditService.LogoutFinished += RefreshComponent;
             NavigationManager.LocationChanged += LocationChanged;

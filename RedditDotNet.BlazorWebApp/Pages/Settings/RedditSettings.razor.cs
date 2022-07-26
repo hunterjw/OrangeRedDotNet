@@ -23,6 +23,11 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// </summary>
         [Inject]
         public IToastService ToastService { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Current user preferences

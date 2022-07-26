@@ -333,7 +333,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                 Before = Before,
                 Count = Count ?? 0,
                 Limit = Limit ?? 25,
-                Timescale = string.IsNullOrWhiteSpace(Timescale) ? Models.Parameters.Timescale.Hour
+                Timescale = string.IsNullOrWhiteSpace(Timescale) ? RedditDotNet.Models.Parameters.Timescale.Hour
                     : Timescale.ToEnumFromDescriptionString<Timescale>()
             };
         }

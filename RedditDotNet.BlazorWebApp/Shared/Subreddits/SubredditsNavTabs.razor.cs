@@ -19,6 +19,11 @@ namespace RedditDotNet.BlazorWebApp.Shared.Subreddits
         /// </summary>
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        /// <summary>
+        /// Theme Service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// The active MySubredditsType
