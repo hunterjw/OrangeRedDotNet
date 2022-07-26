@@ -64,5 +64,18 @@ namespace RedditDotNet.BlazorWebApp
             message += redditApiException?.ResponseContent?.Explanation;
             return message;
         }
+
+        /// <summary>
+        /// Check if a subreddit is a special subreddit or not.
+        /// Special subreddits include friends, all, and popular.
+        /// </summary>
+        /// <param name="subreddit">Name of subreddit to check</param>
+        /// <returns>If the subreddit is a special subreddit or not</returns>
+        public static bool IsSpecialSubreddit(this string subreddit)
+        {
+            return subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase) ||
+                subreddit.Equals("all", StringComparison.OrdinalIgnoreCase) ||
+                subreddit.Equals("popular", StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

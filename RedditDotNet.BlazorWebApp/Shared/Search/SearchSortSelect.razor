@@ -1,0 +1,13 @@
+﻿<Select Margin="Margin.Is2.FromBottom"
+        Width="Width.Auto"
+        Background="App.Background"
+        TextColor="App.TextColor"
+        Border="Border.Secondary"
+        @bind-SelectedValue="SearchSort"
+        @onchange="Select_OnChange">
+    <SelectItem Value="@("relavance")">Relavance</SelectItem>
+    <SelectItem Value="@("hot")">Hot</SelectItem>
+    <SelectItem Value="@("top")">Top</SelectItem>
+    <SelectItem Value="@("new")">New</SelectItem>
+    <SelectItem Value="@("comments")">Comments</SelectItem>
+</Select>

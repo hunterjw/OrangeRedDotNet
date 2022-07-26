@@ -1,0 +1,7 @@
+﻿<Tabs SelectedTab="@ActiveTab" Pills Margin="Margin.Is2.FromBottom">
+    <Items>
+        <Tab Name="link" @onclick="@(() => NavigateTo("link"))">Posts</Tab>
+        <Tab Name="sr" @onclick="@(() => NavigateTo("sr"))">Subreddits</Tab>
+        <Tab Name="user" @onclick="@(() => NavigateTo("user"))">Users</Tab>
+    </Items>
+</Tabs>

@@ -128,5 +128,21 @@ namespace RedditDotNet
             }
         }
 		private SubredditsController SubredditsController = null;
+
+		/// <summary>
+		/// Search operations
+		/// </summary>
+		public SearchController Search
+        {
+			get
+            {
+				if (SearchController == null)
+                {
+					SearchController = new SearchController(RedditAuthentication, RedditUserAgent);
+                }
+				return SearchController;
+            }
+        }
+		private SearchController SearchController = null;
 	}
 }

@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Shared
@@ -9,6 +14,15 @@ namespace RedditDotNet.BlazorWebApp.Shared
     /// </summary>
     public partial class NavMenu
     {
+        /// <summary>
+        /// Regex for matching subreddit name
+        /// </summary>
+        private static readonly Regex _subredditRegex = new("^/r/(\\w+)");
+        /// <summary>
+        /// Regex for matching search relative URL
+        /// </summary>
+        private static readonly Regex _searchRegex = new("^(?:/r/(?:\\w+))?/search");
+
         /// <summary>
         /// Reddit Service
         /// </summary>
@@ -29,13 +43,23 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// If the nav menu is collapsed or not
         /// </summary>
         protected bool NavMenuCollapsed { get; set; } = false;
+        /// <summary>
+        /// Current subreddit
+        /// </summary>
+        protected string Subreddit { get; set; } = string.Empty;
+        /// <summary>
+        /// Current search query
+        /// </summary>
+        protected string SearchQuery { get; set; } = string.Empty;
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
+            UpdateLocation(NavigationManager.Uri);
             App.ThemeChanged += RefreshComponent;
             RedditService.LoginFinished += RefreshComponent;
             RedditService.LogoutFinished += RefreshComponent;
+            NavigationManager.LocationChanged += LocationChanged;
             // ensure identity is loaded on initial load
             await RedditService.LoadIdentity();
         }
@@ -45,17 +69,75 @@ namespace RedditDotNet.BlazorWebApp.Shared
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="args">Args object</param>
-        void RefreshComponent(object sender, object args)
+        protected void RefreshComponent(object sender, object args)
         {
             StateHasChanged();
         }
 
         /// <summary>
-        /// OnClick event handler for the login button
+        /// Location changed handler
         /// </summary>
-        void LoginButtonOnClick()
+        /// <param name="sender">Sender</param>
+        /// <param name="args">Args</param>
+        protected void LocationChanged(object sender, LocationChangedEventArgs args)
         {
-            NavigationManager.NavigateTo("login");
+            UpdateLocation(args.Location);
+            RefreshComponent(sender, args);
+        }
+
+        /// <summary>
+        /// Update the current location
+        /// </summary>
+        /// <param name="newLocation">New location</param>
+        protected void UpdateLocation(string newLocation)
+        {
+            var location = newLocation[(NavigationManager.BaseUri.Length - 1)..];
+
+            var subredditMatch = _subredditRegex.Match(location);
+            if (subredditMatch.Success)
+            {
+                Subreddit = subredditMatch.Groups[1].Value;
+            }
+            else
+            {
+                Subreddit = string.Empty;
+            }
+
+            if (!_searchRegex.Match(location).Success)
+            {
+                SearchQuery = string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Handle running a search
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task SearchHandler()
+        {
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                Dictionary<string, string> parameters = new()
+                {
+                    { "q", SearchQuery }
+                };
+                NavigationManager.NavigateTo(
+                    $"{(!string.IsNullOrWhiteSpace(Subreddit) ? $"/r/{Subreddit}" : "")}" +
+                    $"/search?{await new FormUrlEncodedContent(parameters).ReadAsStringAsync()}");
+            }
+        }
+
+        /// <summary>
+        /// On submit handler for the search text box
+        /// </summary>
+        /// <param name="args">Args</param>
+        /// <returns>Awaitable task</returns>
+        protected async Task OnSearchSubmit(KeyboardEventArgs args)
+        {
+            if (args.Key.Equals("Enter"))
+            {
+                await SearchHandler();
+            }
         }
     }
 }

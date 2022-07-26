@@ -1,0 +1,63 @@
+﻿@using RedditDotNet.Extensions
+
+@page "/search"
+@page "/r/{subreddit}/search"
+
+<SearchListingNavTabs ActiveTab="@GetSearchType().ToDescriptionString()"
+                      CurrentPageParameters="@BuildSearchListingParameters()"
+                      Subreddit="@Subreddit" />
+@if (GetSearchType() == Models.Parameters.SearchType.Link)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Label>Sort</Label>
+            <SearchSortSelect SearchSort="@GetSearchSort()?.ToDescriptionString()"
+                          OnChange="SearchSortSelect_OnChange" />
+        </Column>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Label>Time</Label>
+            <TimescaleSelect Timescale="@GetTimescale()?.ToDescriptionString()"
+                         OnChange="TimescaleSelect_OnChange" />
+        </Column>
+        @if (!string.IsNullOrWhiteSpace(Subreddit) && !Subreddit.IsSpecialSubreddit())
+        {
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Switch TValue="bool?"
+                @bind-Checked="RestrictSubreddit"
+                @onchange="RestrictSubredditSwitch_OnChange">
+                    Limit results to @Subreddit
+                </Switch>
+            </Column>
+        }
+    </Row>
+}
+
+@if (SearchResults == null)
+{
+    <Paragraph>Loading...</Paragraph>
+}
+else
+{
+    @switch (GetSearchType())
+    {
+        case Models.Parameters.SearchType.Link:
+            <LinkList Links="SearchResults.Links" />
+            break;
+        case Models.Parameters.SearchType.Subreddit:
+            @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
+            {
+                <SubredditCard SubredditDetails="@subreddit" />
+            }
+            break;
+        case Models.Parameters.SearchType.User:
+            @foreach (var user in SearchResults.Users.Data.Children)
+            {
+                <UserCard AccountData="user.Data" />
+            }
+            break;
+    }
+    <ListingPagination After="@GetAfter()"
+                   Before="@GetBefore()"
+                   CurrentPageParameters="@BuildListingParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+}

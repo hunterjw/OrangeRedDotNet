@@ -140,10 +140,7 @@ namespace RedditDotNet.BlazorWebApp.Pages
                     {
                         SubredditDetailsLoaded = false;
                     }
-                    if (!SubredditDetailsLoaded && 
-                        !Subreddit.Equals("friends", StringComparison.OrdinalIgnoreCase) &&
-                        !Subreddit.Equals("all", StringComparison.OrdinalIgnoreCase) &&
-                        !Subreddit.Equals("popular", StringComparison.OrdinalIgnoreCase))
+                    if (!SubredditDetailsLoaded && !Subreddit.IsSpecialSubreddit())
                     {
                         SubredditDetails = await redditClient.Subreddits.GetAbout(Subreddit);
                         Rules = await redditClient.Subreddits.GetRules(Subreddit);

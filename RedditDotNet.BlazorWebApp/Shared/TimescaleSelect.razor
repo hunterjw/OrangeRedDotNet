@@ -1,0 +1,14 @@
+﻿<Select Margin="Margin.Is2.FromBottom"
+        Width="Width.Auto"
+        Background="App.Background"
+        TextColor="App.TextColor"
+        Border="Border.Secondary"
+        @bind-SelectedValue="Timescale"
+        @onchange="Select_OnChange">
+    <SelectItem Value="@("hour")">Hour</SelectItem>
+    <SelectItem Value="@("day")">Day</SelectItem>
+    <SelectItem Value="@("week")">Week</SelectItem>
+    <SelectItem Value="@("month")">Month</SelectItem>
+    <SelectItem Value="@("year")">Year</SelectItem>
+    <SelectItem Value="@("all")">All</SelectItem>
+</Select>

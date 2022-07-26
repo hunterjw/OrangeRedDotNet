@@ -1,11 +1,15 @@
-﻿<Bar @bind-Visible="@NavMenuCollapsed" Breakpoint="Breakpoint.Desktop" NavigationBreakpoint="Breakpoint.Desktop"
+﻿<Bar @bind-Visible="@NavMenuCollapsed"
+     Breakpoint="Breakpoint.Desktop"
+     NavigationBreakpoint="Breakpoint.Desktop"
      Background="App.Background"
      ThemeContrast="App.ThemeContrast"
      Margin="Margin.Is4.FromBottom"
      Class="border-bottom border-secondary">
     <Container Fluid>
         <BarBrand>
-            <Anchor To="" TextColor="App.TextColor" Class="text-decoration-none">
+            <Anchor To=""
+                    TextColor="App.TextColor"
+                    Class="text-decoration-none">
                 @Configuration["BrandName"]
             </Anchor>
         </BarBrand>
@@ -13,21 +17,51 @@
         <BarMenu>
             <BarStart>
                 <BarItem>
-                    <BarLink To="r/popular" Match="Match.Prefix">
+                    <BarLink To="r/popular"
+                             Match="Match.Prefix">
                         Popular
                     </BarLink>
                 </BarItem>
                 <BarItem>
-                    <BarLink To="r/all" Match="Match.Prefix">
+                    <BarLink To="r/all"
+                             Match="Match.Prefix">
                         All
                     </BarLink>
                 </BarItem>
                 <BarItem>
-                    <BarLink To="subreddits" Match="Match.Prefix">
+                    <BarLink To="subreddits"
+                             Match="Match.Prefix">
                         Subreddits
                     </BarLink>
                 </BarItem>
             </BarStart>
+            <Addons Size="Size.Default"
+                    Padding="Padding.Is2.OnX.OnDesktop.Is0.OnMobile">
+                @if (!string.IsNullOrWhiteSpace(Subreddit) && !Subreddit.IsSpecialSubreddit())
+                {
+                    <Addon AddonType="AddonType.Start">
+                        <AddonLabel Border="Border.Secondary"
+                                Background="App.Background"
+                                TextColor="App.TextColor">
+                            /r/@Subreddit
+                        </AddonLabel>
+                    </Addon>
+                }
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit Placeholder="@($"Search {(!string.IsNullOrWhiteSpace(Subreddit) && !Subreddit.IsSpecialSubreddit() ? $"/r/{Subreddit}" : "Reddit")}")"
+                              Style="@($"background-color: {(App.DarkMode ? "black" : "white")};")"
+                              Border="Border.Secondary"
+                              TextColor="App.TextColor"
+                              @bind-Text="SearchQuery"
+                              @onkeypress="OnSearchSubmit" />
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <Button Color="Color.Primary"
+                            @onclick="SearchHandler">
+                        Search
+                    </Button>
+                </Addon>
+            </Addons>
             <BarEnd>
                 @if (RedditService.LoggedIn)
                 {
@@ -37,13 +71,15 @@
                                 @(RedditService.Identity?.Name ?? "Loading...")
                             </BarDropdownToggle>
                             <BarDropdownMenu Class="@(App.DarkMode ? "dropdown-menu-dark" : "")">
-                                <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")" Match="Match.Prefix">
+                                <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")"
+                                             Match="Match.Prefix">
                                     Profile
                                 </BarDropdownItem>
                                 <BarDropdownItem To="multis">
                                     MultiReddits
                                 </BarDropdownItem>
-                                <BarDropdownItem To="settings" Match="Match.Prefix">
+                                <BarDropdownItem To="settings"
+                                             Match="Match.Prefix">
                                     Settings
                                 </BarDropdownItem>
                                 <BarDropdownItem To="logout">
@@ -56,9 +92,11 @@
                 else
                 {
                     <BarItem>
-                        <Button Color="Color.Primary" @onclick="LoginButtonOnClick">
-                            Log In
-                        </Button>
+                        <BarLink To="login"
+                             Match="Match.All"
+                             TextOverflow="TextOverflow.NoWrap">
+                            Log in
+                        </BarLink>
                     </BarItem>
                 }
             </BarEnd>
