@@ -2,6 +2,7 @@
 using Blazored.Modal.Services;
 using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Multis;
 using System;

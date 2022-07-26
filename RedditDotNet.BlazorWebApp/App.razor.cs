@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using System;
 
 namespace RedditDotNet.BlazorWebApp

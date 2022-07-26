@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
+using RedditDotNet.BlazorWebApp.Services;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;

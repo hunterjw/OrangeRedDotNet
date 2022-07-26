@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using System.Threading.Tasks;
 
 namespace RedditDotNet.BlazorWebApp.Pages

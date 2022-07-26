@@ -1,7 +1,8 @@
 ﻿using Blazored.LocalStorage;
+using RedditDotNet.BlazorWebApp.Models;
 using System;
 
-namespace RedditDotNet.BlazorWebApp
+namespace RedditDotNet.BlazorWebApp.Services
 {
     /// <summary>
     /// Settings service

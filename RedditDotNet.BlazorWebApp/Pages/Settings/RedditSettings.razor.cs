@@ -1,6 +1,7 @@
 ﻿using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Account;
 using System.Threading.Tasks;

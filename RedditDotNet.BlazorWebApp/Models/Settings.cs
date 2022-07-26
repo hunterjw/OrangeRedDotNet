@@ -1,4 +1,4 @@
-﻿namespace RedditDotNet.BlazorWebApp
+﻿namespace RedditDotNet.BlazorWebApp.Models
 {
     /// <summary>
     /// App settings

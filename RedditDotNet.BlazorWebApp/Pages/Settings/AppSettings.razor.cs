@@ -1,6 +1,7 @@
 ﻿using Blazored.Toast.Services;
 using Blazorise;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace RedditDotNet.BlazorWebApp.Pages.Settings
         /// <summary>
         /// App settings
         /// </summary>
-        protected BlazorWebApp.Settings Settings { get; set; }
+        protected Models.Settings Settings { get; set; }
         /// <summary>
         /// Validations object
         /// </summary>

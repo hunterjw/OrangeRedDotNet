@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using RedditDotNet.BlazorWebApp.Services;
 using RedditDotNet.Exceptions;
 using RedditDotNet.Models.Links;
 using RedditDotNet.Models.Parameters;

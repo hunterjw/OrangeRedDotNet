@@ -5,7 +5,7 @@ using RedditDotNet.Models.Account;
 using System;
 using System.Threading.Tasks;
 
-namespace RedditDotNet.BlazorWebApp
+namespace RedditDotNet.BlazorWebApp.Services
 {
     /// <summary>
     /// Service for interacting with Reddit
@@ -123,13 +123,13 @@ namespace RedditDotNet.BlazorWebApp
                     _redditAuthentication = new OAuthAuthentication(
                         _oauthAuthOpts,
                         () => LocalStorageLoad("auth")?.FromJson<TokenResponse>(),
-                        (TokenResponse value) => LocalStorageSave("auth", value.ToJson()));
+                        (value) => LocalStorageSave("auth", value.ToJson()));
                 }
                 else
                 {
                     _redditAuthentication = new ApplicationOnlyAuthentication(_appOnlyAuthOpts,
                         () => LocalStorageLoad("appAuth")?.FromJson<TokenResponse>(),
-                        (TokenResponse value) => LocalStorageSave("appAuth", value.ToJson()));
+                        (value) => LocalStorageSave("appAuth", value.ToJson()));
                 }
             }
             return _redditAuthentication;
@@ -240,7 +240,7 @@ namespace RedditDotNet.BlazorWebApp
         {
             string storedState = LocalStorageLoad("authState");
             OAuthAuthentication auth = new(_oauthAuthOpts,
-                save: (TokenResponse value) => LocalStorageSave("auth", value.ToJson()));
+                save: (value) => LocalStorageSave("auth", value.ToJson()));
             await auth.ParseRedirectUrl(code, state, storedState, error);
         }
     }
