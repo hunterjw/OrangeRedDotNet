@@ -45,13 +45,16 @@
         </CardBody>
         <CardFooter Class="border-secondary">
             <Row>
-                <Column ColumnSize="ColumnSize.IsAuto">
-                    <VoteInput Likes="@commentData.Likes"
+                @if (!RepliesCollapsed)
+                {
+                    <Column ColumnSize="ColumnSize.IsAuto">
+                        <VoteInput Likes="@commentData.Likes"
                            Score="@commentData.Score"
                            ScoreHidden="@commentData.ScoreHidden"
                            Id="@commentData.Name"
                            Archived="@commentData.Archived" />
-                </Column>
+                    </Column>
+                }
                 <Column ColumnSize="ColumnSize.IsAuto">
                     <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
@@ -59,7 +62,7 @@
                         <span class="oi @(RepliesCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>
-                @if (RedditService.LoggedIn)
+                @if (!RepliesCollapsed && RedditService.LoggedIn)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto">
                         <Button Color="ThemeService.AppTheme.DefaultButtonColor"
