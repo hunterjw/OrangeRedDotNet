@@ -44,15 +44,29 @@ else
             <LinkList Links="SearchResults.Links" />
             break;
         case RedditDotNet.Models.Parameters.SearchType.Subreddit:
-            @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
+            @if (SearchResults?.Subreddits?.Data?.Children?.Any() ?? false)
             {
-                <SubredditCard SubredditDetails="@subreddit" />
+                @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
+                {
+                    <SubredditCard SubredditDetails="@subreddit" />
+                }
+            }
+            else
+            {
+                <Paragraph>No subreddits to display</Paragraph>
             }
             break;
         case RedditDotNet.Models.Parameters.SearchType.User:
-            @foreach (var user in SearchResults.Users.Data.Children)
+            @if (SearchResults?.Users?.Data?.Children?.Any() ?? false)
             {
-                <UserCard AccountData="user.Data" />
+                @foreach (var user in SearchResults.Users.Data.Children)
+                {
+                    <UserCard AccountData="user.Data" />
+                }
+            }
+            else
+            {
+                <Paragraph>No users to display</Paragraph>
             }
             break;
     }

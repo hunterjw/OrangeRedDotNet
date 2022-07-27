@@ -1,4 +1,11 @@
-﻿@foreach (var link in Links.Data.Children)
+﻿@if (Links?.Data?.Children?.Any() ?? false)
 {
-    <LinkCard Link="@link" ContentCollapsed="@ContentCollapsed" />
+    @foreach (var link in Links.Data.Children)
+    {
+        <LinkCard Link="@link" ContentCollapsed="@ContentCollapsed" />
+    }
+}
+else 
+{
+    <Paragraph>No links to display</Paragraph>
 }

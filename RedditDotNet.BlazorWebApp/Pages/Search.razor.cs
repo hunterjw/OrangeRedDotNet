@@ -208,9 +208,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             return GetSearchType() switch
             {
-                RedditDotNet.Models.Parameters.SearchType.Link => SearchResults.Links.Data.After,
-                RedditDotNet.Models.Parameters.SearchType.Subreddit => SearchResults.Subreddits.Data.After,
-                RedditDotNet.Models.Parameters.SearchType.User => SearchResults.Users.Data.After,
+                RedditDotNet.Models.Parameters.SearchType.Link => SearchResults?.Links?.Data?.After,
+                RedditDotNet.Models.Parameters.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.After,
+                RedditDotNet.Models.Parameters.SearchType.User => SearchResults?.Users?.Data?.After,
                 _ => null,
             };
         }
@@ -223,9 +223,9 @@ namespace RedditDotNet.BlazorWebApp.Pages
         {
             return GetSearchType() switch
             {
-                RedditDotNet.Models.Parameters.SearchType.Link => SearchResults.Links.Data.Before,
-                RedditDotNet.Models.Parameters.SearchType.Subreddit => SearchResults.Subreddits.Data.Before,
-                RedditDotNet.Models.Parameters.SearchType.User => SearchResults.Users.Data.Before,
+                RedditDotNet.Models.Parameters.SearchType.Link => SearchResults?.Links?.Data?.Before,
+                RedditDotNet.Models.Parameters.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.Before,
+                RedditDotNet.Models.Parameters.SearchType.User => SearchResults?.Users?.Data?.Before,
                 _ => null,
             };
         }
