@@ -57,12 +57,39 @@ namespace RedditDotNet.Controllers
         /// <typeparam name="T">Type to deserialize to</typeparam>
         /// <param name="responseMessage">Response from a HTTP operation</param>
         /// <returns><typeparamref name="T"/> instance</returns>
-        internal static async Task<T> DeserializeToObject<T>(HttpResponseMessage responseMessage)
+        private static async Task<T> DeserializeToObject<T>(HttpResponseMessage responseMessage)
         {
             var serializer = new JsonSerializer();
             using var streamReader = new StreamReader(await responseMessage.Content.ReadAsStreamAsync());
             using var jsonTextReader = new JsonTextReader(streamReader);
             return serializer.Deserialize<T>(jsonTextReader);
+        }
+
+        /// <summary>
+        /// Send a HTTP request
+        /// </summary>
+        /// <param name="method">Request method</param>
+        /// <param name="requestUri">Request URI</param>
+        /// <param name="content">Request content</param>
+        /// <returns>Response message</returns>
+        private async Task<HttpResponseMessage> SendRequest(HttpMethod method, string requestUri, HttpContent content = null)
+        {
+            HttpRequestMessage request = new(method, requestUri);
+            string token = await RedditAuthentication.GetBearerToken();
+            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
+            if (RedditUserAgent != null)
+            {
+                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
+            }
+            if (content != null)
+            {
+                request.Content = content;
+            }
+            HttpResponseMessage response = await HttpClient.SendAsync(request);
+
+            string responseJson = await response.Content.ReadAsStringAsync();
+
+            return response;
         }
 
         #region Get
@@ -93,22 +120,12 @@ namespace RedditDotNet.Controllers
             {
                 builder.Query = await new FormUrlEncodedContent(queryParameters).ReadAsStringAsync();
             }
-            HttpRequestMessage request = new(HttpMethod.Get, builder.ToString());
-            var token = await RedditAuthentication.GetBearerToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (RedditUserAgent != null)
-            {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
-            }
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response = await SendRequest(HttpMethod.Get, builder.ToString());
             if (!response.IsSuccessStatusCode)
             {
                 throw new RedditApiException(response);
             }
-
-            string responseJson = await response.Content.ReadAsStringAsync();
-
             return response;
         }
 
@@ -177,23 +194,13 @@ namespace RedditDotNet.Controllers
         internal async Task<HttpResponseMessage> Put(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
-            HttpRequestMessage request = new(HttpMethod.Put, builder.ToString());
-            var token = await RedditAuthentication.GetBearerToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (RedditUserAgent != null)
-            {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
-            }
-            request.Content = new FormUrlEncodedContent(queryParameters);
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response = await SendRequest(HttpMethod.Put, builder.ToString(), 
+                new FormUrlEncodedContent(queryParameters));
             if (!response.IsSuccessStatusCode)
             {
                 throw new RedditApiException(response);
             }
-
-            string responseJson = await response.Content.ReadAsStringAsync();
-
             return response;
         }
 
@@ -223,15 +230,8 @@ namespace RedditDotNet.Controllers
         internal async Task Delete(string relativeUrl)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
-            HttpRequestMessage request = new(HttpMethod.Delete, builder.ToString());
-            var token = await RedditAuthentication.GetBearerToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (RedditUserAgent != null)
-            {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
-            }
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response = await SendRequest(HttpMethod.Delete, builder.ToString());
             if (!response.IsSuccessStatusCode)
             {
                 throw new RedditApiException(response);
@@ -251,23 +251,13 @@ namespace RedditDotNet.Controllers
         internal async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
-            HttpRequestMessage request = new(HttpMethod.Post, builder.ToString());
-            var token = await RedditAuthentication.GetBearerToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (RedditUserAgent != null)
-            {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
-            }
-            request.Content = new FormUrlEncodedContent(queryParameters);
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response = await SendRequest(HttpMethod.Post, builder.ToString(),
+                new FormUrlEncodedContent(queryParameters));
             if (!response.IsSuccessStatusCode)
             {
                 throw new RedditApiException(response);
             }
-
-            string responseJson = await response.Content.ReadAsStringAsync();
-
             return response;
         }
 
@@ -298,23 +288,13 @@ namespace RedditDotNet.Controllers
         internal async Task<HttpResponseMessage> Patch(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
-            HttpRequestMessage request = new(HttpMethod.Patch, builder.ToString());
-            var token = await RedditAuthentication.GetBearerToken();
-            request.Headers.Authorization = new AuthenticationHeaderValue("bearer", token);
-            if (RedditUserAgent != null)
-            {
-                request.Headers.UserAgent.Add(new ProductInfoHeaderValue(RedditUserAgent.Name, RedditUserAgent.Version));
-            }
-            request.Content = new FormUrlEncodedContent(queryParameters);
 
-            HttpResponseMessage response = await HttpClient.SendAsync(request);
+            HttpResponseMessage response = await SendRequest(HttpMethod.Patch, builder.ToString(),
+                new FormUrlEncodedContent(queryParameters));
             if (!response.IsSuccessStatusCode)
             {
                 throw new RedditApiException(response);
             }
-
-            string responseJson = await response.Content.ReadAsStringAsync();
-
             return response;
         }
 
