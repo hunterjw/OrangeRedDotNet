@@ -2,14 +2,20 @@
 
 <Tabs SelectedTab="@ActiveTab.ToString()"
       Pills
-      Margin="ThemeService.AppTheme.SpacingRelated">
+      Margin="ThemeService.AppTheme.SpacingRelated"
+      Overflow="Overflow.Auto"
+      Flex="Flex.NoWrap"
+      Class="@(ThemeService.AppTheme.DarkMode ? "horizontal-scroll-dark" : "horizontal-scroll-light")"
+      Border="Border.Rounded">
     <Items>
         <Tab Name="@SettingsNavTab.AppSettings.ToString()"
-             @onclick="() => NavigateTo(SettingsNavTab.AppSettings)">
+             @onclick="() => NavigateTo(SettingsNavTab.AppSettings)"
+             TextOverflow="TextOverflow.NoWrap">
             App Settings
         </Tab>
         <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
-             @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)">
+             @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)"
+             TextOverflow="TextOverflow.NoWrap">
             Reddit Settings
         </Tab>
         <Tab Name="@SettingsNavTab.Friends.ToString()"

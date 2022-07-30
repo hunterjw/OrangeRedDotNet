@@ -1,6 +1,12 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<Tabs SelectedTab="@GetActiveTabName()" Pills Margin="ThemeService.AppTheme.SpacingRelated">
+<Tabs SelectedTab="@GetActiveTabName()"
+      Pills
+      Margin="ThemeService.AppTheme.SpacingRelated"
+      Overflow="Overflow.Auto"
+      Flex="Flex.NoWrap"
+      Class="@(ThemeService.AppTheme.DarkMode ? "horizontal-scroll-dark" : "horizontal-scroll-light")"
+      Border="Border.Rounded">
     <Items>
         <Tab Name="@SubredditsType.Popular.ToString()"
              @onclick="() => NavigateTo(SubredditsType.Popular)">
@@ -16,16 +22,16 @@
         </Tab>
         @if (RedditService.LoggedIn)
         {
-            <Tab Name="@MySubredditsType.Subscriber.ToString()" 
-                @onclick="() => NavigateTo(MySubredditsType.Subscriber)">
+            <Tab Name="@MySubredditsType.Subscriber.ToString()"
+             @onclick="() => NavigateTo(MySubredditsType.Subscriber)">
                 Subscriber
             </Tab>
-            <Tab Name="@MySubredditsType.Contributor.ToString()" 
-                @onclick="() => NavigateTo(MySubredditsType.Contributor)">
+            <Tab Name="@MySubredditsType.Contributor.ToString()"
+             @onclick="() => NavigateTo(MySubredditsType.Contributor)">
                 Contributor
             </Tab>
-            <Tab Name="@MySubredditsType.Moderator.ToString()" 
-                @onclick="() => NavigateTo(MySubredditsType.Moderator)">
+            <Tab Name="@MySubredditsType.Moderator.ToString()"
+             @onclick="() => NavigateTo(MySubredditsType.Moderator)">
                 Moderator
             </Tab>
         }

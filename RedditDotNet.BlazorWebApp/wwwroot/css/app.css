@@ -156,3 +156,21 @@ p, .p {
     color: rgb(248, 249, 250) !important;
     border-color: black !important;
 }
+
+.horizontal-scroll-light {
+    background-image: linear-gradient(to right, white, white), linear-gradient(to right, white, white), linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0));
+    background-position: left center, right center, left center, right center;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 20px 100%, 20px 100%, 15px 100%, 15px 100%;
+    background-attachment: local, local, scroll, scroll;
+}
+
+.horizontal-scroll-dark {
+    background-image: linear-gradient(to right, black, black), linear-gradient(to right, black, black), linear-gradient(to right, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0));
+    background-position: left center, right center, left center, right center;
+    background-repeat: no-repeat;
+    background-color: black;
+    background-size: 20px 100%, 20px 100%, 15px 100%, 15px 100%;
+    background-attachment: local, local, scroll, scroll;
+}

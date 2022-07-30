@@ -1,6 +1,12 @@
 ﻿@using RedditDotNet.Models.Parameters
 
-<Tabs SelectedTab="@ActiveTab.ToString()" Pills Margin="ThemeService.AppTheme.SpacingRelated">
+<Tabs SelectedTab="@ActiveTab.ToString()"
+      Pills
+      Margin="ThemeService.AppTheme.SpacingRelated"
+      Overflow="Overflow.Auto"
+      Flex="Flex.NoWrap"
+      Class="@(ThemeService.AppTheme.DarkMode ? "horizontal-scroll-dark" : "horizontal-scroll-light")"
+      Border="Border.Rounded">
     <Items>
         <Tab Name="@UserProfileListingType.Overview.ToString()"
              @onclick="() => NavigateTo(UserProfileListingType.Overview)">

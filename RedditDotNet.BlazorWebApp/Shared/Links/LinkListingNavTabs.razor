@@ -1,4 +1,10 @@
-﻿<Tabs SelectedTab="@ActiveTab" Pills Margin="ThemeService.AppTheme.SpacingRelated">
+﻿<Tabs SelectedTab="@ActiveTab"
+      Pills
+      Margin="ThemeService.AppTheme.SpacingRelated"
+      Overflow="Overflow.Auto"
+      Flex="Flex.NoWrap"
+      Class="@(ThemeService.AppTheme.DarkMode ? "horizontal-scroll-dark" : "horizontal-scroll-light")"
+      Border="Border.Rounded">
     <Items>
         @if (string.IsNullOrWhiteSpace(Subreddit) && string.IsNullOrWhiteSpace(MultiRedditPath))
         {
