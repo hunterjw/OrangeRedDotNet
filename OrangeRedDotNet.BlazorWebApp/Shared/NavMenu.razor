@@ -63,14 +63,21 @@
                 </Addon>
             </Addons>
             <BarEnd>
-                @if (RedditService.LoggedIn)
-                {
-                    <BarItem>
-                        <BarDropdown RightAligned>
-                            <BarDropdownToggle>
+                <BarItem>
+                    <BarDropdown RightAligned>
+                        <BarDropdownToggle>
+                            @if (RedditService.LoggedIn)
+                            {
                                 @(RedditService.Identity?.Name ?? "Loading...")
-                            </BarDropdownToggle>
-                            <BarDropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")">
+                            }
+                            else
+                            {
+                                <Span>Guest</Span>
+                            }
+                        </BarDropdownToggle>
+                        <BarDropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")">
+                            @if (RedditService.LoggedIn)
+                            {
                                 <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")"
                                              Match="Match.Prefix">
                                     Profile
@@ -78,27 +85,27 @@
                                 <BarDropdownItem To="multis">
                                     MultiReddits
                                 </BarDropdownItem>
-                                <BarDropdownItem To="settings"
+                            }
+                            <BarDropdownItem To="settings"
                                              Match="Match.Prefix">
-                                    Settings
-                                </BarDropdownItem>
+                                Settings
+                            </BarDropdownItem>
+                            <BarDropdownDivider />
+                            @if (RedditService.LoggedIn)
+                            {
                                 <BarDropdownItem To="logout">
                                     Log Out
                                 </BarDropdownItem>
-                            </BarDropdownMenu>
-                        </BarDropdown>
-                    </BarItem>
-                }
-                else
-                {
-                    <BarItem>
-                        <BarLink To="login"
-                             Match="Match.All"
-                             TextOverflow="TextOverflow.NoWrap">
-                            Log in
-                        </BarLink>
-                    </BarItem>
-                }
+                            }
+                            else
+                            {
+                                <BarDropdownItem To="login">
+                                    Log In
+                                </BarDropdownItem>
+                            }
+                        </BarDropdownMenu>
+                    </BarDropdown>
+                </BarItem>
             </BarEnd>
         </BarMenu>
     </Container>

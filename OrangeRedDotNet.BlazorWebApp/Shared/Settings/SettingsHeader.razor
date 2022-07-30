@@ -13,18 +13,21 @@
              TextOverflow="TextOverflow.NoWrap">
             App Settings
         </Tab>
-        <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
+        @if (RedditService.LoggedIn)
+        {
+            <Tab Name="@SettingsNavTab.RedditSettings.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.RedditSettings)"
              TextOverflow="TextOverflow.NoWrap">
-            Reddit Settings
-        </Tab>
-        <Tab Name="@SettingsNavTab.Friends.ToString()"
+                Reddit Settings
+            </Tab>
+            <Tab Name="@SettingsNavTab.Friends.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.Friends)">
-            Friends
-        </Tab>
-        <Tab Name="@SettingsNavTab.Blocked.ToString()"
+                Friends
+            </Tab>
+            <Tab Name="@SettingsNavTab.Blocked.ToString()"
              @onclick="() => NavigateTo(SettingsNavTab.Blocked)">
-            Blocked
-        </Tab>
+                Blocked
+            </Tab>
+        }
     </Items>
 </Tabs>

@@ -29,6 +29,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Settings
         /// </summary>
         [Inject]
         public AppThemeService ThemeService { get; set; }
+        /// <summary>
+        /// Reddit Service
+        /// </summary>
+        [Inject]
+        public RedditService RedditService { get; set; }
 
         /// <summary>
         /// Active settings tab
