@@ -1,0 +1,46 @@
+﻿@using OrangeRedDotNet.Models.Comments
+@using System.Web
+
+@if (Comment.Data is CommentData commentData)
+{
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
+        <CardBody>
+            <CardSubtitle Size="6"
+                      TextColor="TextColor.Muted"
+                      Margin="ThemeService.AppTheme.SpacingSame">
+                <Anchor Class="text-decoration-none"
+                    To="@($"/r/{commentData.Subreddit}")">
+                    /r/@commentData.Subreddit
+                </Anchor>
+            </CardSubtitle>
+            <CardSubtitle Size="4"
+                      Margin="ThemeService.AppTheme.SpacingSame">
+                <Anchor Class="text-decoration-none"
+                    To="@($"/r/{commentData.Subreddit}/comments/{commentData.LinkId[3..]}")">
+                    @((MarkupString)HttpUtility.HtmlDecode(commentData.LinkTitle))
+                </Anchor>
+            </CardSubtitle>
+            <CardSubtitle Size="6"
+                      TextColor="TextColor.Muted"
+                      Margin="ThemeService.AppTheme.SpacingSame">
+                Posted by
+                <Anchor Class="text-decoration-none"
+                    To="@($"/user/{commentData.LinkAuthor}")">
+                    /u/@commentData.LinkAuthor
+                </Anchor>
+            </CardSubtitle>
+            <Flair Over18="@commentData.Over18" />
+            <Div Margin="Margin.Is1.FromTop">
+                <CommentCard Comment="@Comment"
+                         OriginalPoster="@commentData.LinkAuthor" />
+            </Div>
+        </CardBody>
+    </Card>
+}
+else
+{
+    <CommentCard Comment="@Comment" />
+}

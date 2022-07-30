@@ -1,0 +1,104 @@
+﻿@using OrangeRedDotNet.Models
+@using OrangeRedDotNet.Models.Links
+@using System.Web
+
+@if(IsOriginalPoster)
+{
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">OP</Badge>
+}
+@if (LinkType != null)
+{
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">@LinkType.ToString()</Badge>
+}
+@if (Over18)
+{
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">NSFW</Badge>
+}
+@if (Spoiler)
+{
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">Spoiler</Badge>
+}
+@if (Locked)
+{
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">Locked</Badge>
+}
+@if (Stickied)
+{
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">Stickied</Badge>
+}
+@if (Archived)
+{
+    <Badge Color="Color.Secondary" Margin="Margin.Is1.FromEnd">Archived</Badge>
+}
+@if (IsOriginalContent)
+{
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">OC</Badge>
+}
+@if (Banned)
+{
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">You are banned</Badge>
+}
+@if (Contributor)
+{
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">You are a contributor</Badge>
+}
+@if (Moderator)
+{
+    <Badge Color="Color.Success" Margin="Margin.Is1.FromEnd">You are a moderator</Badge>
+}
+@if (Muted)
+{
+    <Badge Color="Color.Warning" TextColor="TextColor.Dark" Margin="Margin.Is1.FromEnd">You are muted</Badge>
+}
+@if (Subscribed)
+{
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">Subscribed</Badge>
+}
+@if (Saved)
+{
+    <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">Saved</Badge>
+}
+@if (Hidden)
+{
+    <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">Hidden</Badge>
+}
+
+@switch (FlairType?.ToLower())
+{
+    case "text":
+        if (!string.IsNullOrWhiteSpace(FlairText))
+        {
+            <Span Class="@FlairClass()" Style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</Span>
+        }
+        break;
+    case "richtext":
+        <Span Class="@FlairClass()" Style="@FlairStyle()">
+            @if (FlairRichtext?.Count > 0)
+            {
+                @foreach (FlairRichtext flair in FlairRichtext)
+                {
+                    switch (flair?.Type.ToLower())
+                    {
+                        case "text":
+                            if (!string.IsNullOrWhiteSpace(flair?.Text))
+                            {
+                                @((MarkupString)HttpUtility.HtmlDecode(flair?.Text))
+                            }
+                            break;
+                        case "emoji":
+                            <Image Source="@flair?.Url" Text="@flair?.Tag" Class="flair-emoji" />
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(FlairText))
+            {
+                @((MarkupString)HttpUtility.HtmlDecode(FlairText))
+            }
+        </Span>
+        break;
+    default:
+        break;
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OrangeRedDotNet.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "users-get-overview --username \"\""
+    }
+  }
+}

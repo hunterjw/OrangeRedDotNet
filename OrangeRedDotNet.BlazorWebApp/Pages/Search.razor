@@ -1,0 +1,77 @@
+﻿@using OrangeRedDotNet.Extensions
+
+@page "/search"
+@page "/r/{subreddit}/search"
+
+<SearchListingNavTabs ActiveTab="@GetSearchType().ToDescriptionString()"
+                      CurrentPageParameters="@BuildSearchListingParameters()"
+                      Subreddit="@Subreddit" />
+@if (GetSearchType() == OrangeRedDotNet.Models.Parameters.SearchType.Link)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Label>Sort</Label>
+            <SearchSortSelect SearchSort="@GetSearchSort()?.ToDescriptionString()"
+                          OnChange="SearchSortSelect_OnChange" />
+        </Column>
+        <Column ColumnSize="ColumnSize.IsAuto">
+            <Label>Time</Label>
+            <TimescaleSelect Timescale="@GetTimescale()?.ToDescriptionString()"
+                         OnChange="TimescaleSelect_OnChange" />
+        </Column>
+        @if (!string.IsNullOrWhiteSpace(Subreddit) && !Subreddit.IsSpecialSubreddit())
+        {
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Switch TValue="bool?"
+                @bind-Checked="RestrictSubreddit"
+                @onchange="RestrictSubredditSwitch_OnChange">
+                    Limit results to @Subreddit
+                </Switch>
+            </Column>
+        }
+    </Row>
+}
+
+@if (SearchResults == null)
+{
+    <Paragraph>Loading...</Paragraph>
+}
+else
+{
+    @switch (GetSearchType())
+    {
+        case OrangeRedDotNet.Models.Parameters.SearchType.Link:
+            <LinkList Links="SearchResults.Links" />
+            break;
+        case OrangeRedDotNet.Models.Parameters.SearchType.Subreddit:
+            @if (SearchResults?.Subreddits?.Data?.Children?.Any() ?? false)
+            {
+                @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
+                {
+                    <SubredditCard SubredditDetails="@subreddit" />
+                }
+            }
+            else
+            {
+                <Paragraph>No subreddits to display</Paragraph>
+            }
+            break;
+        case OrangeRedDotNet.Models.Parameters.SearchType.User:
+            @if (SearchResults?.Users?.Data?.Children?.Any() ?? false)
+            {
+                @foreach (var user in SearchResults.Users.Data.Children)
+                {
+                    <UserCard AccountData="user.Data" />
+                }
+            }
+            else
+            {
+                <Paragraph>No users to display</Paragraph>
+            }
+            break;
+    }
+    <ListingPagination After="@GetAfter()"
+                   Before="@GetBefore()"
+                   CurrentPageParameters="@BuildListingParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
+}

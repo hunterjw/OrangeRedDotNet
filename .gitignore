@@ -34,4 +34,4 @@ packages/
 *[Aa]ppsettings.Development.json
 
 #Debug console app verb
-/RedditDotNet.ConsoleApp/Verbs/DebugVerb.cs
+/OrangeRedDotNet.ConsoleApp/Verbs/DebugVerb.cs

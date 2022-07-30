@@ -1,0 +1,14 @@
+﻿@using OrangeRedDotNet.Models.Comments
+@using OrangeRedDotNet.Models.Links
+
+@foreach (var item in Listing.Data.Children)
+{
+    @if (item is OrangeRedDotNet.Models.Links.Link link)
+    {
+        <LinkCard ContentCollapsed="true" Link="@link" />
+    }
+    else if (item is CommentBase comment)
+    {
+        <CommentRefCard Comment="@comment" />
+    }
+}

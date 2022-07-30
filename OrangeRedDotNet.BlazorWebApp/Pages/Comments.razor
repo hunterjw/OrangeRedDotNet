@@ -1,0 +1,34 @@
+﻿@using OrangeRedDotNet.Extensions
+@using OrangeRedDotNet.Models.Parameters
+
+@page "/r/{subreddit}/comments/{articleId}"
+
+@if (LinkWithComments == null)
+{
+    <Heading Size="HeadingSize.Is2">@Subreddit</Heading>
+    <Paragraph>Loading...</Paragraph>
+}
+else
+{
+    <LinkList ContentCollapsed="false"
+          Links="@LinkWithComments.Links" />
+    <hr />
+    <Select Margin="ThemeService.AppTheme.SpacingRelated"
+        Width="Width.Auto"
+        Background="ThemeService.AppTheme.Background"
+        TextColor="ThemeService.AppTheme.TextColor"
+        Border="ThemeService.AppTheme.Border"
+        @bind-SelectedValue="Sort" @onchange="SortSelect_OnChange">
+        <SelectItem Value="@("confidence")">Best</SelectItem>
+        <SelectItem Value="@("top")">Top</SelectItem>
+        <SelectItem Value="@("new")">New</SelectItem>
+        <SelectItem Value="@("controversial")">Controversial</SelectItem>
+        <SelectItem Value="@("old")">Old</SelectItem>
+        <SelectItem Value="@("random")">Random</SelectItem>
+        <SelectItem Value="@("qa")">Q&A</SelectItem>
+    </Select>
+    <CommentsList Comments="@LinkWithComments.Comments"
+              OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author"
+              LinkFullName="@LinkWithComments.Links.Data.Children.First().Data.Name"
+              CommentSort="@(string.IsNullOrWhiteSpace(Sort) ? null : Sort.ToEnumFromDescriptionString<CommentSort>())" />
+}

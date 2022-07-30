@@ -1,0 +1,363 @@
+﻿@using OrangeRedDotNet.Models.Account
+@using System.Globalization
+@using OrangeRedDotNet.Extensions
+@using OrangeRedDotNet.Models.Parameters
+
+@page "/settings/reddit"
+
+<SettingsHeader ActiveTab="SettingsNavTab.RedditSettings" />
+
+<Alert Color="Color.Warning" Visible>
+    <AlertDescription>
+        Not all Reddit settings may be supported by this client
+    </AlertDescription>
+</Alert>
+
+@if (Preferences == null)
+{
+    <Paragraph>Loading preferences</Paragraph>
+}
+else
+{
+    <Validations Model="Preferences" Mode="ValidationMode.Auto" ValidateOnLoad="false" StatusChanged="OnValidationsStatusChange" @ref="Validations">
+        <Heading Size="HeadingSize.Is3">Globalization</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Language</FieldLabel>
+                <Select Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                    Border="ThemeService.AppTheme.Border" @bind-SelectedValue="Preferences.Language">
+                    @foreach (var value in Enum.GetValues<LanguageCode>())
+                    {
+                        <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
+                    }
+                </Select>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Country</FieldLabel>
+                <Select Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                    Border="ThemeService.AppTheme.Border" @bind-SelectedValue="Preferences.CountryCode">
+                    @foreach (var value in Enum.GetValues<CountryCode>().OrderBy(_ => _.ToDescriptionString()))
+                    {
+                        <SelectItem Value="@value">@value.ToDescriptionString()</SelectItem>
+                    }
+                </Select>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Clicking options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.NewWindow">Open links in new window</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Media</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Show thumbnails next to links</FieldLabel>
+                <RadioGroup TValue="MediaPreference" @bind-CheckedValue="Preferences.Thumbnails">
+                    @foreach (var value in Enum.GetValues<MediaPreference>())
+                    {
+                        <Radio Value="@value">@value.ToDescriptionString()</Radio>
+                    }
+                </RadioGroup>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Auto-expand media previews</FieldLabel>
+                <RadioGroup TValue="MediaPreference" @bind-CheckedValue="Preferences.MediaPreview">
+                    @foreach (var value in Enum.GetValues<MediaPreference>())
+                    {
+                        <Radio Value="@value">@value.ToDescriptionString()</Radio>
+                    }
+                </RadioGroup>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.VideoAutoplay">Autoplay Reddit videos on the desktop comments page</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.NoProfanity">Hide images for NSFW/18+ content</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Link Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowTrending">Show trending subreddits on the home feed</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowRecentlyViewed">Show me links I've recently viewed</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.Compress">Compress the link display</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.DomainDetails">Show additional details in the domain text when available</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.HideUps">Don't show me submissions after I've upvoted them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.HideDowns">Don't show me submissions after I've downvoted them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Number of links to display at once</FieldLabel>
+                <NumericEdit Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                         Border="ThemeService.AppTheme.Border" @bind-Value="Preferences.NumLinks">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Minimum score for links to display</FieldLabel>
+                <NumericEdit Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                         Border="ThemeService.AppTheme.Border" @bind-Value="Preferences.MinLinkScore">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Comment Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Default comment sort</FieldLabel>
+                <Select Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                    Border="ThemeService.AppTheme.Border" @bind-SelectedValue="Preferences.DefaultCommentSort">
+                    @foreach (var value in Enum.GetValues<CommentSort>())
+                    {
+                        <SelectItem Value="@value">@value</SelectItem>
+                    }
+                </Select>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.IgnoreSuggestedSort">Ignore suggested sorts</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.HighlightControversial">Highlight controversial comments</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Don't show me comments with a score less than</FieldLabel>
+                <NumericEdit Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                         Border="ThemeService.AppTheme.Border" @bind-Value="Preferences.MinCommentScore">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Number of comments to display at once</FieldLabel>
+                <NumericEdit Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
+                         Border="ThemeService.AppTheme.Border" @bind-Value="Preferences.NumComments">
+                    <Feedback>
+                        <ValidationError />
+                    </Feedback>
+                </NumericEdit>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Messaging Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThreadedMessages">Show message conversations in the inbox</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.CollapseReadMessages">Collapse messages after I've read them</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.MarkMessagesRead">Mark messages as read when I open my inbox</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.MonitorMentions">Notify me when people say my username</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.SendWelcomeMessages">Receive welcome messages from moderators when I join a community</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThreadedModmail">Enable threaded modmail display</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.LiveOrangereds">Send message notifications in my browser</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Email Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailMessages">Send messages as emails</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailDigests">Send email digests</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.EmailUnsubscribeAll">Unsubscribe from all emails</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Display Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowStylesheets">Allow subreddits to show me custom themes</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowFlair">Show user flair</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ShowLinkFlair">Show link flair</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.LegacySearch">Show legacy search page</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Content Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.Over18">I am over eighteen years old and willing to view adult content</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.LabelNsfw">Label posts that are not safe for work (NSFW)</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.SearchIncludeOver18">Include not safe for work (NSFW) search results in searches</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.PrivateFeeds">Enable private RSS feeds</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Privacy Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.PublicVotes">Make my votes public</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.Research">Allow my data to be used for research purposes</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.HideFromRobots">Don't allow search engines to index my user profile</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.AllowClicktracking">Allow reddit to log my outbound clicks for personalization</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Personalization Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ActivityRelevantAds">Allow Reddit to use your activity on Reddit to show you more relevant advertisements.</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartyPersonalizedAds">Allow Reddit to use information from third-party websites that integrate with our services to personalize your experience on Reddit.</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartySiteDataPersonalizedAds">Allow personalization of advertisements using this data</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartySiteDataPersonalizedContent">Allow personalization of content using this data</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.ThirdPartyDataPersonalizedAds">Allow Reddit to use data provided by third-parties to show you more relevant advertisements on Reddit.</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Heading Size="HeadingSize.Is3">Beta Options</Heading>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.Beta">I would like to beta test features for reddit</Check>
+            </Field>
+        </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Check TValue="bool" @bind-Checked="Preferences.DesignBeta">Use new Reddit as my default experience</Check>
+            </Field>
+        </Validation>
+        <hr />
+
+        <Button Color="Color.Primary" Margin="ThemeService.AppTheme.SpacingSame" Disabled="SaveButtonDisabled" @onclick="HandleValidSubmit">Save</Button>
+    </Validations>
+}
