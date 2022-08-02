@@ -8,14 +8,17 @@
       Border="@(Link.Data.Stickied ? Border.Success : ThemeService.AppTheme.Border)">
     <CardBody>
         <Row>
-            <Column Flex="Flex.JustifyContent.Center.Column"
+            @if (ShowThumbnails())
+            {
+                <Column Flex="Flex.JustifyContent.Center.Column"
                     Class="link-preview-col">
-                <Div Border="Border.Rounded"
+                    <Div Border="Border.Rounded"
                      Width="Width.Is100"
                      Height="Height.Is100"
                      Class="link-preview-img"
                      Style="@($"background-image: url({GetPreviewUrl(Link)});")" />
-            </Column>
+                </Column>
+            }
             <Column>
                 <CardSubtitle Size="6"
                               TextColor="TextColor.Muted"
@@ -110,7 +113,8 @@
                             break;
                         case LinkType.Crosspost:
                             <LinkCard Link="@(new OrangeRedDotNet.Models.Links.Link { Kind = Link.Kind, Data = Link.Data.CrosspostParentList.First() })"
-                      ContentCollapsed="@ContentCollapsed" />
+                      ContentCollapsed="@ContentCollapsed"
+                      Subreddit="@Subreddit" />
                             break;
                         case LinkType.EmbeddedMedia:
                             @GetEmbeddedMediaContent()

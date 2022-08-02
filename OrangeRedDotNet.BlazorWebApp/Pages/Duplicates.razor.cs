@@ -4,6 +4,7 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Subreddits;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -71,15 +72,35 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         /// Duplicate links object
         /// </summary>
         protected DuplicateLinks DuplicateLinks { get; set; }
+        /// <summary>
+        /// Subreddit details
+        /// </summary>
+        protected Subreddit SubredditDetails { get; set; }
+        /// <summary>
+        /// Subreddit details loaded
+        /// </summary>
+        protected bool SubredditDetailsLoaded { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
             try
             {
+                var redditClient = RedditService.GetClient();
+
                 DuplicateLinks = null;
 
-                DuplicateLinks = await RedditService.GetClient().Listings.GetDuplicates(
+                if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
+                {
+                    SubredditDetailsLoaded = false;
+                }
+                if (!SubredditDetailsLoaded && !Subreddit.IsSpecialSubreddit())
+                {
+                    SubredditDetails = await redditClient.Subreddits.GetAbout(Subreddit);
+                    SubredditDetailsLoaded = true;
+                }
+
+                DuplicateLinks = await redditClient.Listings.GetDuplicates(
                     ArticleId,
                     BuildDuplicateListingParameters());
 

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
+using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Links;
+using OrangeRedDotNet.Models.Subreddits;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -45,6 +47,12 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         [Parameter]
         public bool ContentCollapsed { get; set; } = true;
+        /// <summary>
+        /// Subreddit context
+        /// Should be populated when the link is shown in a subreddit context
+        /// </summary>
+        [Parameter]
+        public Subreddit Subreddit { get; set; }
 
         /// <summary>
         /// If the spoiler has been acknowledged or not
@@ -244,6 +252,27 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Failed to update link hidden state"));
             }
+        }
+
+        /// <summary>
+        /// To show thumbnails or not.
+        /// Calculated based on user preferences and subreddit context.
+        /// </summary>
+        /// <returns>To show thumbnails or not</returns>
+        protected bool ShowThumbnails()
+        {
+            MediaPreference? preference = RedditService.Preferences?.Thumbnails;
+            if (preference == null)
+            {
+                preference = MediaPreference.Subreddit;
+            }
+            return preference switch
+            {
+                MediaPreference.On => true,
+                MediaPreference.Off => false,
+                MediaPreference.Subreddit => Subreddit?.Data?.ShowMedia ?? true,
+                _ => true,
+            };
         }
     }
 }

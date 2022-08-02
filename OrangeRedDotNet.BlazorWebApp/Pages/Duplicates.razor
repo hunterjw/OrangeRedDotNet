@@ -7,12 +7,13 @@
 }
 else
 {
-    <LinkList Links="DuplicateLinks.Originals" />
+    <LinkList Links="DuplicateLinks.Originals"
+          Subreddit="@SubredditDetails" />
     <hr />
-    <LinkList Links="@DuplicateLinks.Duplicates" />
-    <ListingPagination 
-        After="@DuplicateLinks.Duplicates?.Data?.After"
-        Before="@DuplicateLinks.Duplicates?.Data?.Before"
-        CurrentPageParameters="@BuildParameters()"
-        RelativeUrl="@GetRelativeUrl()" />
+    <LinkList Links="@DuplicateLinks.Duplicates"
+          Subreddit="@SubredditDetails" />
+    <ListingPagination After="@DuplicateLinks.Duplicates?.Data?.After"
+                   Before="@DuplicateLinks.Duplicates?.Data?.Before"
+                   CurrentPageParameters="@BuildParameters()"
+                   RelativeUrl="@GetRelativeUrl()" />
 }

@@ -5,6 +5,7 @@ using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Subreddits;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -66,20 +67,40 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         /// Link(s) with comments
         /// </summary>
         protected LinkWithComments LinkWithComments { get; set; }
+        /// <summary>
+        /// Subreddit details
+        /// </summary>
+        protected Subreddit SubredditDetails { get; set; }
+        /// <summary>
+        /// Subreddit details loaded
+        /// </summary>
+        protected bool SubredditDetailsLoaded { get; set; }
 
         /// <inheritdoc/>
         protected override async Task OnParametersSetAsync()
         {
             try
             {
+                var redditClient = RedditService.GetClient();
+
                 LinkWithComments = null;
+
+                if (SubredditDetailsLoaded && !SubredditDetails.Data.DisplayName.Equals(Subreddit))
+                {
+                    SubredditDetailsLoaded = false;
+                }
+                if (!SubredditDetailsLoaded && !Subreddit.IsSpecialSubreddit())
+                {
+                    SubredditDetails = await redditClient.Subreddits.GetAbout(Subreddit);
+                    SubredditDetailsLoaded = true;
+                }
 
                 if (string.IsNullOrWhiteSpace(Sort))
                 {
                     Sort = "confidence";
                 }
 
-                LinkWithComments = await RedditService.GetClient().Listings.GetComments(
+                LinkWithComments = await redditClient.Listings.GetComments(
                     ArticleId,
                     subreddit: Subreddit,
                     parameters: BuildCommentListingParameters());

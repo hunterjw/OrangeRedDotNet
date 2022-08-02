@@ -56,7 +56,8 @@ else if (IsMultiReddit)
 }
 else
 {
-    <LinkList Links="@LinkListing" />
+    <LinkList Links="@LinkListing"
+          Subreddit="SubredditDetails" />
 
     <ListingPagination After="@LinkListing?.Data?.After"
                    Before="@LinkListing?.Data?.Before"
