@@ -9,13 +9,13 @@ namespace OrangeRedDotNet.Models.Subreddits
 	public class SubredditData
     {
         [JsonProperty("accept_followers")]
-        public bool AcceptFollowers { get; set; }
+        public bool? AcceptFollowers { get; set; }
 
         [JsonProperty("accounts_active")]
         public int? AccountsActive { get; set; }
 
         [JsonProperty("accounts_active_is_fuzzed")]
-        public bool AccountsActiveIsFuzzed { get; set; }
+        public bool? AccountsActiveIsFuzzed { get; set; }
 
         [JsonProperty("active_user_count")]
         public int? ActiveUserCount { get; set; }
@@ -24,37 +24,37 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string AdvertiserCategory { get; set; }
 
         [JsonProperty("all_original_content")]
-        public bool AllOriginalContent { get; set; }
+        public bool? AllOriginalContent { get; set; }
 
         [JsonProperty("allow_discovery")]
-        public bool AllowDiscovery { get; set; }
+        public bool? AllowDiscovery { get; set; }
 
         [JsonProperty("allow_galleries")]
-        public bool AllowGalleries { get; set; }
+        public bool? AllowGalleries { get; set; }
 
         [JsonProperty("allow_images")]
-        public bool AllowImages { get; set; }
+        public bool? AllowImages { get; set; }
 
         [JsonProperty("allow_polls")]
-        public bool AllowPolls { get; set; }
+        public bool? AllowPolls { get; set; }
 
         [JsonProperty("allow_prediction_contributors")]
-        public bool AllowPredictionContributors { get; set; }
+        public bool? AllowPredictionContributors { get; set; }
 
         [JsonProperty("allow_predictions")]
-        public bool AllowPredictions { get; set; }
+        public bool? AllowPredictions { get; set; }
 
         [JsonProperty("allow_predictions_tournament")]
-        public bool AllowPredictionsTournament { get; set; }
+        public bool? AllowPredictionsTournament { get; set; }
 
         [JsonProperty("allow_talks")]
-        public bool AllowTalks { get; set; }
+        public bool? AllowTalks { get; set; }
 
         [JsonProperty("allow_videogifs")]
-        public bool AllowVideogifs { get; set; }
+        public bool? AllowVideogifs { get; set; }
 
         [JsonProperty("allow_videos")]
-        public bool AllowVideos { get; set; }
+        public bool? AllowVideos { get; set; }
 
         [JsonProperty("banner_background_color")]
         public string BannerBackgroundColor { get; set; }
@@ -69,28 +69,28 @@ namespace OrangeRedDotNet.Models.Subreddits
         public List<int> BannerSize { get; set; }
 
         [JsonProperty("can_assign_link_flair")]
-        public bool CanAssignLinkFlair { get; set; }
+        public bool? CanAssignLinkFlair { get; set; }
 
         [JsonProperty("can_assign_user_flair")]
-        public bool CanAssignUserFlair { get; set; }
+        public bool? CanAssignUserFlair { get; set; }
 
         [JsonProperty("collapse_deleted_comments")]
-        public bool CollapseDeletedComments { get; set; }
+        public bool? CollapseDeletedComments { get; set; }
 
         [JsonProperty("comment_score_hide_mins")]
-        public int CommentScoreHideMins { get; set; }
+        public int? CommentScoreHideMins { get; set; }
 
         [JsonProperty("community_icon")]
         public string CommunityIcon { get; set; }
 
         [JsonProperty("community_reviewed")]
-        public bool CommunityReviewed { get; set; }
+        public bool? CommunityReviewed { get; set; }
 
         [JsonProperty("created")]
-        public double Created { get; set; }
+        public double? Created { get; set; }
 
         [JsonProperty("created_utc")]
-        public double CreatedUtc { get; set; }
+        public double? CreatedUtc { get; set; }
 
         [JsonProperty("default_set")]
         public bool? DefaultSet { get; set; }
@@ -102,7 +102,7 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string DescriptionHtml { get; set; }
 
         [JsonProperty("disable_contributor_requests")]
-        public bool DisableContributorRequests { get; set; }
+        public bool? DisableContributorRequests { get; set; }
 
         [JsonProperty("display_name")]
         public string DisplayName { get; set; }
@@ -114,13 +114,13 @@ namespace OrangeRedDotNet.Models.Subreddits
         public object EmojisCustomSize { get; set; }
 
         [JsonProperty("emojis_enabled")]
-        public bool EmojisEnabled { get; set; }
+        public bool? EmojisEnabled { get; set; }
 
         [JsonProperty("free_form_reports")]
-        public bool FreeFormReports { get; set; }
+        public bool? FreeFormReports { get; set; }
 
         [JsonProperty("has_menu_widget")]
-        public bool HasMenuWidget { get; set; }
+        public bool? HasMenuWidget { get; set; }
 
         [JsonProperty("header_img")]
         public string HeaderImg { get; set; }
@@ -132,7 +132,7 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string HeaderTitle { get; set; }
 
         [JsonProperty("hide_ads")]
-        public bool HideAds { get; set; }
+        public bool? HideAds { get; set; }
 
         [JsonProperty("icon_color")]
         public string IconColor { get; set; }
@@ -159,7 +159,7 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string Lang { get; set; }
 
         [JsonProperty("link_flair_enabled")]
-        public bool LinkFlairEnabled { get; set; }
+        public bool? LinkFlairEnabled { get; set; }
 
         [JsonProperty("link_flair_position")]
         public string LinkFlairPosition { get; set; }
@@ -174,10 +174,10 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string NotificationLevel { get; set; }
 
         [JsonProperty("original_content_tag_enabled")]
-        public bool OriginalContentTagEnabled { get; set; }
+        public bool? OriginalContentTagEnabled { get; set; }
 
         [JsonProperty("over18")]
-        public bool Over18 { get; set; }
+        public bool? Over18 { get; set; }
 
         [JsonProperty("over_18")]
         private bool Over_18 { set { Over18 = value; } }
@@ -198,28 +198,28 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string PublicDescriptionHtml { get; set; }
 
         [JsonProperty("public_traffic")]
-        public bool PublicTraffic { get; set; }
+        public bool? PublicTraffic { get; set; }
 
         [JsonProperty("quarantine")]
-        public bool Quarantine { get; set; }
+        public bool? Quarantine { get; set; }
 
         [JsonProperty("restrict_commenting")]
-        public bool RestrictCommenting { get; set; }
+        public bool? RestrictCommenting { get; set; }
 
         [JsonProperty("restrict_posting")]
-        public bool RestrictPosting { get; set; }
+        public bool? RestrictPosting { get; set; }
 
         [JsonProperty("should_archive_posts")]
-        public bool ShouldArchivePosts { get; set; }
+        public bool? ShouldArchivePosts { get; set; }
 
         [JsonProperty("show_media")]
-        public bool ShowMedia { get; set; }
+        public bool? ShowMedia { get; set; }
 
         [JsonProperty("show_media_preview")]
-        public bool ShowMediaPreview { get; set; }
+        public bool? ShowMediaPreview { get; set; }
 
         [JsonProperty("spoilers_enabled")]
-        public bool SpoilersEnabled { get; set; }
+        public bool? SpoilersEnabled { get; set; }
 
         [JsonProperty("submission_type")]
         public string SubmissionType { get; set; }
@@ -240,7 +240,7 @@ namespace OrangeRedDotNet.Models.Subreddits
         public string SubredditType { get; set; }
 
         [JsonProperty("subscribers")]
-        public int Subscribers { get; set; }
+        public int? Subscribers { get; set; }
 
         [JsonProperty("suggested_comment_sort")]
         public object SuggestedCommentSort { get; set; }
@@ -261,7 +261,7 @@ namespace OrangeRedDotNet.Models.Subreddits
         public object UserFlairCssClass { get; set; }
 
         [JsonProperty("user_flair_enabled_in_sr")]
-        public bool UserFlairEnabledInSr { get; set; }
+        public bool? UserFlairEnabledInSr { get; set; }
 
         [JsonProperty("user_flair_position")]
         public string UserFlairPosition { get; set; }
@@ -303,10 +303,10 @@ namespace OrangeRedDotNet.Models.Subreddits
         public bool? UserSrFlairEnabled { get; set; }
 
         [JsonProperty("user_sr_theme_enabled")]
-        public bool UserSrThemeEnabled { get; set; }
+        public bool? UserSrThemeEnabled { get; set; }
 
         [JsonProperty("videostream_links_count")]
-        public int VideostreamLinksCount { get; set; }
+        public int? VideostreamLinksCount { get; set; }
 
         [JsonProperty("whitelist_status")]
         public string WhitelistStatus { get; set; }

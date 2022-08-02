@@ -27,12 +27,12 @@
                     <CardTitle Size="4">
                         @GetTitle()
                     </CardTitle>
-                    @if (!IsUser)
+                    @if (!IsUser && SubredditDetails.Data.Subscribers.HasValue)
                     {
                         <CardSubtitle Size="6"
                               TextColor="TextColor.Muted"
                               Margin="ThemeService.AppTheme.SpacingSame">
-                            @SubredditDetails.Data.Subscribers.ToDisplayString() subscribers
+                            @SubredditDetails.Data.Subscribers.Value.ToDisplayString() subscribers
                         </CardSubtitle>
                     }
                     @if (SubredditDetails.Data.AccountsActive.HasValue)
@@ -43,12 +43,15 @@
                             @SubredditDetails.Data.AccountsActive.Value.ToDisplayString() online
                         </CardSubtitle>
                     }
-                    <CardSubtitle Size="6"
+                    @if (SubredditDetails.Data.CreatedUtc.HasValue)
+                    {
+                        <CardSubtitle Size="6"
                               TextColor="TextColor.Muted"
                               Margin="ThemeService.AppTheme.SpacingSame">
-                        Created @SubredditDetails.Data.CreatedUtc.ToLocalDateTime()
-                    </CardSubtitle>
-                    <Flair Over18="@SubredditDetails.Data.Over18"
+                            Created @SubredditDetails.Data.CreatedUtc.Value.ToLocalDateTime()
+                        </CardSubtitle>
+                    }
+                    <Flair Over18="@(SubredditDetails.Data.Over18 ?? false)"
                        Banned="@(SubredditDetails.Data.UserIsBanned ?? false)"
                        Contributor="@(SubredditDetails.Data.UserIsContributor ?? false)"
                        Moderator="@(SubredditDetails.Data.UserIsModerator ?? false)"

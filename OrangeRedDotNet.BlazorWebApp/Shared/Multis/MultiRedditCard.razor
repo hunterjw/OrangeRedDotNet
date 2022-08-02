@@ -79,16 +79,23 @@
                                         </Row>
                                         @if (subreddit.Detail != null)
                                         {
-                                            <Row>
-                                                <Span Width="Width.Auto">
-                                                    @subreddit.Detail.Subscribers.ToDisplayString() members
-                                                </Span>
-                                            </Row>
-                                            <Row>
-                                                <Span Width="Width.Auto">
-                                                    <Flair Over18="@subreddit.Detail.Over18" />
-                                                </Span>
-                                            </Row>
+                                            @if (subreddit.Detail.Subscribers.HasValue)
+                                            {
+                                                <Row>
+                                                    <Span Width="Width.Auto">
+                                                        @subreddit.Detail.Subscribers.Value.ToDisplayString() members
+                                                    </Span>
+                                                </Row>
+
+                                            }
+                                            @if (subreddit.Detail.Over18.HasValue)
+                                            {
+                                                <Row>
+                                                    <Span Width="Width.Auto">
+                                                        <Flair Over18="@subreddit.Detail.Over18.Value" />
+                                                    </Span>
+                                                </Row>
+                                            }
                                         }
                                     </Column>
                                     @if (MultiReddit.Data.CanEdit)
