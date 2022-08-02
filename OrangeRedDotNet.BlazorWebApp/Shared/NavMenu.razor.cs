@@ -59,15 +59,13 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
         protected string SearchQuery { get; set; } = string.Empty;
 
         /// <inheritdoc/>
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
             UpdateLocation(NavigationManager.Uri);
             ThemeService.ThemeChanged += RefreshComponent;
             RedditService.LoginFinished += RefreshComponent;
             RedditService.LogoutFinished += RefreshComponent;
             NavigationManager.LocationChanged += LocationChanged;
-            // ensure identity is loaded on initial load
-            await RedditService.LoadIdentity();
         }
 
         /// <summary>

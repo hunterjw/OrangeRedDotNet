@@ -41,6 +41,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         /// If the user is logged in or not
         /// </summary>
         private bool _loggedIn = false;
+        /// <summary>
+        /// User Reddit preferences
+        /// </summary>
+        private Preferences _preferences;
 
         /// <summary>
         /// Event handler for when the login operation finishes
@@ -167,6 +171,24 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         }
 
         /// <summary>
+        /// Load the current users preferences
+        /// </summary>
+        /// <param name="forceReload">To force reload from Reddit or not</param>
+        /// <returns>User preferences</returns>
+        public async Task<Preferences> LoadPreferences(bool forceReload = false)
+        {
+            if (!_loggedIn)
+            {
+                return null;
+            }
+            if (_preferences == null || forceReload)
+            {
+                _preferences = await GetClient().Account.GetPreferences();
+            }
+            return _preferences;
+        }
+
+        /// <summary>
         /// Current user Identity
         /// </summary>
         public AccountData Identity
@@ -183,6 +205,14 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         }
 
         /// <summary>
+        /// User Reddit preferences
+        /// </summary>
+        public Preferences Preferences
+        {
+            get => _preferences;
+        }
+
+        /// <summary>
         /// Login to Reddit
         /// </summary>
         /// <returns>Awaitable task</returns>
@@ -194,6 +224,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 _reddit = default;
                 _redditAuthentication = default;
                 _identity = await GetClient().Account.GetIdentity();
+                _preferences = await GetClient().Account.GetPreferences();
                 LocalStorageSave("loggedIn", _loggedIn.ToString());
                 LoginFinished?.Invoke(this, new object());
             }
@@ -212,6 +243,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 _reddit = default;
                 _redditAuthentication = default;
                 _identity = default;
+                _preferences = default;
                 LocalStorageClear("auth");
                 LocalStorageSave("loggedIn", _loggedIn.ToString());
                 LogoutFinished?.Invoke(this, new object());

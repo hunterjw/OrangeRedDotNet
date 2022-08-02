@@ -66,6 +66,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages.Settings
                 Preferences = await RedditService.GetClient().Account.SetPreferences(Preferences);
                 ToastService.ShowSuccess("Preferences saved");
                 await Validations.ClearAll();
+                await RedditService.LoadPreferences(true);
             }
             catch (RedditApiException rex)
             {
