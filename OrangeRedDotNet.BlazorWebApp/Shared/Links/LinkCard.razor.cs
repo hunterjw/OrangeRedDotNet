@@ -265,6 +265,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
         /// <returns>To show thumbnails or not</returns>
         protected bool ShowThumbnails()
         {
+            if (HideNsfwImages())
+            {
+                return false;
+            }
             MediaPreference? preference = RedditService.Preferences?.Thumbnails;
             if (preference == null)
             {
@@ -296,6 +300,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             };
             if (mediaLinkTypes.Contains(linkType))
             {
+                if (HideNsfwImages())
+                {
+                    return false;
+                }
                 MediaPreference? preference = RedditService.Preferences?.MediaPreview;
                 if (preference == null)
                 {
@@ -310,6 +318,15 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
                 };
             }
             return true;
+        }
+
+        /// <summary>
+        /// To hide NSFW images or not
+        /// </summary>
+        /// <returns>To hide NSFW images or not</returns>
+        protected bool HideNsfwImages()
+        {
+            return (RedditService.Preferences?.NoProfanity ?? false) && Link.Data.Over18;
         }
     }
 }
