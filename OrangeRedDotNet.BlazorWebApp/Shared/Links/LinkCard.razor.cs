@@ -5,6 +5,7 @@ using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Subreddits;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -67,18 +68,21 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
         protected override void OnParametersSet()
         {
             LinkType linkType = Link.GetLinkType();
+            if (!ShowMediaPreviews(linkType))
+            {
+                ContentCollapsed = true;
+            }
             if (!ContentCollapsed &&
                 (!(linkType == LinkType.Image ||
                 linkType == LinkType.Gallery ||
                 linkType == LinkType.Video ||
                 linkType == LinkType.Text ||
                 linkType == LinkType.Crosspost ||
-                linkType == LinkType.EmbeddedMedia) || 
+                linkType == LinkType.EmbeddedMedia) ||
                 (linkType == LinkType.Text && string.IsNullOrWhiteSpace(Link.Data.Selftext))))
             {
                 ContentCollapsed = true;
             }
-            
         }
 
         /// <summary>
@@ -225,7 +229,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             }
             catch (RedditApiException rex)
             {
-                ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));   
+                ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));
             }
         }
 
@@ -273,6 +277,39 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
                 MediaPreference.Subreddit => Subreddit?.Data?.ShowMedia ?? true,
                 _ => true,
             };
+        }
+
+        /// <summary>
+        /// To show media previews or not
+        /// </summary>
+        /// <param name="linkType">Link type</param>
+        /// <returns>To show media previews or not</returns>
+        protected bool ShowMediaPreviews(LinkType linkType)
+        {
+            List<LinkType> mediaLinkTypes = new()
+            {
+                LinkType.Image,
+                LinkType.Video,
+                LinkType.Gallery,
+                LinkType.Crosspost,
+                LinkType.EmbeddedMedia,
+            };
+            if (mediaLinkTypes.Contains(linkType))
+            {
+                MediaPreference? preference = RedditService.Preferences?.MediaPreview;
+                if (preference == null)
+                {
+                    preference = MediaPreference.Subreddit;
+                }
+                return preference switch
+                {
+                    MediaPreference.On => true,
+                    MediaPreference.Off => false,
+                    MediaPreference.Subreddit => Subreddit?.Data?.ShowMediaPreview ?? true,
+                    _ => true,
+                };
+            }
+            return true;
         }
     }
 }
