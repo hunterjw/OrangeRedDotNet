@@ -24,6 +24,7 @@ else
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
                 <FieldLabel>Language</FieldLabel>
+                <UnsupportedSettingMessage />
                 <Select Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
                     Border="ThemeService.AppTheme.Border" @bind-SelectedValue="Preferences.Language">
                     @foreach (var value in Enum.GetValues<LanguageCode>())
@@ -36,6 +37,7 @@ else
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
                 <FieldLabel>Country</FieldLabel>
+                <UnsupportedSettingMessage />
                 <Select Background="ThemeService.AppTheme.Background" TextColor="ThemeService.AppTheme.TextColor"
                     Border="ThemeService.AppTheme.Border" @bind-SelectedValue="Preferences.CountryCode">
                     @foreach (var value in Enum.GetValues<CountryCode>().OrderBy(_ => _.ToDescriptionString()))
@@ -50,6 +52,7 @@ else
         <Heading Size="HeadingSize.Is3">Clicking options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.NewWindow">Open links in new window</Check>
             </Field>
         </Validation>
@@ -80,6 +83,7 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.VideoAutoplay">Autoplay Reddit videos on the desktop comments page</Check>
             </Field>
         </Validation>
