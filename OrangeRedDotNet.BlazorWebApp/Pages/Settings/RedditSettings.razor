@@ -97,21 +97,25 @@ else
         <Heading Size="HeadingSize.Is3">Link Options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.ShowTrending">Show trending subreddits on the home feed</Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.ShowRecentlyViewed">Show me links I've recently viewed</Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.Compress">Compress the link display</Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <UnsupportedSettingMessage />
                 <Check TValue="bool" @bind-Checked="Preferences.DomainDetails">Show additional details in the domain text when available</Check>
             </Field>
         </Validation>

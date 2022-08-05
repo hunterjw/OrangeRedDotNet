@@ -302,7 +302,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 After = After,
                 Before = Before,
                 Count = Count ?? 0,
-                Limit = Limit ?? 25
+                Limit = Limit ?? (RedditService.Preferences?.NumLinks ?? 25)
             };
         }
 
@@ -317,7 +317,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 After = After,
                 Before = Before,
                 Count = Count ?? 0,
-                Limit = Limit ?? 25
+                Limit = Limit ?? (RedditService.Preferences?.NumLinks ?? 25)
             };
         }
 
@@ -332,7 +332,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 After = After,
                 Before = Before,
                 Count = Count ?? 0,
-                Limit = Limit ?? 25,
+                Limit = Limit ?? (RedditService.Preferences?.NumLinks ?? 25),
                 Timescale = string.IsNullOrWhiteSpace(Timescale) ? OrangeRedDotNet.Models.Parameters.Timescale.Hour
                     : Timescale.ToEnumFromDescriptionString<Timescale>()
             };
