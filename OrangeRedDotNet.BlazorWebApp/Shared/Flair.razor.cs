@@ -12,6 +12,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
     public partial class Flair
     {
         /// <summary>
+        /// Show the user/link flair
+        /// </summary>
+        [Parameter]
+        public bool ShowFlair { get; set; } = false;
+        /// <summary>
         /// If the content is NSFW
         /// </summary>
         [Parameter]

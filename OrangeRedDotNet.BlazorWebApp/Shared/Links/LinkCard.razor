@@ -44,7 +44,8 @@
                            FlairRichtext="@Link.Data.AuthorFlairRichtext"
                            FlairText="@Link.Data.AuthorFlairText"
                            FlairTextColor="@Link.Data.AuthorFlairTextColor"
-                           FlairType="@Link.Data.AuthorFlairType" />
+                           FlairType="@Link.Data.AuthorFlairType"
+                           ShowFlair="@(RedditService.Preferences?.ShowFlair ?? true)" />
                 </CardSubtitle>
                 <CardSubtitle Size="6"
                               TextColor="TextColor.Muted"
@@ -65,7 +66,8 @@
                        Archived="Link.Data.Archived"
                        LinkType="@Link.GetLinkType()"
                        Saved="@Link.Data.Saved"
-                       Hidden="@Link.Data.Hidden" />
+                       Hidden="@Link.Data.Hidden"
+                       ShowFlair="@(RedditService.Preferences?.ShowLinkFlair ?? true)" />
             </Column>
         </Row>
         @if (!ContentCollapsed)

@@ -23,7 +23,8 @@
                            FlairText="@commentData.AuthorFlairText"
                            FlairTextColor="@commentData.AuthorFlairTextColor"
                            FlairType="@commentData.AuthorFlairType"
-                           IsOriginalPoster="@(commentData.Author.Equals(OriginalPoster))" />
+                           IsOriginalPoster="@(commentData.Author.Equals(OriginalPoster))"
+                           ShowFlair="@(RedditService.Preferences?.ShowFlair ?? true)" />
                     </CardSubtitle>
                     <CardSubtitle Size="6"
                               Margin="ThemeService.AppTheme.SpacingSame"

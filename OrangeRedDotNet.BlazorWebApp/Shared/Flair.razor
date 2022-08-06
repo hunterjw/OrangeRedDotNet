@@ -2,7 +2,7 @@
 @using OrangeRedDotNet.Models.Links
 @using System.Web
 
-@if(IsOriginalPoster)
+@if (IsOriginalPoster)
 {
     <Badge Color="Color.Primary" Margin="Margin.Is1.FromEnd">OP</Badge>
 }
@@ -67,42 +67,45 @@
     <Badge Color="Color.Warning" Margin="Margin.Is1.FromEnd">Controversial</Badge>
 }
 
-@switch (FlairType?.ToLower())
+@if (ShowFlair)
 {
-    case "text":
-        if (!string.IsNullOrWhiteSpace(FlairText))
-        {
-            <Span Class="@FlairClass()" Style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</Span>
-        }
-        break;
-    case "richtext":
-        <Span Class="@FlairClass()" Style="@FlairStyle()">
-            @if (FlairRichtext?.Count > 0)
+    @switch (FlairType?.ToLower())
+    {
+        case "text":
+            if (!string.IsNullOrWhiteSpace(FlairText))
             {
-                @foreach (FlairRichtext flair in FlairRichtext)
+                <Span Class="@FlairClass()" Style="@FlairStyle()">@((MarkupString)HttpUtility.HtmlDecode(FlairText))</Span>
+            }
+            break;
+        case "richtext":
+            <Span Class="@FlairClass()" Style="@FlairStyle()">
+                @if (FlairRichtext?.Count > 0)
                 {
-                    switch (flair?.Type.ToLower())
+                    @foreach (FlairRichtext flair in FlairRichtext)
                     {
-                        case "text":
-                            if (!string.IsNullOrWhiteSpace(flair?.Text))
-                            {
-                                @((MarkupString)HttpUtility.HtmlDecode(flair?.Text))
-                            }
-                            break;
-                        case "emoji":
-                            <Image Source="@flair?.Url" Text="@flair?.Tag" Class="flair-emoji" />
-                            break;
-                        default:
-                            break;
+                        switch (flair?.Type.ToLower())
+                        {
+                            case "text":
+                                if (!string.IsNullOrWhiteSpace(flair?.Text))
+                                {
+                                    @((MarkupString)HttpUtility.HtmlDecode(flair?.Text))
+                                }
+                                break;
+                            case "emoji":
+                                <Image Source="@flair?.Url" Text="@flair?.Tag" Class="flair-emoji" />
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
-            }
-            else if (!string.IsNullOrWhiteSpace(FlairText))
-            {
-                @((MarkupString)HttpUtility.HtmlDecode(FlairText))
-            }
-        </Span>
-        break;
-    default:
-        break;
+                else if (!string.IsNullOrWhiteSpace(FlairText))
+                {
+                    @((MarkupString)HttpUtility.HtmlDecode(FlairText))
+                }
+            </Span>
+            break;
+        default:
+            break;
+    }
 }

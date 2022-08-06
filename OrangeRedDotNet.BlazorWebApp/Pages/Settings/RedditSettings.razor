@@ -268,7 +268,9 @@ else
         <Heading Size="HeadingSize.Is3">Display Options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <Check TValue="bool" @bind-Checked="Preferences.ShowStylesheets">Allow subreddits to show me custom themes</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.ShowStylesheets">
+                    Allow subreddits to show me custom themes <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
@@ -283,7 +285,9 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <Check TValue="bool" @bind-Checked="Preferences.LegacySearch">Show legacy search page</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.LegacySearch">
+                    Show legacy search page <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <hr />
