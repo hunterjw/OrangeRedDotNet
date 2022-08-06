@@ -35,3 +35,6 @@ packages/
 
 #Debug console app verb
 /OrangeRedDotNet.ConsoleApp/Verbs/DebugVerb.cs
+
+#Blazor app client side libraries
+/OrangeRedDotNet.BlazorWebApp/wwwroot/lib/*
