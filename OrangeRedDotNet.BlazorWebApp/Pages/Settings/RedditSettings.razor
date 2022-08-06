@@ -209,6 +209,7 @@ else
         <hr />
 
         <Heading Size="HeadingSize.Is3">Messaging Options</Heading>
+        <UnsupportedSettingMessage />
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
                 <Check TValue="bool" @bind-Checked="Preferences.ThreadedMessages">Show message conversations in the inbox</Check>
