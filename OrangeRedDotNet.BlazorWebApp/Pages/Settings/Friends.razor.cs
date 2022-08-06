@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.Account;
@@ -73,6 +74,37 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages.Settings
                 {
                     ToastService.ShowError(rex.MakeErrorMessage("Error adding new friend"));
                 }
+            }
+        }
+
+        /// <summary>
+        /// On submit handler for the add friend text box
+        /// </summary>
+        /// <param name="args">Args</param>
+        /// <returns>Awaitable task</returns>
+        protected async Task OnAddSubmit(KeyboardEventArgs args)
+        {
+            if (args.Key.Equals("Enter"))
+            {
+                await NewFriendButtonOnClick();
+            }
+        }
+
+        /// <summary>
+        /// On click handler for the remove friend button
+        /// </summary>
+        /// <returns>Awaitable task</returns>
+        protected async Task RemoveFriendButtonOnClick(User friend)
+        {
+            try
+            {
+                await RedditService.GetClient().Users.RemoveFriend(friend.Name);
+                MyFriends.Data.Children.RemoveAll(_ => _.Id == friend.Id);
+                ToastService.ShowSuccess("Friend removed");
+            }
+            catch (RedditApiException rex)
+            {
+                ToastService.ShowError(rex.MakeErrorMessage("Error removing friend"));
             }
         }
     }

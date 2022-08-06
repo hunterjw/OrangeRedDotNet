@@ -15,7 +15,9 @@
         <TextEdit Background="ThemeService.AppTheme.Background"
                   TextColor="ThemeService.AppTheme.TextColor"
                   Border="ThemeService.AppTheme.Border"
-                  @bind-Text="NewFriend" />
+                  Placeholder="New friend username"
+                  @bind-Text="NewFriend"
+                  @onkeypress="OnAddSubmit" />
     </Addon>
     <Addon AddonType="AddonType.End">
         <Button Color="Color.Primary"
@@ -32,6 +34,42 @@
 }
 else
 {
-    <UserList Users="@MyFriends"
-          DateLabel="Friend added on" />
+    @if (MyFriends.Data.Children.Count > 0)
+    {
+        @foreach (var user in MyFriends.Data.Children)
+        {
+            <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSame"
+      Border="ThemeService.AppTheme.Border">
+                <CardBody>
+                    <Row>
+                        <Column>
+                            <CardTitle Size="5">@user.Name</CardTitle>
+                            <CardSubtitle Size="6"
+                              TextColor="TextColor.Muted"
+                              Margin="ThemeService.AppTheme.SpacingSame">
+                                <Anchor Class="text-decoration-none"
+                            To="@($"/user/{user.Name}")">
+                                    /u/@user.Name
+                                </Anchor>
+                            </CardSubtitle>
+                            <CardText>Friend added on @user.DateDateTime.ToString()</CardText>
+                        </Column>
+                        <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
+                            <Button Color="Color.Danger"
+                        @onclick="() => RemoveFriendButtonOnClick(user)">
+                                Remove
+                            </Button>
+                        </Column>
+                    </Row>
+                </CardBody>
+            </Card>
+        }
+    }
+    else
+    {
+        <Paragraph>No users to display</Paragraph>
+    }
 }
