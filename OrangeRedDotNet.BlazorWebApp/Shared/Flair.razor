@@ -62,6 +62,10 @@
 {
     <Badge Color="Color.Danger" Margin="Margin.Is1.FromEnd">Hidden</Badge>
 }
+@if (Controversial)
+{
+    <Badge Color="Color.Warning" Margin="Margin.Is1.FromEnd">Controversial</Badge>
+}
 
 @switch (FlairType?.ToLower())
 {

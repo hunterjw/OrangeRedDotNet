@@ -97,7 +97,9 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
 
                 if (string.IsNullOrWhiteSpace(Sort))
                 {
-                    Sort = "confidence";
+                    Sort = RedditService.Preferences?.DefaultCommentSort != null ?
+                        RedditService.Preferences.DefaultCommentSort.ToDescriptionString() : 
+                        "confidence";
                 }
 
                 LinkWithComments = await redditClient.Listings.GetComments(

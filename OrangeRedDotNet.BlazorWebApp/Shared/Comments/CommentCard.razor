@@ -33,7 +33,8 @@
                     <Awardings Data="@commentData.AllAwardings" />
                     <Flair Stickied="@commentData.Stickied"
                        Locked="@commentData.Locked"
-                       Saved="@commentData.Saved" />
+                       Saved="@commentData.Saved"
+                       Controversial="@((RedditService.Preferences?.HighlightControversial ?? false) && (commentData.Controversiality > 0))" />
                     @if (!RepliesCollapsed)
                     {
                         <Row NoGutters="true">

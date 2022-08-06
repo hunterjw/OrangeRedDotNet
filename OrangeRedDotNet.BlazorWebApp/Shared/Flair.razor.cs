@@ -111,6 +111,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
         /// </summary>
         [Parameter]
         public bool Hidden { get; set; } = false;
+        /// <summary>
+        /// If the thing is Controversial or not
+        /// </summary>
+        [Parameter]
+        public bool Controversial { get; set; } = false;
 
         /// <summary>
         /// Get the css class(es) for the flair badge
