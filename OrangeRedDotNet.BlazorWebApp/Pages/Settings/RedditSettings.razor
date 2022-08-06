@@ -52,8 +52,9 @@ else
         <Heading Size="HeadingSize.Is3">Clicking options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.NewWindow">Open links in new window</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.NewWindow">
+                    Open links in new window <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <hr />
@@ -83,8 +84,9 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.VideoAutoplay">Autoplay Reddit videos on the desktop comments page</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.VideoAutoplay">
+                    Autoplay Reddit videos on the desktop comments page <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
@@ -97,26 +99,30 @@ else
         <Heading Size="HeadingSize.Is3">Link Options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.ShowTrending">Show trending subreddits on the home feed</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.ShowTrending">
+                    Show trending subreddits on the home feed <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.ShowRecentlyViewed">Show me links I've recently viewed</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.ShowRecentlyViewed">
+                    Show me links I've recently viewed <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.Compress">Compress the link display</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.Compress">
+                    Compress the link display <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.DomainDetails">Show additional details in the domain text when available</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.DomainDetails">
+                    Show additional details in the domain text when available <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
@@ -168,8 +174,9 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <UnsupportedSettingMessage />
-                <Check TValue="bool" @bind-Checked="Preferences.IgnoreSuggestedSort">Ignore suggested sorts</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.IgnoreSuggestedSort">
+                    Ignore suggested sorts <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
