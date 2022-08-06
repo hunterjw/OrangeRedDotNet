@@ -320,7 +320,9 @@ else
         <Heading Size="HeadingSize.Is3">Privacy Options</Heading>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <Check TValue="bool" @bind-Checked="Preferences.PublicVotes">Make my votes public</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.PublicVotes">
+                    Make my votes public <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <Validation>
@@ -376,7 +378,9 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <Check TValue="bool" @bind-Checked="Preferences.DesignBeta">Use new Reddit as my default experience</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.DesignBeta">
+                    Use new Reddit as my default experience <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <hr />
