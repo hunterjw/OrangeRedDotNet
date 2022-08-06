@@ -8,6 +8,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Models
     public class AppTheme
     {
         /// <summary>
+        /// Blazorise theme
+        /// </summary>
+        public Theme BlazoriseTheme { get; set; }
+        /// <summary>
         /// If dark mode is set or not
         /// </summary>
         public bool DarkMode { get; set; }

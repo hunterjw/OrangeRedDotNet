@@ -1,5 +1,4 @@
-﻿using Blazorise;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Models;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using System.Threading.Tasks;
@@ -12,22 +11,13 @@ namespace OrangeRedDotNet.BlazorWebApp
     public partial class App
     {
         /// <summary>
-        /// App theme
-        /// </summary>
-        private readonly Theme theme = new()
-        {
-            //ColorOptions = new ThemeColorOptions
-            //{
-            //    Primary = "#ff4500"
-            //}
-        };
-
-        /// <summary>
         /// Theme Service
         /// </summary>
         [Inject]
         public AppThemeService ThemeService { get; set; }
-
+        /// <summary>
+        /// Reddit service
+        /// </summary>
         [Inject]
         public RedditService RedditService { get; set; }
 

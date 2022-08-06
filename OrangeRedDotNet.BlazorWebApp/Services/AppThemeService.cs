@@ -48,6 +48,19 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         {
             AppTheme newTheme = new()
             {
+                BlazoriseTheme = new Theme
+                {
+                    ColorOptions = new ThemeColorOptions
+                    {
+                        Dark = settings.TrueDark ? "#000000" : "#212529",
+                        Primary = "#0d6efd",
+                    },
+                    BackgroundOptions = new ThemeBackgroundOptions
+                    {
+                        Dark = settings.TrueDark ? "#000000" : "#212529",
+                        Primary = "#0d6efd",
+                    },
+                },
                 DarkMode = settings.DarkMode,
                 Background = settings.DarkMode ? Background.Dark : Background.Light,
                 SpacingRelated = Margin.Is2.FromBottom,

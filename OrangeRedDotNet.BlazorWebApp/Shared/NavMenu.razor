@@ -75,7 +75,9 @@
                                 <Span>Guest</Span>
                             }
                         </BarDropdownToggle>
-                        <BarDropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")">
+                        <BarDropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")"
+                                         Background="@(ThemeService.AppTheme.DarkMode ? Background.Dark : Background.Light)"
+                                         Border="Border.Secondary">
                             @if (RedditService.LoggedIn)
                             {
                                 <BarDropdownItem To="@($"user/{RedditService.Identity?.Name}")"

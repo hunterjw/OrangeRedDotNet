@@ -19,7 +19,8 @@
             {
                 return new Settings
                 {
-                    DarkMode = false
+                    DarkMode = false,
+                    TrueDark = false,
                 };
             }
         }
@@ -28,5 +29,9 @@
         /// To use darkmode or not
         /// </summary>
         public bool DarkMode { get; set; }
+        /// <summary>
+        /// To truly embrace the darkness or not
+        /// </summary>
+        public bool TrueDark { get; set; }
     }
 }

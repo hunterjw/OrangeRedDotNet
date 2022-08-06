@@ -23,6 +23,14 @@ else
                 </Switch>
             </Field>
         </Validation>
+        <Validation>
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <Switch TValue="bool"
+                    @bind-Checked="Settings.TrueDark">
+                    Dark mode in True Dark (backgrounds are black rather than "dark")
+                </Switch>
+            </Field>
+        </Validation>
         <hr />
 
         <Button Color="Color.Primary"
