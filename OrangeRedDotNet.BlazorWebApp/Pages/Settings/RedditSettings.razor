@@ -310,7 +310,9 @@ else
         </Validation>
         <Validation>
             <Field Margin="ThemeService.AppTheme.SpacingSeparate">
-                <Check TValue="bool" @bind-Checked="Preferences.PrivateFeeds">Enable private RSS feeds</Check>
+                <Check TValue="bool" @bind-Checked="Preferences.PrivateFeeds">
+                    Enable private RSS feeds <UnsupportedSettingMessage />
+                </Check>
             </Field>
         </Validation>
         <hr />
