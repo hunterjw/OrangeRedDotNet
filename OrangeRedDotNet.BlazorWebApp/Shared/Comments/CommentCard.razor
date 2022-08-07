@@ -45,11 +45,13 @@
                 </Column>
             </Row>
         </CardBody>
-        <CardFooter Class="border-secondary">
+        <CardFooter Class="border-secondary"
+                Padding="Padding.Is0.FromBottom">
             <Row>
                 @if (!RepliesCollapsed)
                 {
-                    <Column ColumnSize="ColumnSize.IsAuto">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                         <VoteInput Likes="@commentData.Likes"
                            Score="@commentData.Score"
                            ScoreHidden="@commentData.ScoreHidden"
@@ -57,7 +59,8 @@
                            Archived="@commentData.Archived" />
                     </Column>
                 }
-                <Column ColumnSize="ColumnSize.IsAuto">
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                     <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
                         @onclick="() => RepliesCollapsed = !RepliesCollapsed">
@@ -66,7 +69,8 @@
                 </Column>
                 @if (!RepliesCollapsed && RedditService.LoggedIn)
                 {
-                    <Column ColumnSize="ColumnSize.IsAuto">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                         <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
                         @onclick="SaveToggleButton_OnClick">
@@ -77,7 +81,8 @@
                 @if (RepliesCollapsed)
                 {
                     <Column ColumnSize="ColumnSize.IsAuto"
-                    Flex="Flex.JustifyContent.Center.Column">
+                    Flex="Flex.JustifyContent.Center.Column"
+                    Padding="Padding.Is2.FromBottom">
                         <span>@(commentData.Replies?.Data?.Children?.Count ?? 0) children comments</span>
                     </Column>
                 }

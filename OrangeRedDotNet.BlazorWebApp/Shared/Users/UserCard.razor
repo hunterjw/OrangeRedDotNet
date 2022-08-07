@@ -51,26 +51,28 @@
             </Column>
         </Row>
     </CardBody>
-    <CardFooter Class="border-secondary">
+    <CardFooter Class="border-secondary"
+                Padding="Padding.Is0.FromBottom">
         <Row>
             @if (RedditService.LoggedIn)
             {
-                @if (AccountData.Subreddit != null)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
+                    <Buttons>
+                        @if (AccountData.Subreddit != null)
+                        {
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="FollowButton_OnClick">
+                                @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
+                            </Button>
+                        }
                         <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="FollowButton_OnClick">
-                            @(AccountData.Subreddit.UserIsSubscriber ?? false ? "Unfollow" : "Follow")
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="AddToMultiRedditButton_OnClick">
+                            Add to MultiReddit
                         </Button>
-                    </Column>
-                }
-                <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="AddToMultiRedditButton_OnClick">
-                        Add to MultiReddit
-                    </Button>
+                    </Buttons>
                 </Column>
             }
         </Row>

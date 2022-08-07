@@ -69,11 +69,13 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter Class="border-secondary">
+        <CardFooter Class="border-secondary"
+                Padding="Padding.Is0.FromBottom">
             <Row>
                 @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
                 {
-                    <Column ColumnSize="ColumnSize.IsAuto">
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                         <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
@@ -83,19 +85,20 @@
                 }
                 @if (RedditService.LoggedIn)
                 {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="SubscribeButton_OnClick">
-                            @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
-                        </Button>
-                    </Column>
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="AddToMultiRedditButton_OnClick">
-                            Add to MultiReddit
-                        </Button>
+                    <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
+                        <Buttons>
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="SubscribeButton_OnClick">
+                                @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
+                            </Button>
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="AddToMultiRedditButton_OnClick">
+                                Add to MultiReddit
+                            </Button>
+                        </Buttons>
                     </Column>
                 }
             </Row>

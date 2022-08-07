@@ -115,44 +115,45 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter Class="border-secondary">
+        <CardFooter Class="border-secondary"
+                Padding="Padding.Is0.FromBottom">
             <Row>
-                <Column ColumnSize="ColumnSize.IsAuto">
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                     <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
                         <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
                     </Button>
                 </Column>
-                @if (MultiReddit.Data.CanEdit)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="EditMultiRedditButton_OnClick">
-                            Edit
-                        </Button>
-                    </Column>
-                }
-                @if (RedditService.LoggedIn)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="CopyMultiRedditButton_OnClick">
-                            Copy
-                        </Button>
-                    </Column>
-                }
-                @if (MultiReddit.Data.CanEdit)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="Color.Danger"
-                        @onclick="@DeleteMultiRedditButton_OnClick">
-                            Delete
-                        </Button>
-                    </Column>
-                }
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
+                    <Buttons>
+                        @if (MultiReddit.Data.CanEdit)
+                        {
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="EditMultiRedditButton_OnClick">
+                                Edit
+                            </Button>
+                        }
+                        @if (RedditService.LoggedIn)
+                        {
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="CopyMultiRedditButton_OnClick">
+                                Copy
+                            </Button>
+                        }
+                        @if (MultiReddit.Data.CanEdit)
+                        {
+                            <Button Color="Color.Danger"
+                            @onclick="@DeleteMultiRedditButton_OnClick">
+                                Delete
+                            </Button>
+                        }
+                    </Buttons>
+                </Column>
             </Row>
         </CardFooter>
     </Card>

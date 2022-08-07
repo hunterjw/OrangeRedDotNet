@@ -128,16 +128,19 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter Class="border-secondary">
+        <CardFooter Class="border-secondary"
+                Padding="Padding.Is0.FromBottom">
             <Row>
-                <Column ColumnSize="ColumnSize.IsAuto">
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                     <VoteInput Likes="@Link.Data.Likes"
                            Score="@Link.Data.Score"
                            ScoreHidden="@Link.Data.HideScore"
                            Id="@Link.Data.Name"
                            Archived="@Link.Data.Archived" />
                 </Column>
-                <Column ColumnSize="ColumnSize.IsAuto">
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
                     @switch (Link.GetLinkType())
                     {
                         case LinkType.Link:
@@ -184,44 +187,41 @@
                             break;
                     }
                 </Column>
-                <Column ColumnSize="ColumnSize.IsAuto">
-                    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Type="ButtonType.Link"
-                        Border="ThemeService.AppTheme.Border"
-                        To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
-                        <span class="oi oi-comment-square"></span>
-                        <span>@Link.Data.NumComments.ToDisplayString()</span>
-                    </Button>
+                <Column ColumnSize="ColumnSize.IsAuto"
+                    Padding="Padding.Is2.FromBottom">
+                    <Buttons>
+                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Type="ButtonType.Link"
+                            Border="ThemeService.AppTheme.Border"
+                            To="@($"/r/{Link.Data.Subreddit}/comments/{Link.Data.Id}")">
+                            <span class="oi oi-comment-square"></span>
+                            <span>@Link.Data.NumComments.ToDisplayString()</span>
+                        </Button>
+                        @if (RedditService.LoggedIn)
+                        {
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="SaveToggleButton_OnClick">
+                                <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
+                            </Button>
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="HideToggleButton_OnClick">
+                                <span class="oi oi-ban @(Link.Data.Hidden ? "text-danger" : "")"></span>
+                            </Button>
+                        }
+                        @if (Link.Data.NumDuplicates != null && Link.Data.NumDuplicates > 0)
+                        {
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Type="ButtonType.Link"
+                            Border="ThemeService.AppTheme.Border"
+                            To="@($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}")">
+                                <span class="oi oi-chat"></span>
+                                <span>Other discussions (@Link.Data.NumDuplicates)</span>
+                            </Button>
+                        }
+                    </Buttons>
                 </Column>
-                @if (Link.Data.NumDuplicates != null && Link.Data.NumDuplicates > 0)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Type="ButtonType.Link"
-                        Border="ThemeService.AppTheme.Border"
-                        To="@($"/r/{Link.Data.Subreddit}/duplicates/{Link.Data.Id}")">
-                            <span class="oi oi-chat"></span>
-                            <span>Other discussions (@Link.Data.NumDuplicates)</span>
-                        </Button>
-                    </Column>
-                }
-                @if (RedditService.LoggedIn)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="SaveToggleButton_OnClick">
-                            <span class="oi oi-bookmark @(Link.Data.Saved ? "text-primary" : "")"></span>
-                        </Button>
-                    </Column>
-                    <Column ColumnSize="ColumnSize.IsAuto">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="HideToggleButton_OnClick">
-                            <span class="oi oi-ban @(Link.Data.Hidden ? "text-danger" : "")"></span>
-                        </Button>
-                    </Column>
-                }
             </Row>
         </CardFooter>
     </Card>
