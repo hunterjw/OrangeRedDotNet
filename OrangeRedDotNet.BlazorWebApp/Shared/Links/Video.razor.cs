@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Models.Links;
 using System.Threading.Tasks;
 
@@ -15,6 +16,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
         /// </summary>
         [Inject]
         IJSRuntime JS { get; set; }
+        /// <summary>
+        /// Theme service
+        /// </summary>
+        [Inject]
+        public AppThemeService ThemeService { get; set; }
 
         /// <summary>
         /// Reddit video object

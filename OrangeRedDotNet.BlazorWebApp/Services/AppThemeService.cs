@@ -69,7 +69,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 TextColor = settings.DarkMode ? TextColor.Light : TextColor.Dark,
                 ThemeContrast = settings.DarkMode ? ThemeContrast.Dark : ThemeContrast.Light,
                 Border = Border.Secondary,
-                DefaultButtonColor = settings.DarkMode ? Color.Dark : Color.Light
+                DefaultButtonColor = settings.DarkMode ? Color.Dark : Color.Light,
+                PrimaryColor = "#0d6efd"
             };
             _appTheme = newTheme;
             ThemeChanged?.Invoke(this, newTheme);

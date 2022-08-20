@@ -12,25 +12,6 @@
       ]
     },
     {
-      "library": "hls.js@1.1.5",
-      "destination": "wwwroot/lib/hls.js/",
-      "files": [
-        "hls.min.js",
-        "hls.js"
-      ]
-    },
-    {
-      "library": "plyr@3.6.12",
-      "destination": "wwwroot/lib/plyr/",
-      "files": [
-        "plyr.js",
-        "plyr.min.js",
-        "plyr.min.js.map",
-        "plyr.css",
-        "plyr.min.css"
-      ]
-    },
-    {
       "library": "font-awesome@6.1.1",
       "destination": "wwwroot/lib/font-awesome/",
       "files": [
@@ -42,6 +23,39 @@
       "destination": "wwwroot/lib/Chart.js/",
       "files": [
         "chart.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@videojs/http-streaming@2.14.2",
+      "destination": "wwwroot/lib/videojs/http-streaming/",
+      "files": [
+        "dist/videojs-http-streaming.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "video.js@7.20.2",
+      "destination": "wwwroot/lib/video.js/",
+      "files": [
+        "dist/video.min.js",
+        "dist/video-js.min.css"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "videojs-contrib-quality-levels@2.1.0",
+      "destination": "wwwroot/lib/videojs-contrib-quality-levels/",
+      "files": [
+        "dist/videojs-contrib-quality-levels.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "videojs-hls-quality-selector@1.1.4",
+      "destination": "wwwroot/lib/videojs-hls-quality-selector/",
+      "files": [
+        "dist/videojs-hls-quality-selector.min.js"
       ]
     }
   ]

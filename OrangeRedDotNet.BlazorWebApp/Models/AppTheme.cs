@@ -47,5 +47,6 @@ namespace OrangeRedDotNet.BlazorWebApp.Models
         /// Default button color
         /// </summary>
         public Color DefaultButtonColor { get; set; }
+        public string PrimaryColor { get; set; }
     }
 }

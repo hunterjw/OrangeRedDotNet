@@ -1,8 +1,18 @@
 ﻿@using System.Web
 
-<div class="rounded reddit-video-container" style="max-width: @(RedditVideo.Width)px; max-height: @(RedditVideo.Height)px;">
-    <video controls crossorigin playsinline id="@($"{LinkId}-video")">
-        <source type="application/x-mpegURL"
-                src="@HttpUtility.HtmlDecode(RedditVideo.HlsUrl)">
-    </video>
+<div class="rounded orangered-video-container"
+     style="max-width: @(RedditVideo.Width)px;">
+    <video-js id="@($"{LinkId}-video")"
+              class="video-js vjs-default-skin orangered-video-player vjs-fluid"
+              controls
+              preload="auto">
+        <source src="@HttpUtility.HtmlDecode(RedditVideo.HlsUrl)"
+                type="application/x-mpegURL">
+    </video-js>
 </div>
+
+<style>
+    .orangered-video-player {
+        --orangered-video-player--primary: @ThemeService.AppTheme.PrimaryColor;
+    }
+</style>
