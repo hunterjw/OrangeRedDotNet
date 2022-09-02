@@ -3,10 +3,8 @@ using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.LinksAndComments;
-using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.Controllers
