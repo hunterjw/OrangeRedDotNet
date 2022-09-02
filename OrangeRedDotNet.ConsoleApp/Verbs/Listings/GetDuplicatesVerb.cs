@@ -52,7 +52,7 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Listings
                 ExpandSubreddits = ExpandSubreddits,
                 Limit = Limit,
                 ShowAll = ShowAll,
-                Sort = Sort.ToEnumFromDescriptionString<DuplicateSort>(),
+                Sort = !string.IsNullOrWhiteSpace(Sort) ? Sort.ToEnumFromDescriptionString<DuplicateSort>() : null,
                 Subreddit = Subreddit
             };
         }
