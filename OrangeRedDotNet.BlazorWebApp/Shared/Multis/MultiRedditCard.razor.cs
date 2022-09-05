@@ -153,8 +153,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                 if (!result.Cancelled)
                 {
                     await RedditService.GetClient().Multis.DeleteMulti(MultiReddit.Data.Path);
-                    OnMultiRedditDelete(MultiReddit.Data.Path);
                     ToastService.ShowSuccess($"{MultiReddit.Data.DisplayName} deleted");
+                    OnMultiRedditDelete(MultiReddit.Data.Path);
                 }
             }
             catch (RedditApiException rex)
@@ -246,8 +246,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                         updateModelResult.DisplayName,
                         updateModelResult.DescriptionMd,
                         true);
-                    OnMultiRedditCopy(copiedMultiReddit);
                     ToastService.ShowSuccess($"{MultiReddit.Data.DisplayName} copied");
+                    OnMultiRedditCopy(copiedMultiReddit);
                 }
             }
             catch (RedditApiException rex)
