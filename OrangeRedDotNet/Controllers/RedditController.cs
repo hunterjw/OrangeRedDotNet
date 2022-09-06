@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.Controllers
@@ -25,6 +26,34 @@ namespace OrangeRedDotNet.Controllers
         /// Shared HttpClient instance
         /// </summary>
         private static readonly HttpClient HttpClient = new();
+        /// <summary>
+        /// Lock for the rate limit info
+        /// </summary>
+        private static readonly SemaphoreSlim _rateLimitLock = new(1, 1);
+
+        /// <summary>
+        /// Rate limit info
+        /// </summary>
+        private static RateLimitInfo _rateLimitInfo = null;
+
+        /// <summary>
+        /// Update the rate limit info with a response message
+        /// </summary>
+        /// <param name="response">Response message</param>
+        /// <returns>Awaitable task</returns>
+        private static async Task UpdateRateLimit(HttpResponseMessage response)
+        {
+            var rateLimitInfo = new RateLimitInfo(response);
+            if (rateLimitInfo.NewerThan(_rateLimitInfo))
+            {
+                await _rateLimitLock.WaitAsync();
+                if (rateLimitInfo.NewerThan(_rateLimitInfo))
+                {
+                    _rateLimitInfo = rateLimitInfo;
+                }
+                _rateLimitLock.Release();
+            }
+        }
 
         /// <summary>
         /// Input reddit authentication
@@ -85,7 +114,15 @@ namespace OrangeRedDotNet.Controllers
             {
                 request.Content = content;
             }
+
+            if (!(_rateLimitInfo?.HasAvailableRequests() ?? true))
+            {
+                await Task.Delay(DateTimeOffset.UtcNow - (_rateLimitInfo?.ResetDateTime ?? DateTimeOffset.UtcNow));
+            }
+
             HttpResponseMessage response = await HttpClient.SendAsync(request);
+
+            _ = UpdateRateLimit(response);
 
             string responseJson = await response.Content.ReadAsStringAsync();
 
@@ -195,7 +232,7 @@ namespace OrangeRedDotNet.Controllers
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
 
-            HttpResponseMessage response = await SendRequest(HttpMethod.Put, builder.ToString(), 
+            HttpResponseMessage response = await SendRequest(HttpMethod.Put, builder.ToString(),
                 new FormUrlEncodedContent(queryParameters));
             if (!response.IsSuccessStatusCode)
             {
