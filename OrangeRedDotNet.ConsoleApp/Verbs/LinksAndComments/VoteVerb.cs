@@ -30,7 +30,12 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.LinksAndComments
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            await reddit.LinksAndComments.Vote(Id, Dir, Rank);
+            await reddit.LinksAndComments.Vote(new()
+            {
+                Id = Id,
+                Dir = Dir,
+                Rank = Rank
+            });
             return string.Empty;
         }
     }

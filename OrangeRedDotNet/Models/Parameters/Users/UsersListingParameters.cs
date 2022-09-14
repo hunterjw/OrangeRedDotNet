@@ -1,7 +1,8 @@
 ﻿using OrangeRedDotNet.Extensions;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Collections.Generic;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Users
 {
     /// <summary>
     /// Parameters for user profile listings

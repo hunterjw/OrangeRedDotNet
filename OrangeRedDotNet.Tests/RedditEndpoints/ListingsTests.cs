@@ -2,7 +2,7 @@
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Multis;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

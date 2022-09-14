@@ -3,12 +3,9 @@ using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Interfaces;
 using OrangeRedDotNet.Models.Account;
-using OrangeRedDotNet.Models.Comments;
-using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Users;
 using OrangeRedDotNet.Models.Users;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,32 +32,24 @@ namespace OrangeRedDotNet.Controllers
         /// <summary>
         /// Get user data by IDs
         /// </summary>
-        /// <param name="ids">Account fullnames</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Dictionary of account fullnames to user data</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<Dictionary<string, UserData>> GetUsersByIds(IEnumerable<string> ids)
+        public async Task<Dictionary<string, UserData>> GetUsersByIds(UsersByIdsParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "ids", string.Join(',', ids) }
-            };
             return await Get<Dictionary<string, UserData>>($"/api/user_data_by_account_ids", parameters);
         }
 
         /// <summary>
         /// Check whether a username is available for registration.
         /// </summary>
-        /// <param name="username">A valid, unused, username</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Boolean value</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<bool> IsUsernameAvailable(string username)
+        public async Task<bool> IsUsernameAvailable(IsUsernameAvailableParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "user", username }
-            };
             return await Get<bool>($"/api/username_available", parameters);
         }
 
@@ -96,18 +85,9 @@ namespace OrangeRedDotNet.Controllers
         /// <returns>User object</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<User> UpdateFriend(string username, string note = "")
+        public async Task<User> UpdateFriend(UpdateFriendParameters parameters)
         {
-            Dictionary<string, string> content = new()
-            {
-                {
-                    "json",
-                    $"{{ \"name\": \"{username}\"" +
-                        (!string.IsNullOrWhiteSpace(note) ? $", \"note\": \"{note}\"" : "") +
-                        $" }}"
-                }
-            };
-            return await Put<User>($"/api/v1/me/friends/{username}", content);
+            return await Put<User>($"/api/v1/me/friends/{parameters.Username}", parameters);
         }
         #endregion
 

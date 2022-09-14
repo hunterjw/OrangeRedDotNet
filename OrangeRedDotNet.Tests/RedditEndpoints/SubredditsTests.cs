@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using OrangeRedDotNet.Models.Subreddits;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,7 +58,11 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Assert.IsNotNull(subscribed);
             Assert.IsTrue(subscribed.Data.Children.Any());
 
-            await client.Subreddits.Subscribe(subscribed.Data.Children.First().Data.DisplayName, SubscribeAction.Subscribe);
+            await client.Subreddits.Subscribe(new()
+            {
+                SubredditName = subscribed.Data.Children.First().Data.DisplayName,
+                Action = SubscribeAction.Subscribe
+            });
         }
     }
 }

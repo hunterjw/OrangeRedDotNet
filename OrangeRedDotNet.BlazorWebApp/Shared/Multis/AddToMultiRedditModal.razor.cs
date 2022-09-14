@@ -127,7 +127,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                     Subreddits = new List<MultiSubredditUpdate>()
                 };
                 string path = $"user/{RedditService.Identity.Name}/m/{NewMultiName.FormatNewMultiName()}";
-                MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModel);
+                MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, new()
+                {
+                    Model = updateModel
+                });
                 MultiRedditStates.Add(new MultiRedditState
                 {
                     MultiReddit = newMulti,

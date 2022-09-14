@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Listings
 {
     public enum FrontPageListingType
     {

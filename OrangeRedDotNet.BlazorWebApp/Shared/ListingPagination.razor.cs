@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Net.Http;
 using System.Threading.Tasks;
 

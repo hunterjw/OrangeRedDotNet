@@ -1,12 +1,12 @@
 ﻿using OrangeRedDotNet.Interfaces;
 using System.Collections.Generic;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Listings
 {
     /// <summary>
     /// Parameters for listings
     /// </summary>
-    public class ListingParameters : IQueryParameters
+    public class ListingParameters : QueryParametersBase
     {
         /// <summary>
         /// Fullname of a thing
@@ -34,7 +34,7 @@ namespace OrangeRedDotNet.Models.Parameters
         public bool? ExpandSubreddits { get; set; }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, string> ToQueryParameters()
+        public override IDictionary<string, string> ToQueryParameters()
         {
             var dict = new Dictionary<string, string>
             {
@@ -61,7 +61,7 @@ namespace OrangeRedDotNet.Models.Parameters
         }
 
         /// <inheritdoc/>
-        public virtual IList<string> GetValidationErrors()
+        public override IList<string> GetValidationErrors()
         {
             List<string> errors = new();
 

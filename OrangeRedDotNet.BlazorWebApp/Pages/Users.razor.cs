@@ -7,6 +7,8 @@ using OrangeRedDotNet.Interfaces;
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Users;
 using System.Net.Http;
 using System.Threading.Tasks;
 

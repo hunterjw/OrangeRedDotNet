@@ -18,7 +18,7 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.LinksAndComments
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            await reddit.LinksAndComments.Unsave(Id);
+            await reddit.LinksAndComments.Unsave(new() { Id = Id });
             return string.Empty;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 using OrangeRedDotNet.Extensions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,12 +41,16 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.LinksAndComments
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.LinksAndComments.GetMoreChildren(
-                    LinkFullName,
-                    Children,
-                    !string.IsNullOrWhiteSpace(Sort) ? Sort.ToEnumFromDescriptionString<CommentSort>() : null,
-                    Depth,
-                    LimitChildren))
+            return (await reddit.LinksAndComments
+                .GetMoreChildren(
+                    new()
+                    {
+                        LinkFullName = LinkFullName,
+                        Children = Children,
+                        Sort = !string.IsNullOrWhiteSpace(Sort) ? Sort.ToEnumFromDescriptionString<CommentSort>() : null,
+                        Depth = Depth,
+                        LimitChildren = LimitChildren
+                    }))
                 .ToJson();
         }
     }

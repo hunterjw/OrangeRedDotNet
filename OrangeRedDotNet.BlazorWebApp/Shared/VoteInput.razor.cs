@@ -105,7 +105,12 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
         {
             try
             {
-                await RedditService.GetClient().LinksAndComments.Vote(Id, 1, 2);
+                await RedditService.GetClient().LinksAndComments.Vote(new()
+                {
+                    Id = Id,
+                    Dir = 1,
+                    Rank = 2
+                });
                 Likes = true;
             }
             catch (RedditApiException rex)
@@ -122,7 +127,12 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
         {
             try
             {
-                await RedditService.GetClient().LinksAndComments.Vote(Id, -1, 2);
+                await RedditService.GetClient().LinksAndComments.Vote(new()
+                {
+                    Id = Id,
+                    Dir = -1,
+                    Rank = 2
+                });
                 Likes = false;
             }
             catch (RedditApiException rex)
@@ -139,7 +149,12 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared
         {
             try
             {
-                await RedditService.GetClient().LinksAndComments.Vote(Id, 0, 2);
+                await RedditService.GetClient().LinksAndComments.Vote(new()
+                {
+                    Id = Id,
+                    Dir = 0,
+                    Rank = 2
+                });
                 Likes = null;
             }
             catch (RedditApiException rex)

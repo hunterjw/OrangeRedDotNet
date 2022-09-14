@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using OrangeRedDotNet.ConsoleApp.Verbs.Listings;
 using OrangeRedDotNet.Extensions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.ConsoleApp.Verbs.Subreddits

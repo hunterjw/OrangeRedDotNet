@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.Links;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using OrangeRedDotNet.Models.Subreddits;
 using System.Linq;
 using System.Threading.Tasks;

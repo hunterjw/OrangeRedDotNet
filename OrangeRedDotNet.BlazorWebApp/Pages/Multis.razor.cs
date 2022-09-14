@@ -56,7 +56,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
             }
             try
             {
-                MultiReddits = await RedditService.GetClient().Multis.GetMine(true);
+                MultiReddits = await RedditService.GetClient().Multis.GetMine(
+                    new()
+                    {
+                        ExpandSubreddits = true
+                    });
             }
             catch (RedditApiException rex)
             {
@@ -95,7 +99,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 {
                     var updateModelResult = result.Data as MultiRedditUpdate;
                     string path = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
-                    MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, updateModelResult, true);
+                    MultiReddit newMulti = await RedditService.GetClient().Multis.CreateMulti(path, new()
+                    {
+                        Model = updateModelResult,
+                        ExpandSubreddits = true
+                    });
                     MultiReddits.Add(newMulti);
                     StateHasChanged();
                     ToastService.ShowSuccess("Multireddit added");

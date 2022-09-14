@@ -7,6 +7,7 @@ using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Multis;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using OrangeRedDotNet.Models.Subreddits;
 using System;
 using System.Net.Http;
@@ -156,7 +157,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                     }
                     if (!MultiRedditLoaded)
                     {
-                        MultiReddit = await redditClient.Multis.GetMulti(GetMultiRedditUrl(true), true);
+                        MultiReddit = await redditClient.Multis.GetMulti(GetMultiRedditUrl(true), new()
+                        {
+                            ExpandSubreddits = true
+                        });
                         MultiRedditLoaded = true;
                     }
                 }

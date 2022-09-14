@@ -25,7 +25,10 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Multi
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Multis.UpdateDescription(Path, Description)).ToJson();
+            return (await reddit.Multis.UpdateDescription(Path, new()
+            {
+                DescriptionMd = Description
+            })).ToJson();
         }
     }
 }

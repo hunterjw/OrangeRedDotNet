@@ -19,7 +19,10 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Multi
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Multis.GetMine(ExpandSubreddits)).ToJson();
+            return (await reddit.Multis.GetMine(new()
+            {
+                ExpandSubreddits = ExpandSubreddits
+            })).ToJson();
         }
     }
 }

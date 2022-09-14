@@ -4,7 +4,7 @@ using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Interfaces;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

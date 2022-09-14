@@ -43,9 +43,15 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Multi
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Multis.CopyMulti(
-                From, To, DisplayName, Description, 
-                ExpandSubreddits)).ToJson();
+            return (await reddit.Multis.CopyMulti(new()
+            {
+                From = From,
+                To = To,
+                DisplayName = DisplayName,
+                DescriptionMd = Description,
+                ExpandSubreddits =
+                ExpandSubreddits
+            })).ToJson();
         }
     }
 }

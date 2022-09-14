@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.BlazorWebApp.Shared.Multis;
 using OrangeRedDotNet.Exceptions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using OrangeRedDotNet.Models.Subreddits;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -119,7 +119,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Subreddits
                         {
                             if (multiState.CurrentState)
                             {
-                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, SubredditDetails.Data.DisplayName);
+                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, new()
+                                {
+                                    SubredditName = SubredditDetails.Data.DisplayName
+                                });
                             }
                             else
                             {
@@ -145,9 +148,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Subreddits
             try
             {
                 bool subscribed = SubredditDetails.Data.UserIsSubscriber ?? false;
-                await RedditService.GetClient().Subreddits.Subscribe(
-                    SubredditDetails.Data.DisplayName, 
-                    subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe);
+                await RedditService.GetClient().Subreddits.Subscribe(new()
+                {
+                    SubredditName = SubredditDetails.Data.DisplayName,
+                    Action = subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe
+                });
                 SubredditDetails.Data.UserIsSubscriber = !subscribed;
             }
             catch (RedditApiException rex)

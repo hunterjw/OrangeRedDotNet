@@ -1,14 +1,10 @@
 ﻿using OrangeRedDotNet.Authentication;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
-using OrangeRedDotNet.Models;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using OrangeRedDotNet.Models.Subreddits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.Controllers
@@ -84,24 +80,12 @@ namespace OrangeRedDotNet.Controllers
         /// <summary>
         /// Subscribe to or unsubscribe from a subreddit
         /// </summary>
-        /// <param name="subredditName">Subreddit name</param>
-        /// <param name="action">Subscribe action</param>
-        /// <param name="skipInitialDefaults">
-        ///     Set to True to prevent automatically subscribing the user to the current set of 
-        ///     defaults when they take their first subscription action. Attempting to set it 
-        ///     for an unsubscribe action will result in an error.
-        /// </param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Subscribe(string subredditName, SubscribeAction action, bool skipInitialDefaults = false)
+        public async Task Subscribe(SubscribeParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "sr_name", subredditName },
-                { "action", action.ToDescriptionString() },
-                { "skip_initial_defaults", $"{skipInitialDefaults}" },
-            };
             await Post("/api/subscribe", parameters);
         }
     }

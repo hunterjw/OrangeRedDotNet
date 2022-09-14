@@ -18,7 +18,7 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.LinksAndComments
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            await reddit.LinksAndComments.Hide(Id);
+            await reddit.LinksAndComments.Hide(new() { Id = Id });
             return string.Empty;
         }
     }

@@ -2,12 +2,12 @@
 using OrangeRedDotNet.Interfaces;
 using System.Collections.Generic;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Listings
 {
     /// <summary>
     /// Parameters for getting Comments from Reddit
     /// </summary>
-    public class CommentListingParameters : IQueryParameters
+    public class CommentListingParameters : QueryParametersBase
     {
         /// <summary>
         /// (optional) ID36 of a comment in the comment tree to focus on
@@ -63,7 +63,7 @@ namespace OrangeRedDotNet.Models.Parameters
         public CommentTheme? Theme { get; set; }
 
         /// <inheritdoc/>
-        public IDictionary<string, string> ToQueryParameters()
+        public override IDictionary<string, string> ToQueryParameters()
         {
             var dict = new Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(CommentId))
@@ -122,7 +122,7 @@ namespace OrangeRedDotNet.Models.Parameters
         }
 
         /// <inheritdoc/>
-        public IList<string> GetValidationErrors()
+        public override IList<string> GetValidationErrors()
         {
             List<string> errors = new();
 

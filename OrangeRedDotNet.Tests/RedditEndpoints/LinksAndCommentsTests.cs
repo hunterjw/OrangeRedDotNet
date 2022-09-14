@@ -5,6 +5,8 @@ using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +31,12 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Assert.IsInstanceOfType(toUpvote, typeof(Link));
 
             Link linkToUpvote = toUpvote as Link;
-            await client.LinksAndComments.Vote(linkToUpvote.Data.Name, 1, 2);
+            await client.LinksAndComments.Vote(new()
+            {
+                Id = linkToUpvote.Data.Name,
+                Dir = 1,
+                Rank = 2
+            });
         }
 
         [TestMethod]
@@ -47,7 +54,12 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Assert.IsInstanceOfType(toDownvote, typeof(Link));
 
             Link linkToDownvote = toDownvote as Link;
-            await client.LinksAndComments.Vote(linkToDownvote.Data.Name, -1, 2);
+            await client.LinksAndComments.Vote(new()
+            {
+                Id = linkToDownvote.Data.Name,
+                Dir = -1,
+                Rank = 2
+            });
         }
 
 
@@ -61,7 +73,12 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Link linkToClearVote = links.Data.Children.FirstOrDefault(_ => !_.Data.Likes.HasValue);
             Assert.IsNotNull(linkToClearVote);
 
-            await client.LinksAndComments.Vote(linkToClearVote.Data.Name, 0, 2);
+            await client.LinksAndComments.Vote(new()
+            {
+                Id = linkToClearVote.Data.Name,
+                Dir = 0,
+                Rank = 2
+            });
         }
 
         [TestMethod]
@@ -76,7 +93,7 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
 
             string linkFullName = null;
             IEnumerable<string> children = null;
-            foreach(Link link in links.Data.Children)
+            foreach (Link link in links.Data.Children)
             {
                 LinkWithComments linkWithComments = await client.Listings.GetComments(link.Data.Id);
                 IEnumerable<CommentBase> moreData = linkWithComments.Comments.Data.Children.Where(_ => _.Data.GetType() == typeof(MoreData));
@@ -90,14 +107,19 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Assert.IsNotNull(linkFullName);
             Assert.IsNotNull(children);
 
-            List<CommentBase> moreChildren = await client.LinksAndComments.GetMoreChildren(linkFullName, children);
+            List<CommentBase> moreChildren = await client.LinksAndComments.GetMoreChildren(
+                new()
+                {
+                    LinkFullName = linkFullName,
+                    Children = children
+                });
             Assert.IsNotNull(moreChildren);
         }
 
         [TestMethod]
         public async Task Save()
         {
-            Reddit client = GetRedditClient(); 
+            Reddit client = GetRedditClient();
             AccountData identity = await client.Account.GetIdentity();
             Listing<ILinkOrComment> saved = await client.Users.GetListing(identity.Name, UserProfileListingType.Saved, new UsersListingParameters
             {
@@ -117,7 +139,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             }
             Assert.IsTrue(!string.IsNullOrWhiteSpace(fullName));
 
-            await client.LinksAndComments.Save(fullName);
+            await client.LinksAndComments.Save(new()
+            {
+                Id = fullName
+            });
         }
 
         [TestMethod]
@@ -130,7 +155,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Link linkToUnsave = links.Data.Children.FirstOrDefault(_ => !_.Data.Saved);
             Assert.IsNotNull(linkToUnsave);
 
-            await client.LinksAndComments.Unsave(linkToUnsave.Data.Name);
+            await client.LinksAndComments.Unsave(new()
+            {
+                Id = linkToUnsave.Data.Name
+            });
         }
 
         [TestMethod]
@@ -152,7 +180,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             }
             Assert.IsTrue(!string.IsNullOrWhiteSpace(fullName));
 
-            await client.LinksAndComments.Hide(fullName);
+            await client.LinksAndComments.Hide(new()
+            {
+                Id = fullName
+            });
         }
 
         [TestMethod]
@@ -165,7 +196,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Link linkToUnsave = links.Data.Children.FirstOrDefault(_ => !_.Data.Hidden);
             Assert.IsNotNull(linkToUnsave);
 
-            await client.LinksAndComments.Unhide(linkToUnsave.Data.Name);
+            await client.LinksAndComments.Unhide(new()
+            {
+                Id = linkToUnsave.Data.Name
+            });
         }
     }
 }

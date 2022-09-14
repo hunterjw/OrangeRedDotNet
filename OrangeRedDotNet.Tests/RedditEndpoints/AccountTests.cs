@@ -32,9 +32,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
         {
             var client = GetRedditClient();
             // Grab current preferences, send them back
-            var result = await client.Account.SetPreferences(
-                await client.Account.GetPreferences()
-                );
+            var result = await client.Account.SetPreferences(new()
+            {
+                Preferences = await client.Account.GetPreferences()
+            });
             Assert.IsNotNull(result);
         }
 

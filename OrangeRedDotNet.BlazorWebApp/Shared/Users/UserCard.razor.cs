@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.BlazorWebApp.Shared.Multis;
 using OrangeRedDotNet.Exceptions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -100,7 +100,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Users
                         {
                             if (multiState.CurrentState)
                             {
-                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, AccountData.Subreddit.DisplayName);
+                                await reddit.Multis.AddSubreddit(multiState.MultiReddit.Data.Path, new()
+                                {
+                                    SubredditName = AccountData.Subreddit.DisplayName
+                                });
                             }
                             else
                             {
@@ -128,9 +131,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Users
                 if (AccountData.Subreddit != null)
                 {
                     bool subscribed = AccountData.Subreddit.UserIsSubscriber ?? false;
-                    await RedditService.GetClient().Subreddits.Subscribe(
-                        AccountData.Subreddit.DisplayName,
-                        subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe);
+                    await RedditService.GetClient().Subreddits.Subscribe(new()
+                    {
+                        SubredditName = AccountData.Subreddit.DisplayName,
+                        Action = subscribed ? SubscribeAction.Unsubscribe : SubscribeAction.Subscribe
+                    });
                     AccountData.Subreddit.UserIsSubscriber = !subscribed;
                 }
             }

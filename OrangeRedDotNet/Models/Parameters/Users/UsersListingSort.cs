@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Users
 {
     /// <summary>
     /// Sort types for User profile listings

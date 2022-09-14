@@ -4,6 +4,8 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Search;
 using OrangeRedDotNet.Models.Search;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -126,7 +128,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         protected SearchType GetSearchType()
         {
             return string.IsNullOrWhiteSpace(SearchType) ?
-                OrangeRedDotNet.Models.Parameters.SearchType.Link :
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.Link :
                 SearchType.ToEnumFromDescriptionString<SearchType>();
         }
 
@@ -136,7 +138,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         /// <returns>Timescale</returns>
         protected Timescale? GetTimescale()
         {
-            if (GetSearchType() != OrangeRedDotNet.Models.Parameters.SearchType.Link)
+            if (GetSearchType() != OrangeRedDotNet.Models.Parameters.Search.SearchType.Link)
             {
                 return null;
             }
@@ -150,7 +152,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         /// <returns>Search sort</returns>
         protected SearchSort? GetSearchSort()
         {
-            if (GetSearchType() != OrangeRedDotNet.Models.Parameters.SearchType.Link)
+            if (GetSearchType() != OrangeRedDotNet.Models.Parameters.Search.SearchType.Link)
             {
                 return null;
             }
@@ -208,9 +210,9 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         {
             return GetSearchType() switch
             {
-                OrangeRedDotNet.Models.Parameters.SearchType.Link => SearchResults?.Links?.Data?.After,
-                OrangeRedDotNet.Models.Parameters.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.After,
-                OrangeRedDotNet.Models.Parameters.SearchType.User => SearchResults?.Users?.Data?.After,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.Link => SearchResults?.Links?.Data?.After,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.After,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.User => SearchResults?.Users?.Data?.After,
                 _ => null,
             };
         }
@@ -223,9 +225,9 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
         {
             return GetSearchType() switch
             {
-                OrangeRedDotNet.Models.Parameters.SearchType.Link => SearchResults?.Links?.Data?.Before,
-                OrangeRedDotNet.Models.Parameters.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.Before,
-                OrangeRedDotNet.Models.Parameters.SearchType.User => SearchResults?.Users?.Data?.Before,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.Link => SearchResults?.Links?.Data?.Before,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.Subreddit => SearchResults?.Subreddits?.Data?.Before,
+                OrangeRedDotNet.Models.Parameters.Search.SearchType.User => SearchResults?.Users?.Data?.Before,
                 _ => null,
             };
         }

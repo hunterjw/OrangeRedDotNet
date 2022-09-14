@@ -2,6 +2,7 @@
 using OrangeRedDotNet.ConsoleApp.Verbs.Listings;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Users;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.ConsoleApp.Verbs.Users

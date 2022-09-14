@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 using OrangeRedDotNet.Extensions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.ConsoleApp.Verbs.Listings

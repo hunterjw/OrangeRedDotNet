@@ -1,7 +1,8 @@
 ﻿using OrangeRedDotNet.Extensions;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.Collections.Generic;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Search
 {
     /// <summary>
     /// Search listing parameters
@@ -68,7 +69,7 @@ namespace OrangeRedDotNet.Models.Parameters
             }
             return parameters;
         }
-        
+
         /// <inheritdoc/>
         public override ListingParameters Copy()
         {

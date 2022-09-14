@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrangeRedDotNet.Models.Account
 {
-	public class Preferences
+    public class Preferences
     {
         [JsonProperty("accept_pms")]
         public string AcceptPms { get; set; }

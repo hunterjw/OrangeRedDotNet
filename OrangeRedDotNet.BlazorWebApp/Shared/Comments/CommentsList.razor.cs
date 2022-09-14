@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 
 namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
 {

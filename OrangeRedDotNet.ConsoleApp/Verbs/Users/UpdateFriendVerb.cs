@@ -24,7 +24,11 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Users
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Users.UpdateFriend(Username, Note)).ToJson();
+            return (await reddit.Users.UpdateFriend(new()
+            {
+                Username = Username,
+                Note = Note
+            })).ToJson();
         }
     }
 }

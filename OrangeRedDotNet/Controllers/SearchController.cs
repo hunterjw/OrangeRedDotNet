@@ -1,5 +1,5 @@
 ﻿using OrangeRedDotNet.Authentication;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Search;
 using OrangeRedDotNet.Models.Search;
 using System.Threading.Tasks;
 

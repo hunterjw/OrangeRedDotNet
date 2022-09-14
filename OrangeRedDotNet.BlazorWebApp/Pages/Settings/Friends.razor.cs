@@ -62,7 +62,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages.Settings
             {
                 try
                 {
-                    var newFriend = await RedditService.GetClient().Users.UpdateFriend(NewFriend);
+                    var newFriend = await RedditService.GetClient().Users.UpdateFriend(new()
+                    {
+                        Username = NewFriend
+                    });
                     if (MyFriends?.Data?.Children?.Count(_ => _.Name.Equals(newFriend.Name)) < 1)
                     {
                         MyFriends.Data.Children.Add(newFriend);

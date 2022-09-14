@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Users
 {
     /// <summary>
     /// Returned object type filter for Userp profile listings

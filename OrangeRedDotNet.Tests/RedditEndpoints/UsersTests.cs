@@ -3,7 +3,8 @@ using OrangeRedDotNet.Interfaces;
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Links;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Users;
 using OrangeRedDotNet.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             AccountData identity = await client.Account.GetIdentity();
             Assert.IsNotNull(identity);
 
-            Dictionary<string, UserData> users = await client.Users.GetUsersByIds(new[] { "t2_" + identity.Id });
+            Dictionary<string, UserData> users = await client.Users.GetUsersByIds(new()
+            {
+                Ids = new[] { "t2_" + identity.Id }
+            });
             Assert.IsNotNull(users);
         }
 
@@ -33,7 +37,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             AccountData identity = await client.Account.GetIdentity();
             Assert.IsNotNull(identity);
 
-            bool usernameAvailable = await client.Users.IsUsernameAvailable(identity.Name);
+            bool usernameAvailable = await client.Users.IsUsernameAvailable(new()
+            {
+                Username = identity.Name
+            });
             Assert.IsFalse(usernameAvailable);
         }
 
@@ -61,7 +68,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             IEnumerable<string> friendNames = friends.Data?.Children?.Select(_ => _.Name);
             string username = frontpage.Data.Children.Where(_ => !friendNames.Contains(_.Data.Author)).First().Data.Author;
 
-            User newFriend = await client.Users.UpdateFriend(username);
+            User newFriend = await client.Users.UpdateFriend(new()
+            {
+                Username = username
+            });
             Assert.IsNotNull(newFriend);
 
             await client.Users.RemoveFriend(username);

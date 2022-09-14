@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 using OrangeRedDotNet.Extensions;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.ConsoleApp.Verbs.Subreddits
@@ -34,10 +34,12 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Subreddits
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            await reddit.Subreddits.Subscribe(
-                SubredditName,
-                Action.ToEnumFromDescriptionString<SubscribeAction>(),
-                SkipInitialDefaults);
+            await reddit.Subreddits.Subscribe(new()
+            {
+                SubredditName = SubredditName,
+                Action = Action.ToEnumFromDescriptionString<SubscribeAction>(),
+                SkipInitialDefaults = SkipInitialDefaults
+            });
             return string.Empty;
         }
     }

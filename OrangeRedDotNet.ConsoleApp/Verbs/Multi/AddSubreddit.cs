@@ -25,7 +25,10 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Multi
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Multis.AddSubreddit(Path, Subreddit)).ToJson();
+            return (await reddit.Multis.AddSubreddit(Path, new()
+            {
+                SubredditName = Subreddit
+            })).ToJson();
         }
     }
 }

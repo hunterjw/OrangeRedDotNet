@@ -32,7 +32,11 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Multi
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Multis.UpdateMulti(Path, Model.FromJson<MultiRedditUpdate>(), ExpandSubreddits)).ToJson();
+            return (await reddit.Multis.UpdateMulti(Path, new()
+            {
+                Model = Model.FromJson<MultiRedditUpdate>(),
+                ExpandSubreddits = ExpandSubreddits
+            })).ToJson();
         }
     }
 }

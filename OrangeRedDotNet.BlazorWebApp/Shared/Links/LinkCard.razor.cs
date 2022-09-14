@@ -4,6 +4,7 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Links;
+using OrangeRedDotNet.Models.Parameters.LinkAndComments;
 using OrangeRedDotNet.Models.Subreddits;
 using System.Collections.Generic;
 using System.Linq;
@@ -217,13 +218,17 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             try
             {
                 Reddit client = RedditService.GetClient();
+                ThingParameters parameters = new()
+                {
+                    Id = Link.Data.Name
+                };
                 if (Link.Data.Saved)
                 {
-                    await client.LinksAndComments.Unsave(Link.Data.Name);
+                    await client.LinksAndComments.Unsave(parameters);
                 }
                 else
                 {
-                    await client.LinksAndComments.Save(Link.Data.Name);
+                    await client.LinksAndComments.Save(parameters);
                 }
                 Link.Data.Saved = !Link.Data.Saved;
             }
@@ -242,13 +247,17 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             try
             {
                 Reddit client = RedditService.GetClient();
+                ThingParameters parameters = new()
+                {
+                    Id = Link.Data.Name
+                };
                 if (Link.Data.Hidden)
                 {
-                    await client.LinksAndComments.Unhide(Link.Data.Name);
+                    await client.LinksAndComments.Unhide(parameters);
                 }
                 else
                 {
-                    await client.LinksAndComments.Hide(Link.Data.Name);
+                    await client.LinksAndComments.Hide(parameters);
                 }
                 Link.Data.Hidden = !Link.Data.Hidden;
             }

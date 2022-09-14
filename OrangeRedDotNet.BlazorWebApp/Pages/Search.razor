@@ -6,7 +6,7 @@
 <SearchListingNavTabs ActiveTab="@GetSearchType().ToDescriptionString()"
                       CurrentPageParameters="@BuildSearchListingParameters()"
                       Subreddit="@Subreddit" />
-@if (GetSearchType() == OrangeRedDotNet.Models.Parameters.SearchType.Link)
+@if (GetSearchType() == OrangeRedDotNet.Models.Parameters.Search.SearchType.Link)
 {
     <Row>
         <Column ColumnSize="ColumnSize.IsAuto">
@@ -40,10 +40,10 @@ else
 {
     @switch (GetSearchType())
     {
-        case OrangeRedDotNet.Models.Parameters.SearchType.Link:
+        case OrangeRedDotNet.Models.Parameters.Search.SearchType.Link:
             <LinkList Links="SearchResults.Links" />
             break;
-        case OrangeRedDotNet.Models.Parameters.SearchType.Subreddit:
+        case OrangeRedDotNet.Models.Parameters.Search.SearchType.Subreddit:
             @if (SearchResults?.Subreddits?.Data?.Children?.Any() ?? false)
             {
                 @foreach (var subreddit in SearchResults.Subreddits.Data.Children)
@@ -56,7 +56,7 @@ else
                 <Paragraph>No subreddits to display</Paragraph>
             }
             break;
-        case OrangeRedDotNet.Models.Parameters.SearchType.User:
+        case OrangeRedDotNet.Models.Parameters.Search.SearchType.User:
             @if (SearchResults?.Users?.Data?.Children?.Any() ?? false)
             {
                 @foreach (var user in SearchResults.Users.Data.Children)

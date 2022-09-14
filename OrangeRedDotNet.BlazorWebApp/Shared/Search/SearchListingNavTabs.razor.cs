@@ -2,8 +2,8 @@
 using OrangeRedDotNet.Extensions;
 using System.Threading.Tasks;
 using System.Net.Http;
-using OrangeRedDotNet.Models.Parameters;
 using OrangeRedDotNet.BlazorWebApp.Services;
+using OrangeRedDotNet.Models.Parameters.Search;
 
 namespace OrangeRedDotNet.BlazorWebApp.Shared.Search
 {

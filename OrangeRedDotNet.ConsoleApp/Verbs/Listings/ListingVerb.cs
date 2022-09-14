@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
 
 namespace OrangeRedDotNet.ConsoleApp.Verbs.Listings
 {

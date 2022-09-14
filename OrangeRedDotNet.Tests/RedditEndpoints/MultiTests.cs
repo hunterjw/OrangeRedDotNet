@@ -2,7 +2,7 @@
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Multis;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using OrangeRedDotNet.Models.Subreddits;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,11 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             List<MultiReddit> mine = await client.Multis.GetMine();
             Assert.IsTrue(mine?.Any());
 
-            MultiReddit copyResult = await client.Multis.CopyMulti(mine.First().Data.Path, $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}");
+            MultiReddit copyResult = await client.Multis.CopyMulti(new()
+            {
+                From = mine.First().Data.Path,
+                To = $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}"
+            });
             Assert.IsNotNull(copyResult);
 
             await client.Multis.DeleteMulti(copyResult.Data.Path);
@@ -78,7 +82,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
                 Subreddits = new List<MultiSubredditUpdate>(),
                 Visibility = "private"
             };
-            MultiReddit result = await client.Multis.CreateMulti($"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}", updateModel);
+            MultiReddit result = await client.Multis.CreateMulti($"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}", new()
+            {
+                Model = updateModel
+            });
             Assert.IsNotNull(result);
 
             await client.Multis.DeleteMulti(result.Data.Path);
@@ -94,7 +101,11 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             List<MultiReddit> mine = await client.Multis.GetMine();
             Assert.IsTrue(mine?.Any());
 
-            MultiReddit copyResult = await client.Multis.CopyMulti(mine.First().Data.Path, $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}");
+            MultiReddit copyResult = await client.Multis.CopyMulti(new()
+            {
+                From = mine.First().Data.Path,
+                To = $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}"
+            });
             Assert.IsNotNull(copyResult);
 
             MultiRedditUpdate updateModel = new()
@@ -109,7 +120,10 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
                     }).ToList(),
                 Visibility = copyResult.Data.Visibility
             };
-            MultiReddit updateResult = await client.Multis.UpdateMulti(copyResult.Data.Path, updateModel);
+            MultiReddit updateResult = await client.Multis.UpdateMulti(copyResult.Data.Path, new()
+            {
+                Model = updateModel
+            });
             Assert.IsNotNull(updateResult);
 
             await client.Multis.DeleteMulti(updateResult.Data.Path);
@@ -139,10 +153,17 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             List<MultiReddit> mine = await client.Multis.GetMine();
             Assert.IsTrue(mine?.Any());
 
-            MultiReddit copyResult = await client.Multis.CopyMulti(mine.First().Data.Path, $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}");
+            MultiReddit copyResult = await client.Multis.CopyMulti(new()
+            {
+                From = mine.First().Data.Path,
+                To = $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}"
+            });
             Assert.IsNotNull(copyResult);
 
-            MultiDescription updateDescriptionResult = await client.Multis.UpdateDescription(copyResult.Data.Path, copyResult.Data.DescriptionMd + " Edited");
+            MultiDescription updateDescriptionResult = await client.Multis.UpdateDescription(copyResult.Data.Path, new()
+            {
+                DescriptionMd = copyResult.Data.DescriptionMd + " Edited"
+            });
             Assert.IsNotNull(updateDescriptionResult);
 
             await client.Multis.DeleteMulti(copyResult.Data.Path);
@@ -161,7 +182,11 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             MultiReddit toCopy = mine.First();
             Assert.IsTrue(toCopy.Data.Subreddits.Any());
 
-            MultiReddit copyResult = await client.Multis.CopyMulti(mine.First().Data.Path, $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}");
+            MultiReddit copyResult = await client.Multis.CopyMulti(new()
+            {
+                From = mine.First().Data.Path,
+                To = $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}"
+            });
             Assert.IsNotNull(copyResult);
 
             await client.Multis.DeleteSubreddit(copyResult.Data.Path, copyResult.Data.Subreddits.First().Name);
@@ -203,10 +228,17 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             Assert.IsNotNull(subreddits);
             Assert.IsTrue(subreddits.Data.Children.Any());
 
-            MultiReddit copyResult = await client.Multis.CopyMulti(mine.First().Data.Path, $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}");
+            MultiReddit copyResult = await client.Multis.CopyMulti(new()
+            {
+                From = mine.First().Data.Path,
+                To = $"user/{identity.Name}/m/{DateTime.UtcNow:yyyyMd}"
+            });
             Assert.IsNotNull(copyResult);
 
-            MultiSubreddit addResult = await client.Multis.AddSubreddit(copyResult.Data.Path, subreddits.Data.Children.First().Data.DisplayName);
+            MultiSubreddit addResult = await client.Multis.AddSubreddit(copyResult.Data.Path, new()
+            {
+                SubredditName = subreddits.Data.Children.First().Data.DisplayName
+            });
             Assert.IsNotNull(addResult);
 
             await client.Multis.DeleteMulti(copyResult.Data.Path);

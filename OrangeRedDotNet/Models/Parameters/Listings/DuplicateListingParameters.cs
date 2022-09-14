@@ -1,7 +1,7 @@
 ﻿using OrangeRedDotNet.Extensions;
 using System.Collections.Generic;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Listings
 {
     /// <summary>
     /// Listing parameters for getting duplicate links

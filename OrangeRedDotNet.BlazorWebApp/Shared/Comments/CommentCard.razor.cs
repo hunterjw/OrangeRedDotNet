@@ -4,7 +4,8 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Comments;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.LinkAndComments;
+using OrangeRedDotNet.Models.Parameters.Listings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,7 +85,12 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
                     var children = moreData.Children.Take(numChildren).ToList();
                     moreData.Children.RemoveRange(0, numChildren);
                     var result = await RedditService.GetClient().LinksAndComments.GetMoreChildren(
-                        LinkFullName, children, sort: CommentSort);
+                        new()
+                        {
+                            LinkFullName = LinkFullName,
+                            Children = children,
+                            Sort = CommentSort
+                        });
                     moreData.Count -= result.Count;
                     MoreComments.AddRange(result.NestComments(moreData.ParentId));
                 }
@@ -107,13 +113,17 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
                 if (Comment.Data is CommentData commentData)
                 {
                     Reddit client = RedditService.GetClient();
+                    ThingParameters parameters = new()
+                    {
+                        Id = commentData.Name
+                    };
                     if (commentData.Saved)
                     {
-                        await client.LinksAndComments.Unsave(commentData.Name);
+                        await client.LinksAndComments.Unsave(parameters);
                     }
                     else
                     {
-                        await client.LinksAndComments.Save(commentData.Name);
+                        await client.LinksAndComments.Save(parameters);
                     }
                     commentData.Saved = !commentData.Saved;
                 }

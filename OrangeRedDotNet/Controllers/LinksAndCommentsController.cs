@@ -1,11 +1,10 @@
 ﻿using OrangeRedDotNet.Authentication;
-using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Models.LinksAndComments;
-using OrangeRedDotNet.Models.Parameters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OrangeRedDotNet.Models.Parameters.LinkAndComments;
 
 namespace OrangeRedDotNet.Controllers
 {
@@ -30,122 +29,73 @@ namespace OrangeRedDotNet.Controllers
         /// <summary>
         /// Cast a vote on a thing.
         /// </summary>
-        /// <param name="id">fullname of a thing</param>
-        /// <param name="dir">vote direction. one of (1, 0, -1)</param>
-        /// <param name="rank">an integer greater than 1</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Vote(string id, int dir, int rank)
+        public async Task Vote(VoteParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "id", id },
-                { "dir", $"{dir}" },
-                { "rank", $"{rank}" }
-            };
             await Post("/api/vote", parameters);
         }
 
         /// <summary>
         /// Retrieve additional comments omitted from a base comment tree.
         /// </summary>
-        /// <param name="linkFullName">Fullname of the link whose comments are being fetched</param>
-        /// <param name="children">List of comment ID36s that need to be fetched</param>
-        /// <param name="sort">The sort on the comments returned</param>
-        /// <param name="depth">Maximum depth of subtrees in the thread to get</param>
-        /// <param name="limitChildren">Only return the children requested</param>
+        /// <param name="parameters">MoreChildren parameters</param>
         /// <returns>List of comment/more objects</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<List<CommentBase>> GetMoreChildren(string linkFullName, IEnumerable<string> children,
-            CommentSort? sort = null, int? depth = null, bool? limitChildren = false)
+        public async Task<List<CommentBase>> GetMoreChildren(MoreChildrenParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "api_type", "json" },
-                { "children", string.Join(',', children) },
-                { "link_id", linkFullName },
-            };
-            if (sort.HasValue)
-            {
-                parameters.Add("sort", sort.Value.ToDescriptionString());
-            }
-            if (depth.HasValue)
-            {
-                parameters.Add("depth", $"{depth}");
-            }
-            if (limitChildren ?? false)
-            {
-                parameters.Add("limit_children", $"{limitChildren}");
-            }
-
             var response = await Get<MoreChildrenResponse>("/api/morechildren", parameters);
-
             return response.Json.Data.Things;
         }
 
         /// <summary>
         /// Save a link or comment.
         /// </summary>
-        /// <param name="id">Fullname of a thing</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Save(string id)
+        public async Task Save(ThingParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                {"id", id }
-            };
             await Post("/api/save", parameters);
         }
 
         /// <summary>
         /// Unsave a link or comment.
         /// </summary>
-        /// <param name="id">Fullname of a thing</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Unsave(string id)
+        public async Task Unsave(ThingParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "id", id }
-            };
             await Post("/api/unsave", parameters);
         }
 
         /// <summary>
         /// Hide a link.
         /// </summary>
-        /// <param name="id">Fullname of a link</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Hide(string id)
+        public async Task Hide(ThingParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "id", id }
-            };
             await Post("/api/hide", parameters);
         }
 
         /// <summary>
         /// Unhide a link.
         /// </summary>
-        /// <param name="id">Fullname of a link</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Awaitable task</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task Unhide(string id)
+        public async Task Unhide(ThingParameters parameters)
         {
-            Dictionary<string, string> parameters = new()
-            {
-                { "id", id }
-            };
             await Post("/api/unhide", parameters);
         }
     }

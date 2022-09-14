@@ -56,6 +56,41 @@ namespace OrangeRedDotNet.Controllers
         }
 
         /// <summary>
+        /// Deserialize the content of a HttpResponseMessage to <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type to deserialize to</typeparam>
+        /// <param name="responseMessage">Response from a HTTP operation</param>
+        /// <returns><typeparamref name="T"/> instance</returns>
+        private static async Task<T> DeserializeToObject<T>(HttpResponseMessage responseMessage)
+        {
+            var serializer = new JsonSerializer();
+            using var streamReader = new StreamReader(await responseMessage.Content.ReadAsStreamAsync());
+            using var jsonTextReader = new JsonTextReader(streamReader);
+            return serializer.Deserialize<T>(jsonTextReader);
+        }
+
+        /// <summary>
+        /// Validate query parameters and return a dictionary of the parameters prepared for form URL encoding.
+        /// </summary>
+        /// <param name="parameters">Query parameters</param>
+        /// <returns>Dictionary, nullable</returns>
+        /// <exception cref="ArgumentException">Thrown if the parameters are not valid</exception>
+        private static IDictionary<string, string> ValidateQueryParameters(IQueryParameters parameters)
+        {
+            IDictionary<string, string> dict = null;
+            if (parameters != null)
+            {
+                var errors = parameters.GetValidationErrors();
+                if (errors?.Any() ?? false)
+                {
+                    throw new ArgumentException(string.Join(Environment.NewLine, errors));
+                }
+                dict = parameters.ToQueryParameters();
+            }
+            return dict;
+        }
+
+        /// <summary>
         /// Input reddit authentication
         /// </summary>
         private readonly IRedditAuthentication RedditAuthentication;
@@ -78,20 +113,6 @@ namespace OrangeRedDotNet.Controllers
         {
             RedditAuthentication = redditAuthentication;
             RedditUserAgent = redditUserAgent;
-        }
-
-        /// <summary>
-        /// Deserialize the content of a HttpResponseMessage to <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">Type to deserialize to</typeparam>
-        /// <param name="responseMessage">Response from a HTTP operation</param>
-        /// <returns><typeparamref name="T"/> instance</returns>
-        private static async Task<T> DeserializeToObject<T>(HttpResponseMessage responseMessage)
-        {
-            var serializer = new JsonSerializer();
-            using var streamReader = new StreamReader(await responseMessage.Content.ReadAsStreamAsync());
-            using var jsonTextReader = new JsonTextReader(streamReader);
-            return serializer.Deserialize<T>(jsonTextReader);
         }
 
         /// <summary>
@@ -134,23 +155,11 @@ namespace OrangeRedDotNet.Controllers
         /// HTTP Get
         /// </summary>
         /// <param name="relativeUrl">URL to make the request to</param>
-        /// <returns>HttpResponseMessage</returns>
-        /// <exception cref="RedditApiException"></exception>
-		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<HttpResponseMessage> Get(string relativeUrl)
-        {
-            return await Get(relativeUrl, null);
-        }
-
-        /// <summary>
-        /// HTTP Get
-        /// </summary>
-        /// <param name="relativeUrl">URL to make the request to</param>
         /// <param name="queryParameters">Query parameters for the request</param>
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<HttpResponseMessage> Get(string relativeUrl, IDictionary<string, string> queryParameters)
+        private async Task<HttpResponseMessage> Get(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
             if (queryParameters != null && queryParameters.Count > 0)
@@ -171,51 +180,14 @@ namespace OrangeRedDotNet.Controllers
         /// </summary>
         /// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
         /// <param name="relativeUrl">URL to make the request to</param>
-        /// <returns><typeparamref name="T"/> instance</returns>
-        /// <exception cref="RedditApiException"></exception>
-		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Get<T>(string relativeUrl)
-        {
-            return await DeserializeToObject<T>(await Get(relativeUrl));
-        }
-
-        /// <summary>
-        /// HTTP Get with the response deserialzed to <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
-        /// <param name="relativeUrl">URL to make the request to</param>
-        /// <param name="queryParameters">Query parameters for the request</param>
-        /// <returns><typeparamref name="T"/> instance</returns>
-        /// <exception cref="RedditApiException"></exception>
-		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Get<T>(string relativeUrl, IDictionary<string, string> queryParameters)
-        {
-            return await DeserializeToObject<T>(await Get(relativeUrl, queryParameters));
-        }
-
-        /// <summary>
-        /// HTTP Get with the response deserialzed to <typeparamref name="T"/>
-        /// </summary>
-        /// <typeparam name="T">Type to deserialze the HttpResponseMessage to</typeparam>
-        /// <param name="relativeUrl">URL to make the request to</param>
         /// <param name="parameters">Query parameters for the request</param>
         /// <returns><typeparamref name="T"/> instance</returns>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Get<T>(string relativeUrl, IQueryParameters parameters)
+        internal async Task<T> Get<T>(string relativeUrl, IQueryParameters parameters = null)
         {
-            IDictionary<string, string> dict = null;
-            if (parameters != null)
-            {
-                var errors = parameters.GetValidationErrors();
-                if (errors?.Any() ?? false)
-                {
-                    throw new ArgumentException(string.Join(Environment.NewLine, errors));
-                }
-                dict = parameters.ToQueryParameters();
-            }
-            return await Get<T>(relativeUrl, dict);
+            return await DeserializeToObject<T>(await Get(relativeUrl, ValidateQueryParameters(parameters)));
         }
         #endregion
 
@@ -228,7 +200,7 @@ namespace OrangeRedDotNet.Controllers
         /// <returns>HttpResonseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<HttpResponseMessage> Put(string relativeUrl, IDictionary<string, string> queryParameters)
+        private async Task<HttpResponseMessage> Put(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
 
@@ -246,13 +218,13 @@ namespace OrangeRedDotNet.Controllers
         /// </summary>
         /// <typeparam name="T">Type to deserialize to</typeparam>
         /// <param name="relativeUrl">Relative URL</param>
-        /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
+        /// <param name="parameters">Query parameters (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Put<T>(string relativeUrl, IDictionary<string, string> queryParameters)
+        internal async Task<T> Put<T>(string relativeUrl, IQueryParameters parameters)
         {
-            return await DeserializeToObject<T>(await Put(relativeUrl, queryParameters));
+            return await DeserializeToObject<T>(await Put(relativeUrl, ValidateQueryParameters(parameters)));
         }
         #endregion
 
@@ -285,7 +257,7 @@ namespace OrangeRedDotNet.Controllers
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> queryParameters)
+        private async Task<HttpResponseMessage> Post(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
 
@@ -299,17 +271,30 @@ namespace OrangeRedDotNet.Controllers
         }
 
         /// <summary>
+        /// HTTP Post
+        /// </summary>
+        /// <param name="relativeUrl">Relative URL</param>
+        /// <param name="parameters">Query parameters (sent as request content, form URL encoded)</param>
+        /// <returns>Awaitable task</returns>
+        /// <exception cref="RedditApiException"></exception>
+        /// <exception cref="RedditAuthenticationException"></exception>
+        internal async Task Post(string relativeUrl, IQueryParameters parameters)
+        {
+            await Post(relativeUrl, ValidateQueryParameters(parameters));
+        }
+
+        /// <summary>
         /// HTTP Post with the content deserialized to <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">Type to deserialize to</typeparam>
         /// <param name="relativeUrl">Relative URL</param>
-        /// <param name="queryParameters">Query parameter (sent as request content, form URL encoded)</param>
+        /// <param name="parameters">Query parameters (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Post<T>(string relativeUrl, IDictionary<string, string> queryParameters)
+        internal async Task<T> Post<T>(string relativeUrl, IQueryParameters parameters)
         {
-            return await DeserializeToObject<T>(await Post(relativeUrl, queryParameters));
+            return await DeserializeToObject<T>(await Post(relativeUrl, ValidateQueryParameters(parameters)));
         }
         #endregion
 
@@ -322,7 +307,7 @@ namespace OrangeRedDotNet.Controllers
         /// <returns>HttpResponseMessage</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<HttpResponseMessage> Patch(string relativeUrl, IDictionary<string, string> queryParameters)
+        private async Task<HttpResponseMessage> Patch(string relativeUrl, IDictionary<string, string> queryParameters)
         {
             UriBuilder builder = new(new Uri(BaseUri, relativeUrl));
 
@@ -340,13 +325,13 @@ namespace OrangeRedDotNet.Controllers
         /// </summary>
         /// <typeparam name="T">Type to deserialize to</typeparam>
         /// <param name="relativeUrl">Relative URL</param>
-        /// <param name="queryParameters">Query parameters (sent as request content, form URL encoded)</param>
+        /// <param name="parameters">Query parameters (sent as request content, form URL encoded)</param>
         /// <returns><typeparamref name="T"/> object</returns>
         /// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        internal async Task<T> Patch<T>(string relativeUrl, IDictionary<string, string> queryParameters)
+        internal async Task<T> Patch<T>(string relativeUrl, IQueryParameters parameters)
         {
-            return await DeserializeToObject<T>(await Patch(relativeUrl, queryParameters));
+            return await DeserializeToObject<T>(await Patch(relativeUrl, ValidateQueryParameters(parameters)));
         }
         #endregion
     }

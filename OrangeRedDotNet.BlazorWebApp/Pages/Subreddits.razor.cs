@@ -4,7 +4,8 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Listings;
-using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.Listings;
+using OrangeRedDotNet.Models.Parameters.Subreddits;
 using OrangeRedDotNet.Models.Subreddits;
 using System.Threading.Tasks;
 
@@ -80,7 +81,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 if (!string.IsNullOrWhiteSpace(SubredditsType))
                 {
                     SubredditsType subredditsType = GetSubredditsType() ??
-                        OrangeRedDotNet.Models.Parameters.SubredditsType.Popular;
+                        OrangeRedDotNet.Models.Parameters.Subreddits.SubredditsType.Popular;
 
                     var redditClient = RedditService.GetClient();
                     SubredditsListing = await redditClient.Subreddits.Get(
@@ -89,8 +90,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                 }
                 else
                 {
-                    MySubredditsType mySubredditsType = GetMySubredditsType() ?? 
-                        OrangeRedDotNet.Models.Parameters.MySubredditsType.Subscriber;
+                    MySubredditsType mySubredditsType = GetMySubredditsType() ??
+                        OrangeRedDotNet.Models.Parameters.Subreddits.MySubredditsType.Subscriber;
 
                     var redditClient = RedditService.GetClient();
                     SubredditsListing = await redditClient.Subreddits.GetMine(

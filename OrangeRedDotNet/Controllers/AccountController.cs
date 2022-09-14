@@ -1,16 +1,15 @@
 ﻿using OrangeRedDotNet.Authentication;
 using OrangeRedDotNet.Exceptions;
-using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Account;
-using System.Collections.Generic;
+using OrangeRedDotNet.Models.Parameters.Account;
 using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.Controllers
 {
-    /// <summary>
-    /// Account operations for Reddit
-    /// </summary>
-    public class AccountController : RedditController
+	/// <summary>
+	/// Account operations for Reddit
+	/// </summary>
+	public class AccountController : RedditController
 	{
 		/// <summary>
 		/// Constructor
@@ -61,14 +60,13 @@ namespace OrangeRedDotNet.Controllers
 		/// <summary>
 		/// Set the preferences for the current user
 		/// </summary>
-		/// <param name="preferences">User preferences</param>
+		/// <param name="parameters">Parameters</param>
 		/// <returns>Updated user preferences</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-		public async Task<Preferences> SetPreferences(Preferences preferences)
+		public async Task<Preferences> SetPreferences(SetPreferencesParameters parameters)
         {
-			return await Patch<Preferences>("/api/v1/me/prefs", 
-				new Dictionary<string, string> { { "json", preferences.ToJson() } });
+			return await Patch<Preferences>("/api/v1/me/prefs", parameters);
         }
 
 		/// <summary>

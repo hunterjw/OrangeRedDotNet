@@ -19,7 +19,10 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs.Users
         /// <inheritdoc/>
         public override async Task<string> Run(Reddit reddit)
         {
-            return (await reddit.Users.IsUsernameAvailable(Username)).ToJson();
+            return (await reddit.Users.IsUsernameAvailable(new()
+            {
+                Username = Username
+            })).ToJson();
         }
     }
 }

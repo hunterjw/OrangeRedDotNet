@@ -114,12 +114,18 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                     && !MultiReddit.Data.Subreddits.Any(_ =>
                         _.Name.Equals(AddSubredditName, StringComparison.OrdinalIgnoreCase)))
                 {
-                    MultiSubreddit result = await reddit.Multis.AddSubreddit(MultiReddit.Data.Path, AddSubredditName);
+                    MultiSubreddit result = await reddit.Multis.AddSubreddit(MultiReddit.Data.Path, new()
+                    {
+                        SubredditName = AddSubredditName
+                    });
                     MultiReddit.Data.Subreddits.Add(result);
                     StateHasChanged();
                     ToastService.ShowSuccess($"{AddSubredditName} added to {MultiReddit.Data.DisplayName}");
 
-                    MultiReddit = await reddit.Multis.GetMulti(MultiReddit.Data.Path, true);
+                    MultiReddit = await reddit.Multis.GetMulti(MultiReddit.Data.Path, new()
+                    {
+                        ExpandSubreddits = true
+                    });
                     AddSubredditName = string.Empty;
                     StateHasChanged();
                 }
@@ -197,7 +203,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                 if (!result.Cancelled)
                 {
                     var updateModelResult = result.Data as MultiRedditUpdate;
-                    MultiReddit = await RedditService.GetClient().Multis.UpdateMulti(MultiReddit.Data.Path, updateModelResult, true);
+                    MultiReddit = await RedditService.GetClient().Multis.UpdateMulti(MultiReddit.Data.Path, new()
+                    {
+                        Model = updateModelResult,
+                        ExpandSubreddits = true
+                    });
                     StateHasChanged();
                     ToastService.ShowSuccess($"{MultiReddit.Data.DisplayName} updated");
                 }
@@ -240,12 +250,14 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Multis
                 {
                     var updateModelResult = result.Data as MultiRedditUpdate;
                     string newPath = $"user/{RedditService.Identity.Name}/m/{updateModelResult.DisplayName.FormatNewMultiName()}";
-                    var copiedMultiReddit = await RedditService.GetClient().Multis.CopyMulti(
-                        MultiReddit.Data.Path,
-                        newPath,
-                        updateModelResult.DisplayName,
-                        updateModelResult.DescriptionMd,
-                        true);
+                    var copiedMultiReddit = await RedditService.GetClient().Multis.CopyMulti(new()
+                    {
+                        From = MultiReddit.Data.Path,
+                        To = newPath,
+                        DisplayName = updateModelResult.DisplayName,
+                        DescriptionMd = updateModelResult.DescriptionMd,
+                        ExpandSubreddits = true
+                    });
                     ToastService.ShowSuccess($"{MultiReddit.Data.DisplayName} copied");
                     OnMultiRedditCopy(copiedMultiReddit);
                 }

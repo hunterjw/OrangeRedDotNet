@@ -1,7 +1,7 @@
 ﻿using OrangeRedDotNet.Authentication;
 using OrangeRedDotNet.Exceptions;
-using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Multis;
+using OrangeRedDotNet.Models.Parameters.Multis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,50 +29,24 @@ namespace OrangeRedDotNet.Controllers
         /// <summary>
         /// Copy a MultiReddit
         /// </summary>
-        /// <param name="from">MultiReddit path to copy from</param>
-        /// <param name="to">MultiReddit path to copy to</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="descriptionMd">Description (markdown)</param>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>The newly created MultiReddit</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiReddit> CopyMulti(string from, string to, string displayName = "", string descriptionMd = "", bool? expandSubreddits = null)
+        public async Task<MultiReddit> CopyMulti(CopyMultiParameters parameters)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { "from", from },
-                { "to", to }
-            };
-            if (!string.IsNullOrWhiteSpace(displayName))
-            {
-                parameters.Add("display_name", displayName);
-            }
-            if (!string.IsNullOrWhiteSpace(descriptionMd))
-            {
-                parameters.Add("description_md", descriptionMd);
-            }
-            if (expandSubreddits.HasValue && expandSubreddits.Value)
-            {
-                parameters.Add("expand_srs", expandSubreddits.Value.ToString());
-            }
             return await Post<MultiReddit>("/api/multi/copy", parameters);
         }
 
         /// <summary>
         /// Get my MultiReddits
         /// </summary>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>List of my MultiReddits</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<List<MultiReddit>> GetMine(bool? expandSubreddits = null)
+        public async Task<List<MultiReddit>> GetMine(MultiParameters parameters = null)
         {
-            Dictionary<string, string> parameters = new();
-            if (expandSubreddits != null)
-            {
-                parameters.Add("expand_srs", expandSubreddits.ToString());
-            }
             return await Get<List<MultiReddit>>("/api/multi/mine", parameters);
         }
 
@@ -80,17 +54,12 @@ namespace OrangeRedDotNet.Controllers
         /// Get MultiReddits for a specific user
         /// </summary>
         /// <param name="username">Reddit username</param>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>List of MultiReddits</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<List<MultiReddit>> GetByUsername(string username, bool? expandSubreddits = null)
+        public async Task<List<MultiReddit>> GetByUsername(string username, MultiParameters parameters = null)
         {
-            Dictionary<string, string> parameters = new();
-            if (expandSubreddits != null)
-            {
-                parameters.Add("expand_srs", expandSubreddits.ToString());
-            }
             return await Get<List<MultiReddit>>($"/api/multi/user/{username}", parameters);
         }
         #endregion
@@ -112,17 +81,12 @@ namespace OrangeRedDotNet.Controllers
         /// Get a MultiReddit
         /// </summary>
         /// <param name="multiPath">MultiReddit path</param>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiReddit> GetMulti(string multiPath, bool? expandSubreddits = null)
+        public async Task<MultiReddit> GetMulti(string multiPath, MultiParameters parameters = null)
         {
-            Dictionary<string, string> parameters = new();
-            if (expandSubreddits != null)
-            {
-                parameters.Add("expand_srs", expandSubreddits.ToString());
-            }
             return await Get<MultiReddit>($"/api/multi/{multiPath.Trim('/', '\\')}", parameters);
         }
 
@@ -130,21 +94,12 @@ namespace OrangeRedDotNet.Controllers
         /// Create a new MultiReddit
         /// </summary>
         /// <param name="multiPath">MultiReddit path</param>
-        /// <param name="model">New MultiReddit model</param>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Newly create MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiReddit> CreateMulti(string multiPath, MultiRedditUpdate model, bool? expandSubreddits = null)
+        public async Task<MultiReddit> CreateMulti(string multiPath, UpdateMultiParameters parameters)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { "model", model.ToJson() }
-            };
-            if (expandSubreddits != null)
-            {
-                parameters.Add("expand_srs", expandSubreddits.ToString());
-            }
             return await Post<MultiReddit>($"/api/multi/{multiPath.Trim('/', '\\')}", parameters);
         }
 
@@ -152,21 +107,12 @@ namespace OrangeRedDotNet.Controllers
         /// Update a MultiReddit
         /// </summary>
         /// <param name="multiPath">MultiReddit path</param>
-        /// <param name="model">New MultiReddit model</param>
-        /// <param name="expandSubreddits">True to expand subreddits</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Updated MultiReddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiReddit> UpdateMulti(string multiPath, MultiRedditUpdate model, bool? expandSubreddits = null)
+        public async Task<MultiReddit> UpdateMulti(string multiPath, UpdateMultiParameters parameters)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { "model", model.ToJson() }
-            };
-            if (expandSubreddits != null)
-            {
-                parameters.Add("expand_srs", expandSubreddits.ToString());
-            }
             return await Put<MultiReddit>($"/api/multi/{multiPath.Trim('/', '\\')}", parameters);
         }
         #endregion
@@ -188,17 +134,13 @@ namespace OrangeRedDotNet.Controllers
         /// Update a MultiReddit description
         /// </summary>
         /// <param name="multiPath">MultiReddit path</param>
-        /// <param name="descriptionMd">Description (markdown)</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>Updated description object</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiDescription> UpdateDescription(string multiPath, string descriptionMd)
+        public async Task<MultiDescription> UpdateDescription(string multiPath, UpdateDescriptionParameters parameters)
         {
-            var content = new Dictionary<string, string>
-            {
-                { "model", $"{{ \"body_md\": \"{descriptionMd}\" }}" }
-            };
-            return await Put<MultiDescription>($"/api/multi/{multiPath.Trim('/', '\\')}/description", content);
+            return await Put<MultiDescription>($"/api/multi/{multiPath.Trim('/', '\\')}/description", parameters);
         }
         #endregion
 
@@ -233,17 +175,13 @@ namespace OrangeRedDotNet.Controllers
         /// Add a Subreddit to a MultiReddit
         /// </summary>
         /// <param name="multiPath">MultiReddit path</param>
-        /// <param name="subredditName">Subreddit name</param>
+        /// <param name="parameters">Parameters</param>
         /// <returns>MultiSubreddit object</returns>
 		/// <exception cref="RedditApiException"></exception>
 		/// <exception cref="RedditAuthenticationException"></exception>
-        public async Task<MultiSubreddit> AddSubreddit(string multiPath, string subredditName)
+        public async Task<MultiSubreddit> AddSubreddit(string multiPath, AddSubredditParameters parameters)
         {
-            var content = new Dictionary<string, string>
-            {
-                { "model", $"{{ \"name\": \"{subredditName}\" }}" }
-            };
-            return await Put<MultiSubreddit>($"/api/multi/{multiPath.Trim('/', '\\')}/r/{subredditName}", content);
+            return await Put<MultiSubreddit>($"/api/multi/{multiPath.Trim('/', '\\')}/r/{parameters.SubredditName}", parameters);
         }
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace OrangeRedDotNet.Models.Parameters
+namespace OrangeRedDotNet.Models.Parameters.Subreddits
 {
     public enum SubredditsType
     {
