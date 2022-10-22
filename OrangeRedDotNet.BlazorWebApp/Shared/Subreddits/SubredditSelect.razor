@@ -1,0 +1,38 @@
+﻿@using OrangeRedDotNet.Models.Subreddits
+
+<TextSuggest TItem="PartialSubreddit"
+             GetTextValue="(item) => item.Name"
+             GetSuggestions="GetSuggestions"
+             @bind-Text="Subreddit"
+             Disabled="Disabled"
+             Placeholder="@(Disabled ? "Loading..." : "Search subreddits...")"
+             OnTextBlur="OnTextBlur"
+             OnSuggestionSelected="OnSuggestionSelected">
+    <SuggestionContent>
+        <Row>
+            <Column ColumnSize="ColumnSize.IsAuto"
+                    Flex="Flex.JustifyContent.Center.Column">
+                <Image Border="Border.Rounded"
+                       Source="@GetIconUrl(context)"
+                       Style="max-width: 50px;" />
+            </Column>
+            <Column>
+                <Heading Size="HeadingSize.Is6">
+                    @context.Name
+                </Heading>
+                @if (MyProfile?.Name == context.Name)
+                {
+                    <Flair IsOriginalPoster />
+                }
+                else
+                {
+                    <Heading Size="HeadingSize.Is6"
+                         TextColor="TextColor.Muted">
+                        @context.SubscriberCount.ToDisplayString() members
+                    </Heading>
+                    <Flair Subscribed="@MySubscriptionNames.Contains(context.Name)" />
+                }
+            </Column>
+        </Row>
+    </SuggestionContent>
+</TextSuggest>

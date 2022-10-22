@@ -1,0 +1,27 @@
+﻿@using OrangeRedDotNet.Models.Parameters.LinkAndComments
+
+<Buttons Class="d-flex">
+    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+            Border="ThemeService.AppTheme.Border"
+            Margin="ThemeService.AppTheme.SpacingRelated"
+            Width="Width.Is100"
+            TextAlignment="TextAlignment.Start"
+            Type="ButtonType.Link"
+            To="@BuildUrl()">
+        Post something awesome
+    </Button>
+    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+            Border="ThemeService.AppTheme.Border"
+            Margin="ThemeService.AppTheme.SpacingRelated"
+            Type="ButtonType.Link"
+            To="@BuildUrl(SubmitKind.Self)">
+        <span class="oi oi-pencil"></span>
+    </Button>
+    <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+            Border="ThemeService.AppTheme.Border"
+            Margin="ThemeService.AppTheme.SpacingRelated"
+            Type="ButtonType.Link"
+            To="@BuildUrl(SubmitKind.Link)">
+        <span class="oi oi-link-intact"></span>
+    </Button>
+</Buttons>

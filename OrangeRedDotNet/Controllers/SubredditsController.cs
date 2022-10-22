@@ -88,5 +88,25 @@ namespace OrangeRedDotNet.Controllers
         {
             await Post("/api/subscribe", parameters);
         }
+
+        /// <summary>
+        /// List subreddits that begin with a query string.
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <returns>Search subreddits response</returns>
+        public async Task<SearchSubredditsResponse> SearchSubreddits(SearchSubredditsParameters parameters)
+        {
+            return await Post<SearchSubredditsResponse>("/api/search_subreddits", parameters);
+        }
+
+        /// <summary>
+        /// Fetch moderator-designated requirements to post to the subreddit.
+        /// </summary>
+        /// <param name="subredditName">Subreddit display name</param>
+        /// <returns>Post requiremnts object</returns>
+        public async Task<PostRequirements> GetPostRequirements(string subredditName)
+        {
+            return await Get<PostRequirements>($"/api/v1/{subredditName}/post_requirements");
+        }
     }
 }

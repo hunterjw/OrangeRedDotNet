@@ -1,0 +1,42 @@
+﻿@typeparam TItem
+
+<Dropdown Visible="DropdownVisible">
+    <TextEdit Background="ThemeService.AppTheme.Background"
+              Border="ThemeService.AppTheme.Border"
+              TextColor="ThemeService.AppTheme.TextColor"
+              Text="@Text"
+              TextChanged="HandleTextChanged"
+              Disabled="Disabled"
+              Placeholder="@Placeholder"
+              Blur="HandleBlur"
+              OnFocus="HandleFocus"
+              KeyDown="HandleKeyDown"
+              Debounce="true">
+    </TextEdit>
+    <DropdownMenu Class="@(ThemeService.AppTheme.DarkMode ? "dropdown-menu-dark" : "")"
+                  Background="ThemeService.AppTheme.Background"
+                  Border="Border.Secondary"
+                  MaxMenuHeight="200px"
+                  Width="Width.Is100">
+        @if (DropdownVisible)
+        {
+            for (int i = 0; i < (_currentSuggestions?.Count() ?? 0); i++)
+            {
+                var suggestion = _currentSuggestions.ElementAt(i);
+
+                <DropdownItem Class="@GetDropdownItemClass(i)"
+                      ElementId="@GetDropdownItemId(i)"
+                      Clicked="() => HandleItemSelected(suggestion)">
+                    @if (SuggestionContent != null)
+                    {
+                        @SuggestionContent(suggestion)
+                    }
+                    else
+                    {
+                        @GetTextValue(suggestion)
+                    }
+                </DropdownItem>
+            }
+        }
+    </DropdownMenu>
+</Dropdown>

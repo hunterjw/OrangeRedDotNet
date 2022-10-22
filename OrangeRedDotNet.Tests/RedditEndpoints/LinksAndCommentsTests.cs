@@ -3,10 +3,13 @@ using OrangeRedDotNet.Interfaces;
 using OrangeRedDotNet.Models.Account;
 using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Models.Links;
+using OrangeRedDotNet.Models.LinksAndComments;
 using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters;
+using OrangeRedDotNet.Models.Parameters.LinkAndComments;
 using OrangeRedDotNet.Models.Parameters.Listings;
 using OrangeRedDotNet.Models.Parameters.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -199,6 +202,25 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
             await client.LinksAndComments.Unhide(new()
             {
                 Id = linkToUnsave.Data.Name
+            });
+        }
+
+        [TestMethod]
+        public async Task Submit()
+        {
+            await RunWithTestSubreddit(async (testSubreddit) =>
+            {
+                Reddit client = GetRedditClient();
+
+                SubmitResponse result = await client.LinksAndComments.Submit(new()
+                {
+                    Kind = SubmitKind.Self,
+                    Subreddit = testSubreddit,
+                    Title = $"Test Post {Guid.NewGuid()}",
+                    Text = $"Test post to {testSubreddit}"
+                });
+                Assert.IsNotNull(result);
+                Assert.IsTrue(!(result?.Content?.Errors?.Any()));
             });
         }
     }

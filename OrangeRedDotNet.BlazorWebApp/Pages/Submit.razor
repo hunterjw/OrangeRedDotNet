@@ -1,0 +1,128 @@
+﻿@using OrangeRedDotNet.Extensions
+@using System.Web
+@using OrangeRedDotNet.Models.Parameters.LinkAndComments
+
+@page "/submit"
+@page "/r/{subreddit}/submit"
+
+<Heading Size="HeadingSize.Is2">Create a post</Heading>
+
+<Field Margin="ThemeService.AppTheme.SpacingSeparate">
+    <FieldLabel>Post to</FieldLabel>
+    <SubredditSelect ExcludeSubscribedUsers
+                     @bind-Subreddit="SubmitParameters.Subreddit"
+                     OnTextBlur="LoadSubredditDetails"
+                     OnSuggestionSelected="LoadSubredditDetails" />
+</Field>
+@if (SubredditDetails != null)
+{
+    <Div Margin="ThemeService.AppTheme.SpacingSeparate">
+        <SubredditCard SubredditDetails="SubredditDetails"
+                   HideFooter />
+    </Div>
+    @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data?.SubmitTextHtml))
+    {
+        <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSeparate"
+      Border="ThemeService.AppTheme.Border">
+            <CardBody>
+                @((MarkupString)HttpUtility.HtmlDecode(SubredditDetails.Data.SubmitTextHtml))
+            </CardBody>
+        </Card>
+    }
+}
+@if (!string.IsNullOrWhiteSpace(PostRequirements?.GuidelinesText))
+{
+    <Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Margin="ThemeService.AppTheme.SpacingSeparate"
+      Border="ThemeService.AppTheme.Border">
+        <CardBody>
+            @((MarkupString)HttpUtility.HtmlDecode(PostRequirements.GuidelinesText))
+        </CardBody>
+    </Card>
+}
+<Tabs SelectedTab="@SubmitParameters.Kind.ToDescriptionString()"
+      SelectedTabChanged="OnSelectedTabChanged"
+      Pills
+      Margin="ThemeService.AppTheme.SpacingSeparate">
+    <Items>
+        <Tab Name="self"
+             Disabled=@(!GetAllowedPostTypes(SubredditDetails).Contains(SubmitKind.Self))>
+            Post
+        </Tab>
+        <Tab Name="link"
+             Disabled=@(!GetAllowedPostTypes(SubredditDetails).Contains(SubmitKind.Link))>
+            Link
+        </Tab>
+    </Items>
+    <Content>
+        <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+            <FieldLabel>Title</FieldLabel>
+            <TextEdit Background="ThemeService.AppTheme.Background"
+                      TextColor="ThemeService.AppTheme.TextColor"
+                      Border="Border.Secondary"
+                      @bind-Text="SubmitParameters.Title" />
+        </Field>
+
+        <TabPanel Name="self">
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Text (optional)</FieldLabel>
+                <MemoEdit Rows="3"
+                          Background="ThemeService.AppTheme.Background"
+                          TextColor="ThemeService.AppTheme.TextColor"
+                          Border="Border.Secondary"
+                          @bind-Text="SubmitParameters.Text" />
+            </Field>
+        </TabPanel>
+        <TabPanel Name="link">
+            <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+                <FieldLabel>Url</FieldLabel>
+                <TextEdit Background="ThemeService.AppTheme.Background"
+                          TextColor="ThemeService.AppTheme.TextColor"
+                          Border="Border.Secondary"
+                          InputMode="TextInputMode.Url"
+                          Role="TextRole.Url"
+                          @bind-Text="SubmitParameters.Url" />
+            </Field>
+        </TabPanel>
+
+        <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+            <Check TValue="bool?"
+                   @bind-Checked="SubmitParameters.Nsfw">
+                NSFW
+            </Check>
+        </Field>
+
+        <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+            <Check TValue="bool?"
+                   Disabled="@(!SpoilersEnabled(SubredditDetails))"
+                   @bind-Checked="SubmitParameters.Spoiler">
+                Spoiler
+            </Check>
+        </Field>
+
+        <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+            <Check TValue="bool?"
+                   @bind-Checked="SubmitParameters.SendReplies">
+                Send me post reply notifications
+            </Check>
+        </Field>
+    </Content>
+</Tabs>
+
+<Button Type="ButtonType.Submit"
+        Color="Color.Success"
+        Loading="@Posting"
+        Disabled="@Posting"
+        Width="Width.Is100"
+        @onclick="PostButton_OnClick"
+        Margin="ThemeService.AppTheme.SpacingSeparate">
+    <LoadingTemplate>
+        Posting...
+    </LoadingTemplate>
+    <ChildContent>
+        Post
+    </ChildContent>
+</Button>

@@ -316,5 +316,34 @@ namespace OrangeRedDotNet.Models.Subreddits
 
         [JsonProperty("wls")]
         public int? Wls { get; set; }
+
+        /// <summary>
+        /// Get a partial subreddit for this subreddit
+        /// </summary>
+        /// <returns>Partial subreddit object</returns>
+        public PartialSubreddit ToPartial()
+        {
+            string iconImg = string.Empty;
+            if (!string.IsNullOrWhiteSpace(IconImg))
+            {
+                iconImg = IconImg;
+            }
+            else if (!string.IsNullOrWhiteSpace(CommunityIcon))
+            {
+                iconImg = CommunityIcon;
+            }
+
+            return new()
+            {
+                ActiveUserCount = ActiveUserCount ?? 0,
+                AllowChatPostCreation = false,
+                AllowImages = AllowImages ?? false,
+                IconImg = iconImg,
+                IsChatPostFeatureEnabled = false,
+                KeyColor = KeyColor,
+                Name = DisplayName,
+                SubscriberCount = Subscribers ?? 0,
+            };
+        }
     }
 }

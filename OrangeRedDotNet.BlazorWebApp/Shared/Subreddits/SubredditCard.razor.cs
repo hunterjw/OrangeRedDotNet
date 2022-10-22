@@ -44,6 +44,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Subreddits
         /// </summary>
         [Parameter]
         public Subreddit SubredditDetails { get; set; }
+        /// <summary>
+        /// If the footer should be hidden or not
+        /// </summary>
+        [Parameter]
+        public bool HideFooter { get; set; }
 
         /// <summary>
         /// If the content is collapsed

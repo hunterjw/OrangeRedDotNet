@@ -21,6 +21,10 @@ else
 }
 
 <hr />
+@if (RedditService.LoggedIn && IsSelf)
+{
+    <CreatePostBar Subreddit="@(Account.Data.Subreddit != null ? Account.Data.Subreddit.DisplayName : null)" />
+}
 <Row>
     <Column ColumnSize="ColumnSize.IsAuto">
         <UserProfileNavTabs UserName="@UserName"
@@ -59,6 +63,7 @@ else
             break;
     }
 </Row>
+
 @if (!ListingLoaded)
 {
     <Paragraph>@GetLoadingQuip()</Paragraph>

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using OrangeRedDotNet.Authentication;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace OrangeRedDotNet.Tests
 {
@@ -52,6 +54,11 @@ namespace OrangeRedDotNet.Tests
         protected static PasswordAuthenticationOptions PasswordAuthenticationOptions { get; } = new();
 
         /// <summary>
+        /// Test subreddit display name
+        /// </summary>
+        protected static string TestSubreddit { get; set;  } = string.Empty;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         static TestBase()
@@ -63,6 +70,7 @@ namespace OrangeRedDotNet.Tests
 
             configRoot.GetSection(nameof(PasswordAuthenticationOptions))
                 .Bind(PasswordAuthenticationOptions);
+            TestSubreddit = configRoot.GetValue<string>(nameof(TestSubreddit));
         }
 
         /// <summary>
@@ -89,6 +97,23 @@ namespace OrangeRedDotNet.Tests
                     Name = Assembly.GetEntryAssembly().GetName().Name,
                     Version = Assembly.GetEntryAssembly().GetName().Version.ToString(3)
                 });
+        }
+
+        /// <summary>
+        /// Run a test with a test subreddit, throwing an inconclusive assertion if a test subreddit is not configured
+        /// </summary>
+        /// <param name="testContent">Test content</param>
+        /// <returns>Awaitable task</returns>
+        protected static async Task RunWithTestSubreddit(Func<string, Task> testContent)
+        {
+            if (string.IsNullOrWhiteSpace(TestSubreddit))
+            {
+                Assert.Inconclusive($"Missing {nameof(TestSubreddit)} in configuration.");
+            }
+            else
+            {
+                await testContent(TestSubreddit);
+            }
         }
     }
 }

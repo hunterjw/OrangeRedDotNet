@@ -98,5 +98,15 @@ namespace OrangeRedDotNet.Controllers
         {
             await Post("/api/unhide", parameters);
         }
+
+        /// <summary>
+        /// Submit a link to a subreddit.
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        /// <returns>Submit response object</returns>
+        public async Task<SubmitResponse> Submit(SubmitParameters parameters)
+        {
+            return await Post<SubmitResponse>("/api/submit", parameters);
+        }
     }
 }

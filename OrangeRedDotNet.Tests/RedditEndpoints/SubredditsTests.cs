@@ -64,5 +64,27 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
                 Action = SubscribeAction.Subscribe
             });
         }
+
+        [TestMethod]
+        public async Task SearchSubreddits()
+        {
+            Reddit client = GetRedditClient();
+            SearchSubredditsResponse response = await client.Subreddits.SearchSubreddits(new()
+            {
+                Query = "ask"
+            });
+            Assert.IsNotNull(response);
+        }
+
+        [TestMethod]
+        public async Task GetPostRequirements()
+        {
+            await RunWithTestSubreddit(async (testSubreddit) =>
+            {
+                Reddit client = GetRedditClient();
+                PostRequirements response = await client.Subreddits.GetPostRequirements(testSubreddit);
+                Assert.IsNotNull(response);
+            });
+        }
     }
 }

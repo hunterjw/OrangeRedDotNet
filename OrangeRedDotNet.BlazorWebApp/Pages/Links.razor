@@ -35,6 +35,10 @@ else if (IsMultiReddit)
     }
 }
 
+@if (RedditService.LoggedIn)
+{
+    <CreatePostBar Subreddit="@(IsSubreddit && SubredditDetailsLoaded ? SubredditDetails.Data.DisplayName : null)" />
+}
 <Row>
     <Column ColumnSize="ColumnSize.IsAuto">
         <LinkListingNavTabs ActiveTab="@GetListingType()"

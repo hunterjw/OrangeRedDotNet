@@ -69,39 +69,42 @@
                 </Row>
             }
         </CardBody>
-        <CardFooter Class="border-secondary"
+        @if (!HideFooter)
+        {
+            <CardFooter Class="border-secondary"
                 Padding="Padding.Is0.FromBottom">
-            <Row>
-                @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto"
+                <Row>
+                    @if (!string.IsNullOrWhiteSpace(SubredditDetails.Data.DescriptionHtml))
+                    {
+                        <Column ColumnSize="ColumnSize.IsAuto"
                     Padding="Padding.Is2.FromBottom">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                         Border="ThemeService.AppTheme.Border"
                         @onclick="() => ContentCollapsed = !ContentCollapsed">
-                            <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
-                        </Button>
-                    </Column>
-                }
-                @if (RedditService.LoggedIn)
-                {
-                    <Column ColumnSize="ColumnSize.IsAuto"
+                                <span class="oi @(ContentCollapsed ? "oi-chevron-bottom" : "oi-chevron-top")"></span>
+                            </Button>
+                        </Column>
+                    }
+                    @if (RedditService.LoggedIn)
+                    {
+                        <Column ColumnSize="ColumnSize.IsAuto"
                     Padding="Padding.Is2.FromBottom">
-                        <Buttons>
-                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            <Buttons>
+                                <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                             Border="ThemeService.AppTheme.Border"
                             @onclick="SubscribeButton_OnClick">
-                                @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
-                            </Button>
-                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                                    @(SubredditDetails.Data.UserIsSubscriber ?? false ? "Unsubscribe" : "Subscribe")
+                                </Button>
+                                <Button Color="ThemeService.AppTheme.DefaultButtonColor"
                             Border="ThemeService.AppTheme.Border"
                             @onclick="AddToMultiRedditButton_OnClick">
-                                Add to MultiReddit
-                            </Button>
-                        </Buttons>
-                    </Column>
-                }
-            </Row>
-        </CardFooter>
+                                    Add to MultiReddit
+                                </Button>
+                            </Buttons>
+                        </Column>
+                    }
+                </Row>
+            </CardFooter>
+        }
     </Card>
 }
