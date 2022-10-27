@@ -10,9 +10,11 @@
 }
 else
 {
+    var firstLink = LinkWithComments.Links.Data.Children.First();
+
     <LinkList ContentCollapsed="false"
           Links="@LinkWithComments.Links"
-          Subreddit="@SubredditDetails"/>
+          Subreddit="@SubredditDetails" />
     <hr />
     <Select Margin="ThemeService.AppTheme.SpacingRelated"
         Width="Width.Auto"
@@ -28,8 +30,14 @@ else
         <SelectItem Value="@("random")">Random</SelectItem>
         <SelectItem Value="@("qa")">Q&A</SelectItem>
     </Select>
+    @if (CanPostComment())
+    {
+        <NewCommentCard ParentId="@(firstLink?.Data?.Name)"
+                NewComments="OnNewComments" />
+    }
     <CommentsList Comments="@LinkWithComments.Comments"
-              OriginalPoster="@LinkWithComments.Links.Data.Children.First().Data.Author"
-              LinkFullName="@LinkWithComments.Links.Data.Children.First().Data.Name"
-              CommentSort="@(string.IsNullOrWhiteSpace(Sort) ? null : Sort.ToEnumFromDescriptionString<CommentSort>())" />
+              OriginalPoster="@firstLink.Data.Author"
+              LinkFullName="@firstLink.Data.Name"
+              CommentSort="@(string.IsNullOrWhiteSpace(Sort) ? null : Sort.ToEnumFromDescriptionString<CommentSort>())"
+              ParentLinkLocked="firstLink.Data.Locked" />
 }

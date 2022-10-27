@@ -223,5 +223,21 @@ namespace OrangeRedDotNet.Tests.RedditEndpoints
                 Assert.IsTrue(!(result?.Content?.Errors?.Any()));
             });
         }
+
+        [TestMethod]
+        public async Task Comment()
+        {
+            await RunWithTestPost(async (testPostThingId) =>
+            {
+                var client = GetRedditClient();
+                var result = await client.LinksAndComments.Comment(new()
+                {
+                    ThingId = testPostThingId,
+                    Text = $"Test comment {Guid.NewGuid()}"
+                });
+                Assert.IsNotNull(result);
+                Assert.IsTrue(!(result?.Content?.Errors?.Any()));
+            });
+        }
     }
 }

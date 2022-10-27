@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Components;
 using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
+using OrangeRedDotNet.Models.Comments;
 using OrangeRedDotNet.Models.Links;
+using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters.Listings;
 using OrangeRedDotNet.Models.Subreddits;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -151,6 +154,46 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
             parameters.Sort = ((string)args.Value).ToEnumFromDescriptionString<CommentSort>();
             string parametersString = await new FormUrlEncodedContent(parameters.ToQueryParameters()).ReadAsStringAsync();
             NavigationManager.NavigateTo($"{GetRelativeUrl()}?{parametersString}");
+        }
+
+        /// <summary>
+        /// Handler for when a new comment has been created
+        /// </summary>
+        /// <param name="comments">New comment(s)</param>
+        protected void OnNewComments(List<CommentBase> comments)
+        {
+            if (LinkWithComments == null)
+            {
+                return;
+            }
+            if (LinkWithComments.Comments?.Data?.Children == null)
+            {
+                LinkWithComments.Comments = new Listing<CommentBase>
+                {
+                    Kind = "Listing",
+                    Data = new ListingData<CommentBase>
+                    {
+                        Children = new List<CommentBase>(),
+                        Count = 0
+                    }
+                };
+            }
+            LinkWithComments.Comments.Data.Children.InsertRange(0, comments);
+            LinkWithComments.Comments.Data.Count += comments.Count;
+        }
+
+        /// <summary>
+        /// If a comment can be posted or not
+        /// </summary>
+        /// <returns>Boolean</returns>
+        protected bool CanPostComment()
+        {
+            if (LinkWithComments == null)
+            {
+                return false;
+            }
+            var linkData = LinkWithComments.Links.Data.Children.First().Data;
+            return RedditService.LoggedIn && !linkData.Archived && !linkData.Locked && !linkData.AuthorIsBlocked;
         }
     }
 }

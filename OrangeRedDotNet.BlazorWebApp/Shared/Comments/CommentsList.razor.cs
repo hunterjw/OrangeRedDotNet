@@ -31,6 +31,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
         /// </summary>
         [Parameter]
         public CommentSort? CommentSort { get; set; }
+        /// <summary>
+        /// If the parent link is locked or not
+        /// </summary>
+        [Parameter]
+        public bool ParentLinkLocked { get; set; }
         #endregion
     }
 }

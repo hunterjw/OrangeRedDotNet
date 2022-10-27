@@ -108,5 +108,14 @@ namespace OrangeRedDotNet.Controllers
         {
             return await Post<SubmitResponse>("/api/submit", parameters);
         }
+
+        /// <summary>
+        /// Submit a new comment or reply to a message.
+        /// </summary>
+        /// <returns>Comment response object</returns>
+        public async Task<CommentResponse> Comment(CommentParameters parameters)
+        {
+            return await Post<CommentResponse>("/api/comment", parameters);
+        }
     }
 }

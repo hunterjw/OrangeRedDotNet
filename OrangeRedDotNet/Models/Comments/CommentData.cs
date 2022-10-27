@@ -180,7 +180,7 @@ namespace OrangeRedDotNet.Models.Comments
         public bool Locked { get; set; }
 
         [JsonProperty("report_reasons")]
-        public ListingData<string> ReportReasons { get; set; }
+        public List<string> ReportReasons { get; set; }
 
         [JsonProperty("created")]
         public double Created { get; set; }

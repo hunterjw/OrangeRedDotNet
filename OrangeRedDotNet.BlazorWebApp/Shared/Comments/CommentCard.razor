@@ -71,11 +71,22 @@
                 {
                     <Column ColumnSize="ColumnSize.IsAuto"
                     Padding="Padding.Is2.FromBottom">
-                        <Button Color="ThemeService.AppTheme.DefaultButtonColor"
-                        Border="ThemeService.AppTheme.Border"
-                        @onclick="SaveToggleButton_OnClick">
-                            <span class="oi oi-bookmark @(commentData.Saved ? "text-primary" : "")"></span>
-                        </Button>
+                        <Buttons>
+                            @if (CanPostComment())
+                            {
+                                <Button Color="ShowNewCommentCard ? Color.Primary : ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="() => ShowNewCommentCard = !ShowNewCommentCard">
+                                    <span class="oi oi-comment-square"></span>
+                                    Reply
+                                </Button>
+                            }
+                            <Button Color="ThemeService.AppTheme.DefaultButtonColor"
+                            Border="ThemeService.AppTheme.Border"
+                            @onclick="SaveToggleButton_OnClick">
+                                <span class="oi oi-bookmark @(commentData.Saved ? "text-primary" : "")"></span>
+                            </Button>
+                        </Buttons>
                     </Column>
                 }
                 @if (RepliesCollapsed)
@@ -89,15 +100,24 @@
             </Row>
         </CardFooter>
     </Card>
-    @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
+    @if (!RepliesCollapsed || ShowNewCommentCard)
     {
         <Div Margin="ThemeService.AppTheme.SpacingSame"
      Class="comment-border">
             <Div Margin="Margin.Is2.FromStart">
-                <CommentsList Comments="@commentData.Replies"
+                @if (ShowNewCommentCard)
+                {
+                    <NewCommentCard ParentId="@(commentData.Name)"
+                        NewComments="OnNewComments" />
+                }
+                @if (!RepliesCollapsed && commentData.Replies != null && commentData.Replies?.Data?.Children?.Count > 0)
+                {
+                    <CommentsList Comments="@commentData.Replies"
                       OriginalPoster="@OriginalPoster"
                       LinkFullName="@LinkFullName"
-                      CommentSort="@CommentSort" />
+                      CommentSort="@CommentSort"
+                      ParentLinkLocked="@ParentLinkLocked" />
+                }
             </Div>
         </Div>
     }
@@ -109,7 +129,8 @@ else if (Comment.Data is MoreData moreData)
         <CommentCard Comment="@comment"
              OriginalPoster="@OriginalPoster"
              LinkFullName="@LinkFullName"
-             CommentSort="@CommentSort" />
+             CommentSort="@CommentSort"
+             ParentLinkLocked="@ParentLinkLocked" />
     }
     @if (MoreLoaded)
     {

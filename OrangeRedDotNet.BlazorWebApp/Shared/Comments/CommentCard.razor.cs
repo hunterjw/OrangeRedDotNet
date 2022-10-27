@@ -4,6 +4,8 @@ using OrangeRedDotNet.BlazorWebApp.Services;
 using OrangeRedDotNet.Exceptions;
 using OrangeRedDotNet.Extensions;
 using OrangeRedDotNet.Models.Comments;
+using OrangeRedDotNet.Models.Links;
+using OrangeRedDotNet.Models.Listings;
 using OrangeRedDotNet.Models.Parameters.LinkAndComments;
 using OrangeRedDotNet.Models.Parameters.Listings;
 using System;
@@ -55,6 +57,11 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
         /// </summary>
         [Parameter]
         public CommentSort? CommentSort { get; set; }
+        /// <summary>
+        /// If the parent link is locked or not
+        /// </summary>
+        [Parameter]
+        public bool ParentLinkLocked { get; set; }
         #endregion
 
         /// <summary>
@@ -69,6 +76,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
         /// Additional comments loaded
         /// </summary>
         protected List<CommentBase> MoreComments { get; set; } = new List<CommentBase>();
+        /// <summary>
+        /// If the new comment card should be shown or not
+        /// </summary>
+        protected bool ShowNewCommentCard { get; set; } = false;
 
         /// <summary>
         /// OnClick event handler for the MoreCommentsButton
@@ -132,6 +143,45 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Comments
             {
                 ToastService.ShowError(rex.MakeErrorMessage("Failed to update link save state"));
             }
+        }
+
+        /// <summary>
+        /// Handler for when a new comment has been created
+        /// </summary>
+        /// <param name="comments">New comment(s)</param>
+        protected void OnNewComments(List<CommentBase> comments)
+        {
+            if (Comment.Data is CommentData commentData)
+            {
+                if (commentData.Replies?.Data?.Children == null)
+                {
+                    commentData.Replies = new Listing<CommentBase>
+                    {
+                        Kind = "Listing",
+                        Data = new ListingData<CommentBase>
+                        {
+                            Children = new List<CommentBase>(),
+                            Count = 0                            
+                        }
+                    };
+                }
+                commentData.Replies.Data.Children.InsertRange(0, comments);
+                commentData.Replies.Data.Count += comments.Count;
+                ShowNewCommentCard = false;
+            }
+        }
+
+        /// <summary>
+        /// If a comment can be posted or not
+        /// </summary>
+        /// <returns>Boolean</returns>
+        protected bool CanPostComment()
+        {
+            if (Comment.Data is CommentData commentData)
+            {
+                return RedditService.LoggedIn && !commentData.Archived && !commentData.Locked && !commentData.AuthorIsBlocked && !ParentLinkLocked;
+            }
+            return false;
         }
     }
 }

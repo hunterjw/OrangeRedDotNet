@@ -1,0 +1,29 @@
+﻿<Card TextColor="ThemeService.AppTheme.TextColor"
+      Background="ThemeService.AppTheme.Background"
+      Border="ThemeService.AppTheme.Border"
+      Margin="ThemeService.AppTheme.SpacingSame">
+      <CardBody>
+        <Field Margin="ThemeService.AppTheme.SpacingSeparate">
+            <MemoEdit Rows="3"
+                      Background="ThemeService.AppTheme.Background"
+                      TextColor="ThemeService.AppTheme.TextColor"
+                      Border="Border.Secondary"
+                      Placeholder="Comment text"
+                      @bind-Text="CommentParameters.Text" />
+        </Field>
+
+        <Button Type="ButtonType.Submit"
+                Color="Color.Success"
+                Loading="@Commenting"
+                Disabled="@(Commenting || string.IsNullOrWhiteSpace(CommentParameters.Text))"
+                Width="Width.Is100"
+                @onclick="CommentButton_OnClick">
+            <LoadingTemplate>
+                Commenting...
+            </LoadingTemplate>
+            <ChildContent>
+                Comment
+            </ChildContent>
+        </Button>
+      </CardBody>
+</Card>

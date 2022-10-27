@@ -59,6 +59,11 @@ namespace OrangeRedDotNet.Tests
         protected static string TestSubreddit { get; set;  } = string.Empty;
 
         /// <summary>
+        /// Test post thing ID
+        /// </summary>
+        public static string TestPostThingId { get; set; } = string.Empty;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         static TestBase()
@@ -71,6 +76,7 @@ namespace OrangeRedDotNet.Tests
             configRoot.GetSection(nameof(PasswordAuthenticationOptions))
                 .Bind(PasswordAuthenticationOptions);
             TestSubreddit = configRoot.GetValue<string>(nameof(TestSubreddit));
+            TestPostThingId = configRoot.GetValue<string>(nameof(TestPostThingId));
         }
 
         /// <summary>
@@ -113,6 +119,23 @@ namespace OrangeRedDotNet.Tests
             else
             {
                 await testContent(TestSubreddit);
+            }
+        }
+
+        /// <summary>
+        /// Run a test with a test post thing ID, throwing an inconclusive assertion if a test post is not configured
+        /// </summary>
+        /// <param name="testContent">Test content</param>
+        /// <returns>Awaitable task</returns>
+        protected static async Task RunWithTestPost(Func<string, Task> testContent)
+        {
+            if (string.IsNullOrWhiteSpace(TestPostThingId))
+            {
+                Assert.Inconclusive($"Missing {nameof(TestPostThingId)} in configuration.");
+            }
+            else
+            {
+                await testContent(TestPostThingId);
             }
         }
     }
