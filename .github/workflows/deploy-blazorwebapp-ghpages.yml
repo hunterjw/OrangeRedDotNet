@@ -34,9 +34,6 @@ jobs:
       - name: Publish Blazor Project
         run: dotnet publish OrangeRedDotNet.BlazorWebApp/OrangeRedDotNet.BlazorWebApp.csproj -c Release -o release --nologo
       
-      - name: Update base-tag in index.html
-        run: sed -i 's/<base href="\/" \/>/<base href="\/OrangeRedDotNet\/" \/>/g' release/wwwroot/index.html
-      
       - name: Update App Settings
         shell: pwsh
         env:
