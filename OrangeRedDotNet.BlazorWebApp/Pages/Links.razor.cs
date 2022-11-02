@@ -164,6 +164,13 @@ namespace OrangeRedDotNet.BlazorWebApp.Pages
                         MultiRedditLoaded = true;
                     }
                 }
+                else
+                {
+                    SubredditDetailsLoaded = false;
+                    SubredditDetails = null;
+                    MultiRedditLoaded = false;
+                    MultiReddit = null;
+                }
 
                 if (string.IsNullOrWhiteSpace(Timescale))
                 {
