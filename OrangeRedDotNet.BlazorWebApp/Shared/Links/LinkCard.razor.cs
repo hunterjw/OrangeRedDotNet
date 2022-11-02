@@ -203,7 +203,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Shared.Links
             if (linkType == LinkType.Image ||
                 linkType == LinkType.Gallery ||
                 linkType == LinkType.Video ||
-                linkType == LinkType.Text)
+                linkType == LinkType.Text || 
+                linkType == LinkType.EmbeddedMedia)
             {
                 ContentCollapsed = !ContentCollapsed;
             }
