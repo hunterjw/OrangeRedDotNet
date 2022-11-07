@@ -22,7 +22,7 @@ namespace OrangeRedDotNet.Authentication
 		/// <param name="load">Function to load cached auth</param>
 		/// <param name="save">Action to save auth</param>
         public ApplicationOnlyAuthentication(ApplicationOnlyAuthenticationOptions options, 
-            Func<TokenResponse> load = null, Action<TokenResponse> save = null)
+            Func<Task<TokenResponse>> load = null, Func<TokenResponse, Task> save = null)
             : base(load, save)
         {
             _options = options;

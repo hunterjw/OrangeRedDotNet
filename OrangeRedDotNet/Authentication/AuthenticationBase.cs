@@ -95,11 +95,11 @@ namespace OrangeRedDotNet.Authentication
         /// <summary>
         /// Function to load cached auth
         /// </summary>
-        protected readonly Func<TokenResponse> _load;
+        protected readonly Func<Task<TokenResponse>> _load;
         /// <summary>
         /// Action to save auth
         /// </summary>
-        protected readonly Action<TokenResponse> _save;
+        protected readonly Func<TokenResponse, Task> _save;
         /// <summary>
         /// Locking semaphore for refreshing the token
         /// </summary>
@@ -120,7 +120,7 @@ namespace OrangeRedDotNet.Authentication
         /// </summary>
         /// <param name="load">Function to load cached auth</param>
         /// <param name="save">Action to save auth</param>
-        public AuthenticationBase(Func<TokenResponse> load = null, Action<TokenResponse> save = null)
+        public AuthenticationBase(Func<Task<TokenResponse>> load = null, Func<TokenResponse, Task> save = null)
         {
             _load = load;
             _save = save;
@@ -151,7 +151,7 @@ namespace OrangeRedDotNet.Authentication
                         {
                             if (_load != null)
                             {
-                                TokenResponse loadedToken = _load();
+                                TokenResponse loadedToken = await _load();
                                 if (_latestTokenResponse == null ||
                                     _latestTokenResponse.Expires < loadedToken?.Expires)
                                 {
@@ -165,7 +165,7 @@ namespace OrangeRedDotNet.Authentication
                                 _latestTokenResponse.Retrieved = DateTime.Now;
                                 _latestTokenResponse.Expires = _latestTokenResponse.Retrieved
                                     .AddSeconds(_latestTokenResponse.ExpiresIn);
-                                _save?.Invoke(_latestTokenResponse);
+                                await _save?.Invoke(_latestTokenResponse);
                             }
                             _latestTokenExpires = _latestTokenResponse.Expires;
                         }

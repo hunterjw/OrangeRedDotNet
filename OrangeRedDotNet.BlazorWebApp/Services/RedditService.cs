@@ -24,6 +24,10 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         /// Local storage service
         /// </summary>
         private readonly ISyncLocalStorageService _localStorageService;
+        /// <summary>
+        /// Async local storage service
+        /// </summary>
+        private readonly ILocalStorageService _asyncLocalStorageService;
 
         /// <summary>
         /// Current identity
@@ -63,11 +67,13 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         /// <param name="localStorageService">Local storage service</param>
         public RedditService(ApplicationOnlyAuthenticationOptions appOnlyAuthOpts,
             OAuthAuthenticationOptions oauthAuthOpts,
-            ISyncLocalStorageService localStorageService)
+            ISyncLocalStorageService localStorageService,
+            ILocalStorageService asyncLocalStorageService)
         {
             _appOnlyAuthOpts = appOnlyAuthOpts;
             _oauthAuthOpts = oauthAuthOpts;
             _localStorageService = localStorageService;
+            _asyncLocalStorageService = asyncLocalStorageService;
 
             string loggedInString = LocalStorageLoad("loggedIn");
             if (!string.IsNullOrWhiteSpace(loggedInString))
@@ -93,24 +99,38 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         }
 
         /// <summary>
+        /// Load a string from local storage
+        /// </summary>
+        /// <param name="key">Storage key</param>
+        /// <returns>Stored content, null if key does not exist</returns>
+        private async Task<string> LocalStorageLoadAsync(string key)
+        {
+            if (await _asyncLocalStorageService.ContainKeyAsync(key))
+            {
+                return await _asyncLocalStorageService.GetItemAsStringAsync(key);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Save a string to local storage
         /// </summary>
         /// <param name="key">Key to save to</param>
         /// <param name="value">Value to save</param>
-        private void LocalStorageSave(string key, string value)
+        private async Task LocalStorageSaveAsync(string key, string value)
         {
-            _localStorageService.SetItemAsString(key, value);
+            await _asyncLocalStorageService.SetItemAsStringAsync(key, value);
         }
 
         /// <summary>
         /// Clear the contents of a key in local storage
         /// </summary>
         /// <param name="key">Key to clear</param>
-        private void LocalStorageClear(string key)
+        private async Task LocalStorageClearAsync(string key)
         {
-            if (_localStorageService.ContainKey(key))
+            if (await _asyncLocalStorageService.ContainKeyAsync(key))
             {
-                _localStorageService.RemoveItem(key);
+                await _asyncLocalStorageService.RemoveItemAsync(key);
             }
         }
 
@@ -126,14 +146,14 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 {
                     _redditAuthentication = new OAuthAuthentication(
                         _oauthAuthOpts,
-                        () => LocalStorageLoad("auth")?.FromJson<TokenResponse>(),
-                        (value) => LocalStorageSave("auth", value.ToJson()));
+                        async () => (await LocalStorageLoadAsync("auth"))?.FromJson<TokenResponse>(),
+                        async (value) => await LocalStorageSaveAsync("auth", value.ToJson()));
                 }
                 else
                 {
                     _redditAuthentication = new ApplicationOnlyAuthentication(_appOnlyAuthOpts,
-                        () => LocalStorageLoad("appAuth")?.FromJson<TokenResponse>(),
-                        (value) => LocalStorageSave("appAuth", value.ToJson()));
+                        async () => (await LocalStorageLoadAsync("appAuth"))?.FromJson<TokenResponse>(),
+                        async (value) => await LocalStorageSaveAsync("appAuth", value.ToJson()));
                 }
             }
             return _redditAuthentication;
@@ -225,7 +245,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 _redditAuthentication = default;
                 _identity = await GetClient().Account.GetIdentity();
                 _preferences = await GetClient().Account.GetPreferences();
-                LocalStorageSave("loggedIn", _loggedIn.ToString());
+                await LocalStorageSaveAsync("loggedIn", _loggedIn.ToString());
                 LoginFinished?.Invoke(this, new object());
             }
         }
@@ -244,8 +264,8 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
                 _redditAuthentication = default;
                 _identity = default;
                 _preferences = default;
-                LocalStorageClear("auth");
-                LocalStorageSave("loggedIn", _loggedIn.ToString());
+                await LocalStorageClearAsync("auth");
+                await LocalStorageSaveAsync("loggedIn", _loggedIn.ToString());
                 LogoutFinished?.Invoke(this, new object());
             }
         }
@@ -257,7 +277,7 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         public async Task<string> GetAuthorizationUrl()
         {
             string state = Guid.NewGuid().ToString();
-            LocalStorageSave("authState", state);
+            await LocalStorageSaveAsync("authState", state);
             return await new OAuthAuthentication(_oauthAuthOpts).GetAuthorizationUrl(state);
         }
 
@@ -270,9 +290,9 @@ namespace OrangeRedDotNet.BlazorWebApp.Services
         /// <returns>Awaitable task</returns>
         public async Task ParseRedirectUrl(string code, string state, string error)
         {
-            string storedState = LocalStorageLoad("authState");
+            string storedState = await LocalStorageLoadAsync("authState");
             OAuthAuthentication auth = new(_oauthAuthOpts,
-                save: (value) => LocalStorageSave("auth", value.ToJson()));
+                save: async (value) => await LocalStorageSaveAsync("auth", value.ToJson()));
             await auth.ParseRedirectUrl(code, state, storedState, error);
         }
     }

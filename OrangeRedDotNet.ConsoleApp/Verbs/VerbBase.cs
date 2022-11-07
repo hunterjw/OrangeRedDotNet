@@ -24,26 +24,28 @@ namespace OrangeRedDotNet.ConsoleApp.Verbs
         /// Load a cached TokenResponse
         /// </summary>
         /// <returns>Cached TokenResponse</returns>
-        private static TokenResponse Load()
+        private static Task<TokenResponse> Load()
         {
             string filePath = GetCacheFilePath();
             if (File.Exists(filePath))
             {
-                return JsonConvert.DeserializeObject<TokenResponse>(
-                    File.ReadAllText(filePath));
+                return Task.FromResult(
+                    JsonConvert.DeserializeObject<TokenResponse>(
+                        File.ReadAllText(filePath)));
             }
-            return null;
+            return Task.FromResult<TokenResponse>(null);
         }
 
         /// <summary>
         /// Save a TokenResponse
         /// </summary>
         /// <param name="value">Value to save</param>
-        private static void Save(TokenResponse value)
+        private static Task Save(TokenResponse value)
         {
             string filePath = GetCacheFilePath();
             string content = JsonConvert.SerializeObject(value);
             File.WriteAllText(filePath, content);
+            return Task.CompletedTask;
         }
 
         /// <summary>

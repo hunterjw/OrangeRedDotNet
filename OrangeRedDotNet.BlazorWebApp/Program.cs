@@ -37,9 +37,11 @@ namespace OrangeRedDotNet.BlazorWebApp
             builder.Services.AddScoped(sp =>
             {
                 var localStorage = sp.GetService<ISyncLocalStorageService>();
+                var asyncLocalStorage = sp.GetService<ILocalStorageService>();
                 return new RedditService(ApplicationOnlyAuthenticationOptions,
                     OAuthAuthenticationOptions,
-                    localStorage);
+                    localStorage,
+                    asyncLocalStorage);
             });
             builder.Services.AddScoped(sp =>
             {

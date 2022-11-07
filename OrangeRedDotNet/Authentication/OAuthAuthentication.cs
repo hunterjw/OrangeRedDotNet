@@ -23,8 +23,8 @@ namespace OrangeRedDotNet.Authentication
         /// <param name="load">Function to load a previously saved token response</param>
         /// <param name="save">Function to save token responses</param>
         public OAuthAuthentication(OAuthAuthenticationOptions options,
-            Func<TokenResponse> load = null, 
-            Action<TokenResponse> save = null) 
+            Func<Task<TokenResponse>> load = null,
+            Func<TokenResponse, Task> save = null)
             : base(load, save)
         {
             _options = options;
@@ -49,7 +49,7 @@ namespace OrangeRedDotNet.Authentication
                     _ => string.Empty } },
                 { "scope", _options.Scopes?.Count > 0 ? string.Join(' ', _options.Scopes) : "*" },
             });
-            UriBuilder uriBuilder = new(new Uri($"https://www.reddit.com/api/v1/authorize{ (_options.Compact ? ".compact" : "") }"))
+            UriBuilder uriBuilder = new(new Uri($"https://www.reddit.com/api/v1/authorize{(_options.Compact ? ".compact" : "")}"))
             {
                 Query = await queryString.ReadAsStringAsync()
             };

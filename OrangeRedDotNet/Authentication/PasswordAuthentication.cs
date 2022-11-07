@@ -21,7 +21,9 @@ namespace OrangeRedDotNet.Authentication
         /// Constructor
         /// </summary>
         /// <param name="options">Password options</param>
-        public PasswordAuthentication(PasswordAuthenticationOptions options, Func<TokenResponse> load = null, Action<TokenResponse> save = null)
+        public PasswordAuthentication(PasswordAuthenticationOptions options, 
+            Func<Task<TokenResponse>> load = null, 
+            Func<TokenResponse, Task> save = null)
             : base(load, save)
         {
             _options = options;
